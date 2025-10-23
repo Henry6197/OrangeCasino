@@ -1,5 +1,8 @@
 // Shared utilities: balance handling and small helpers
 (()=>{
+  // Auto payoff protection flag
+  let autoPayoffInProgress = false;
+  
   function readBalance(){
     const raw = localStorage.getItem('vc_balance');
     return raw ? Number(raw) : 1000;
@@ -7,7 +10,10 @@
   function writeBalance(v){ 
     localStorage.setItem('vc_balance', String(v)); 
     updateBalance(); 
-    checkAutoPayoffDebt(); 
+    // Only trigger auto-payoff if not already in progress
+    if(!autoPayoffInProgress) {
+      checkAutoPayoffDebt(); 
+    }
   }
   
   function updateBalance(){ const els = document.querySelectorAll('#balance-value'); els.forEach(e=>{ const v = readBalance(); e.textContent = String(v); }); }
@@ -41,27 +47,61 @@
 
   // Auto payoff debt when balance is high enough
   function checkAutoPayoffDebt(){
+    if(autoPayoffInProgress) return; // Prevent recursion
+    
     const balance = readBalance();
     const debt = readDebt();
     
-    if(debt > 0 && balance >= debt + 500){
-      // Auto pay off debt completely
-      const newBalance = balance - debt;
-      localStorage.setItem('vc_balance', String(newBalance)); // Direct write to avoid recursion
-      updateBalance();
-      localStorage.setItem('vc_debt', '0'); // Direct write to avoid recursion
-      updateDebt();
+    if(debt > 0 && balance >= debt + 100){ // Reduced threshold from 500 to 100
+      autoPayoffInProgress = true;
       
-      setBuddyText(window.TODD_DIALOGUE?.loan?.autoPaidOff || `Auto-paid off $${debt} debt! You still have $${newBalance} left.`);
-      
-      // Show a celebration message
-      if(typeof confetti === 'function') confetti(30);
-      if(typeof showBigMessage === 'function') showBigMessage(`DEBT CLEARED! -$${debt}`, 2000);
+      try {
+        // Auto pay off debt completely
+        const newBalance = balance - debt;
+        
+        // Ensure both operations complete successfully
+        localStorage.setItem('vc_balance', String(newBalance));
+        localStorage.setItem('vc_debt', '0');
+        
+        // Force update both displays
+        updateBalance();
+        updateDebt();
+        
+        setBuddyText(window.TODD_DIALOGUE?.loan?.autoPaidOff || `Auto-paid off $${debt} debt! You still have $${newBalance} left.`);
+        
+        // Show a celebration message
+        if(typeof vc.confetti === 'function') vc.confetti(30);
+        if(typeof vc.showBigMessage === 'function') vc.showBigMessage(`DEBT CLEARED! -$${debt}`, 2000);
+        
+      } catch(error) {
+        // If something goes wrong, restore the original balance
+        console.error('Auto debt payoff failed:', error);
+        localStorage.setItem('vc_balance', String(balance));
+        updateBalance();
+      } finally {
+        autoPayoffInProgress = false;
+      }
+    } else {
+      autoPayoffInProgress = false;
     }
   }
 
   function loan100(){ // give $100, add $150 debt
-    let balance = readBalance(); let debt = readDebt(); balance += 100; debt += 150; writeBalance(balance); writeDebt(debt); setBuddyText(window.TODD_DIALOGUE?.loan?.granted || 'Loan granted — spend wisely.'); }
+    let balance = readBalance(); 
+    let debt = readDebt(); 
+    
+    // Prevent loans if balance is too high
+    if(balance > 500) {
+      setBuddyText(window.TODD_DIALOGUE?.loan?.tooRich || 'You have enough money already. No loan needed!'); 
+      return;
+    }
+    
+    balance += 100; 
+    debt += 150; 
+    writeBalance(balance); 
+    writeDebt(debt); 
+    setBuddyText(window.TODD_DIALOGUE?.loan?.granted || 'Loan granted — spend wisely.'); 
+  }
 
   function paybackLoan(){ let balance = readBalance(); let debt = readDebt(); if(debt <= 0){ setBuddyText(window.TODD_DIALOGUE?.loan?.noDebt || 'No debt to pay.'); return; } const pay = Math.min(balance, debt); if(pay <= 0){ setBuddyText(window.TODD_DIALOGUE?.loan?.insufficientFunds || 'Not enough balance to pay debt.'); return; } balance -= pay; debt -= pay; writeBalance(balance); writeDebt(debt); setBuddyText(window.TODD_DIALOGUE?.loan?.thanksPaid || 'Thanks! Debt lowered.'); }
 

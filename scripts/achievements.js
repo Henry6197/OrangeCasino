@@ -152,6 +152,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     localStorage.removeItem(BLACKJACK_KEY); 
     localStorage.removeItem(COAL_KEY); 
     localStorage.removeItem(POKER_KEY); 
+    localStorage.removeItem('vc_coal_mine_visited');
+    localStorage.removeItem('vc_coal_mine_escaped');
     render(); 
   });
 

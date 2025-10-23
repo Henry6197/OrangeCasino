@@ -247,6 +247,8 @@
       <button class="complete-btn" id="complete-btn">🎉 DEBT PAID! RETURN TO CASINO 🎉</button>
     </div>
 
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
       let coalMined = 0;
       let currentDebt = 0;
@@ -419,17 +421,13 @@
         }
       });
       
-      // Prevent navigation away from coal mine (unless using prison key)
-      window.addEventListener('beforeunload', function(e) {
-        if (coalMined < 100) {
-          e.preventDefault();
-          e.returnValue = "You must mine 100 coal pieces before leaving!";
-          return "You must mine 100 coal pieces before leaving!";
-        }
-      });
-      
       // Initialize
       updateCoalCount();
+      
+      // Mark coal mine as visited for achievement when page loads
+      if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
+        window.vc.markCoalMineVisited();
+      }
     </script>
   </body>
 </html>
