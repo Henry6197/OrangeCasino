@@ -1,0 +1,11 @@
+<svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="100" fill="#ff6600" stroke="#cc5200" stroke-width="2" rx="5"/>
+  <text x="60" y="16" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9" font-weight="bold">KRAFT SINGLES</text>
+  <text x="60" y="26" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">IN YOUR AREA!</text>
+  <rect x="25" y="32" width="70" height="40" fill="#ffcc00" stroke="#ff9900" stroke-width="2" rx="3"/>
+  <rect x="30" y="37" width="60" height="30" fill="#fff200" stroke="#ffaa00" stroke-width="1" rx="2"/>
+  <text x="60" y="50" text-anchor="middle" fill="#cc5200" font-family="Arial, sans-serif" font-size="11" font-weight="bold">KRAFT</text>
+  <text x="60" y="60" text-anchor="middle" fill="#cc5200" font-family="Arial, sans-serif" font-size="8" font-weight="bold">SINGLES</text>
+  <text x="60" y="82" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">FRESH &amp; MELTY!</text>
+  <text x="60" y="92" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="7" font-weight="bold">CLICK NOW!</text>
+</svg>

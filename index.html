@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Orange Casino</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+  <h1 class="brand">ORANGE CASINO</h1>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="slot.html">Slots</a>
+          <a href="blackjack.html">Blackjack</a>
+          <a href="poker.html">Poker</a>
+          <a href="achievements.html">Achievements</a>
+        </nav>
+  <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h2>Welcome to ORANGE CASINO</h2>
+        <p>Pick a game from the menu and have fun. The UI is styled with CSS variables so you can easily tweak colors and spacing in <code>style.css</code>.</p>
+        <div class="game-cards">
+          <a class="card" href="slot.html">
+            <h3>Slots</h3>
+            <p>Spin the reels and enjoy the orange glow.</p>
+          </a>
+          <a class="card" href="blackjack.html">
+            <h3>Blackjack</h3>
+            <p>Beat the dealer.</p>
+          </a>
+          <a class="card" href="poker.html">
+            <h3>Poker</h3>
+            <p>Simplified 5-card draw.</p>
+          </a>
+        </div>
+        <div style="height:12px"></div>
+        <div class="row">
+          <div class="game-panel" style="padding:12px;display:inline-block;">
+            <div>Debt: $<span class="debt-value">0</span></div>
+            <div style="height:8px"></div>
+            <button class="btn" onclick="vc.loan100()" style="margin-right:8px">Loan $100</button>
+            <button class="btn" onclick="vc.paybackLoan()">Payback Loan</button>
+            <a class="btn" href="surgery.html" style="margin-left:12px;background:#ff7b7b;color:#fff">Sell a kidney</a>
+            <a class="btn" href="appendix.html" style="margin-left:12px;background:#ffd27a;color:#222">Sell appendix</a>
+            <a class="btn" href="help.html" style="margin-left:12px;background:#8ec5ff;color:#022">Help</a>
+          </div>
+        </div>
+      </section>
+     <div class="ad-container right ad-4" onclick="window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
+      <img src="images/ad-house.svg" class="ad-svg" alt="Ad 4">
+      <div class="ad-text">Lugi House!</div>
+    </div> 
+      
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">Made with ❤️ — demo only. No real money.</div>
+    </footer>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <div class="buddy" id="buddy">
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Todd</div>
+        <div class="text" id="buddy-text">Welcome back!</div>
+      </div>
+    </div>
+  </body>
+</html>

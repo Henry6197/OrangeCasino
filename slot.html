@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Slots — ORANGE CASINO</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Advertisement System -->
+    <div class="ad-container left ad-1" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad1.svg" class="ad-svg" alt="Ad 1">
+      <div class="ad-text">Kraft Singles!</div>
+    </div>
+    <div class="ad-container left ad-2" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad2.svg" class="ad-svg" alt="Ad 2">
+      <div class="ad-text">Doctors Hate This!</div>
+    </div>
+    <div class="ad-container right ad-3" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad3.svg" class="ad-svg" alt="Ad 3">
+      <div class="ad-text">Make Money!</div>
+    </div>
+    <div class="ad-container right ad-4" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad4.svg" class="ad-svg" alt="Ad 4">
+      <div class="ad-text">You Won't Believe!</div>
+    </div>
+
+    <header class="site-header">
+      <div class="container">
+  <h1 class="brand">ORANGE CASINO</h1>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="slot.html">Slots</a>
+          <a href="blackjack.html">Blackjack</a>
+          <a href="poker.html">Poker</a>
+          <a href="achievements.html">Achievements</a>
+        </nav>
+  <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+      </div>
+    </header>
+
+    <main class="container">
+      <h2>Slot Machine</h2>
+      <div class="game-stage">
+        <div class="game-panel">
+          <div class="reels" id="reels">
+            <!-- 5 columns x 3 rows -->
+            <div class="reel" data-index="0">🍒</div>
+            <div class="reel" data-index="1">🍋</div>
+            <div class="reel" data-index="2">⭐</div>
+            <div class="reel" data-index="3">🍇</div>
+            <div class="reel" data-index="4">🔔</div>
+            <div class="reel" data-index="5">🍋</div>
+            <div class="reel" data-index="6">🍒</div>
+            <div class="reel" data-index="7">🍋</div>
+            <div class="reel" data-index="8">⭐</div>
+            <div class="reel" data-index="9">🍇</div>
+            <div class="reel" data-index="10">🔔</div>
+            <div class="reel" data-index="11">🍉</div>
+            <div class="reel" data-index="12">🍒</div>
+            <div class="reel" data-index="13">🍋</div>
+            <div class="reel" data-index="14">⭐</div>
+          </div>
+          <div style="height:12px"></div>
+          <div class="center">
+            <button class="btn" id="spin">Spin</button>
+            <button class="btn" id="max" style="background:#6ee7b7;color:#06201a">Max</button>
+          </div>
+          <div style="height:12px"></div>
+          <div class="log" id="slot-log"></div>
+        </div>
+
+        <aside class="game-controls">
+          <div class="bet-section">
+            <h4>🎰 Set Your Bet</h4>
+            <div class="row"><label class="bet-label">Bet Amount:</label><input id="bet" class="bet-input" type="number" value="10" min="1"></div>
+          </div>
+          <div class="game-panel">
+            <h3>Payouts</h3>
+            <div class="muted">3-in-row = 2x, 4-in-row = 4x, full row = 8x, full column = 5x.</div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+  <script src="scripts/todd-dialogue.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/slot.clean.js"></script>
+    <!-- buddy + overlays -->
+    <div class="buddy" id="buddy">
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Todd</div>
+        <div class="text" id="buddy-text">Let's win big!</div>
+      </div>
+    </div>
+    <div class="big-overlay" id="big-overlay"><div class="message" id="big-message"></div></div>
+    <div id="confetti-root"></div>
+    
+    <!-- Fake advertisements -->
+    <div class="ad-container left">
+      <div class="ad-image">BONUS</div>
+      <div class="ad-text">Win BIG with this secret!</div>
+      <button class="ad-button">Try Now!</button>
+    </div>
+    <div class="ad-container right">
+      <div class="ad-image">$$$</div>
+      <div class="ad-text">Make money from home!</div>
+      <button class="ad-button">Get Rich</button>
+    </div>
+  </body>
+</html>
