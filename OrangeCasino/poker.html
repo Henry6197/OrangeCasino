@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Poker — ORANGE CASINO</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Advertisement System -->
+    <div class="ad-container left ad-1" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad1.svg" class="ad-svg" alt="Ad 1">
+      <div class="ad-text">Kraft Singles!</div>
+    </div>
+    <div class="ad-container left ad-2" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad2.svg" class="ad-svg" alt="Ad 2">
+      <div class="ad-text">Doctors Hate This!</div>
+    </div>
+    <div class="ad-container right ad-3" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad3.svg" class="ad-svg" alt="Ad 3">
+      <div class="ad-text">Make Money!</div>
+    </div>
+    <div class="ad-container right ad-4" onclick="window.open('popup-hell.html', '_blank')">
+      <img src="images/ad4.svg" class="ad-svg" alt="Ad 4">
+      <div class="ad-text">You Won't Believe!</div>
+    </div>
+
+    <header class="site-header">
+      <div class="container">
+  <h1 class="brand">ORANGE CASINO</h1>
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="slot.html">Slots</a>
+          <a href="blackjack.html">Blackjack</a>
+          <a href="poker.html">Poker</a>
+           <a href="achievements.html">Achievements</a>
+        </nav>
+  <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+      </div>
+    </header>
+
+    <main class="container">
+      <h2>Texas Hold'em Poker</h2>
+      <div class="game-stage">
+        <div class="game-panel">
+          <h3>Community Cards</h3>
+          <div id="community-cards" class="row"></div>
+          
+          <div style="height:16px"></div>
+          
+          <div class="poker-table">
+            <div class="dealer-section">
+              <h4>Dealer</h4>
+              <div id="dealer-hand" class="row"></div>
+              <div class="chip-count">Chips: $<span id="dealer-chips">1000</span></div>
+            </div>
+            
+            <div class="pot-section">
+              <h4>Pot</h4>
+              <div class="pot-amount">$<span id="pot-amount">0</span></div>
+            </div>
+            
+            <div class="player-section">
+              <h4>You</h4>
+              <div id="player-hand" class="row"></div>
+              <div class="chip-count">Your bet: $<span id="current-bet">0</span></div>
+            </div>
+          </div>
+          
+          <div style="height:16px"></div>
+          
+          <div class="poker-actions center">
+            <button class="btn" id="deal-btn">Deal New Hand</button>
+            <button class="btn" id="fold-btn" disabled>Fold</button>
+            <button class="btn" id="call-btn" disabled>Call</button>
+            <button class="btn" id="raise-btn" disabled>Raise</button>
+            <button class="btn" id="check-btn" disabled>Check</button>
+          </div>
+          
+          <div style="height:12px"></div>
+          <div class="game-status" id="game-status">Click "Deal New Hand" to start</div>
+          <div style="height:12px"></div>
+          <div class="log" id="poker-log"></div>
+        </div>
+
+        <aside class="game-controls">
+          <div class="bet-section">
+            <h4>🃏 Place Your Bet</h4>
+            <div class="row"><label class="bet-label">Bet Amount:</label><input id="poker-bet" class="bet-input" type="number" value="15" min="1"></div>
+          </div>
+          <div class="game-panel">
+            <h3>Raise Amount</h3>
+            <div class="row">
+              <label class="bet-label">Raise to:</label>
+              <input id="raise-amount" class="bet-input" type="number" value="20" min="1">
+            </div>
+            <div style="height:12px"></div>
+            <h3>Hand Rankings</h3>
+            <div class="muted">
+              <div>Royal Flush > Straight Flush > Four of a Kind</div>
+              <div>Full House > Flush > Straight > Three of a Kind</div>
+              <div>Two Pair > One Pair > High Card</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+  <script src="scripts/todd-dialogue.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/poker.clean.js"></script>
+    <div class="buddy" id="buddy">
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Todd</div>
+        <div class="text" id="buddy-text">You're on fire!</div>
+      </div>
+    </div>
+    <div class="big-overlay" id="big-overlay"><div class="message" id="big-message"></div></div>
+    <div id="confetti-root"></div>
+  </body>
+</html>
