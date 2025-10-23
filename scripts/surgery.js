@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const balance = vc.readBalance(); vc.writeBalance(balance + 30000);
         localStorage.setItem(usedKey, '1');
         localStorage.removeItem(TIMER_KEY);
+        
+        // Mark achievement for selling kidney
+        try{ if(window.vc && typeof window.vc.markSurgeryUsed === 'function') window.vc.markSurgeryUsed(); }catch(e){}
+        
         append('Surgery complete. You received $30,000.');
         vc.setBuddyText('Testing mode: Surgery completed instantly!');
         vc.showBigMessage('Surgery complete! $30,000', 2000);
@@ -88,6 +92,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const balance = vc.readBalance(); vc.writeBalance(balance + 30000);
       localStorage.setItem(usedKey, '1');
       localStorage.removeItem(TIMER_KEY);
+      
+      // Mark achievement for selling kidney
+      try{ if(window.vc && typeof window.vc.markSurgeryUsed === 'function') window.vc.markSurgeryUsed(); }catch(e){}
+      
       append('Surgery complete. You received $30,000.');
       vc.setBuddyText('You made $30,000. Take care of yourself.');
       vc.showBigMessage('Surgery complete! $30,000', 2000);

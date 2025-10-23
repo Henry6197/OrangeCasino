@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
       // pay user $3
       const balance = vc.readBalance(); vc.writeBalance(balance + 3);
       localStorage.removeItem(TIMER_KEY);
+      
+      // Mark achievement for selling appendix
+      try{ if(window.vc && typeof window.vc.markAppendixUsed === 'function') window.vc.markAppendixUsed(); }catch(e){}
+      
       append('Procedure complete. You received $3.');
       vc.setBuddyText('You made $3.');
       vc.showBigMessage('Procedure complete! $3', 1600);

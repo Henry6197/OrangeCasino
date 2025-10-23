@@ -162,7 +162,7 @@
       </div>
       
       <center>
-        <button class="cta-button" onclick="showPopup()">🔥 YES! I WANT TO GET RICH! 🔥</button>
+        <button class="cta-button" onclick="goToCheckout()">🔥 YES! I WANT TO GET RICH! 🔥</button>
       </center>
       
       <div class="testimonial">
@@ -184,7 +184,7 @@
       </div>
       
       <center>
-        <button class="cta-button" onclick="showPopup()">💰 TAKE MY MONEY NOW! 💰</button>
+        <button class="cta-button" onclick="goToCheckout()">💰 TAKE MY MONEY NOW! 💰</button>
       </center>
       
       <p><strong>Don't let this opportunity slip away!</strong> This is your chance to finally live the life you deserve. Your future millionaire self is counting on you to make the RIGHT decision TODAY!</p>
@@ -194,7 +194,7 @@
       </div>
       
       <center>
-        <button class="cta-button" onclick="showPopup()">🎯 SECURE MY SPOT NOW! 🎯</button>
+        <button class="cta-button" onclick="goToCheckout()">🎯 SECURE MY SPOT NOW! 🎯</button>
       </center>
       
       <div style="text-align: center; margin-top: 30px; font-size: 0.8em; color: #666;">
@@ -204,6 +204,8 @@
       </div>
     </div>
 
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
       let popupCount = 0;
       const popupMessages = [
@@ -230,8 +232,8 @@
           <button class="popup-close" onclick="closePopup(this)">&times;</button>
           <h3>🚨 URGENT MESSAGE! 🚨</h3>
           <p>${message}</p>
-          <button class="cta-button" onclick="showMorePopups()">YES! I CHANGED MY MIND!</button>
-          <button class="cta-button" onclick="showMorePopups()">GIVE ME THE DEAL!</button>
+          <button class="cta-button" onclick="goToCheckout()">YES! I CHANGED MY MIND!</button>
+          <button class="cta-button" onclick="goToCheckout()">GIVE ME THE DEAL!</button>
         `;
         document.body.appendChild(popup);
         
@@ -272,6 +274,16 @@
         }
       }
       
+      function goToCheckout() {
+        // Mark ad clicked for achievement
+        if(window.vc && typeof window.vc.markAdClicked === 'function') {
+          window.vc.markAdClicked();
+        }
+        
+        // Redirect to checkout page
+        window.location.href = 'checkout.html';
+      }
+      
       // Add CSS for shake animation
       const style = document.createElement('style');
       style.textContent = `
@@ -294,14 +306,6 @@
           showPopup();
         }
       }, 10000);
-      
-      // Prevent easy escape
-      window.addEventListener('beforeunload', function(e) {
-        e.preventDefault();
-        e.returnValue = "WAIT! Don't leave! You're about to miss out on MILLIONS!";
-        showMorePopups();
-        return "WAIT! Don't leave! You're about to miss out on MILLIONS!";
-      });
     </script>
   </body>
 </html>

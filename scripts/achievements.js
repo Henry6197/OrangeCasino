@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     {id:'blackjack_10', title:'Play Blackjack 10 times', check:()=> (readBlackjackStats().plays >= 10)},
     {id:'blackjack_20', title:'Play Blackjack 20 times', check:()=> (readBlackjackStats().plays >= 20)},
     {id:'blackjack_50', title:'Play Blackjack 50 times', check:()=> (readBlackjackStats().plays >= 50)},
+    {id:'poker_5', title:'Play Poker 5 times', check:()=> (readPokerStats().plays >= 5)},
+    {id:'poker_10', title:'Play Poker 10 times', check:()=> (readPokerStats().plays >= 10)},
+    {id:'poker_20', title:'Play Poker 20 times', check:()=> (readPokerStats().plays >= 20)},
+    {id:'poker_50', title:'Play Poker 50 times', check:()=> (readPokerStats().plays >= 50)},
     {id:'coal_mine', title:'Get sent to the coal mine', check:()=> (localStorage.getItem('vc_coal_mine_visited') === '1')},
     {id:'mine_1_coal', title:'Mine 1 coal', check:()=> (readCoalStats().mined >= 1)},
     {id:'mine_5_coal', title:'Mine 5 coal', check:()=> (readCoalStats().mined >= 5)},
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     {id:'coal_escape', title:'Secret: Escape the coal mine using the key', check:()=> (localStorage.getItem('vc_coal_mine_escaped') === '1')},
     {id:'sell_kidney', title:'Sell a kidney', check:()=> (localStorage.getItem('vc_surgery_used') === '1')},
     {id:'sell_appendix', title:'Sell your appendix', check:()=> (localStorage.getItem('vc_appendix_used') === '1')},
-    {id:'buy_course', title:"Buy Chad Moneybags' Course", check:()=> (localStorage.getItem('vc_clicked_ad') === '1')},
+    {id:'buy_course', title:"Buy Chad Moneybags' Course", check:()=> (localStorage.getItem('vc_chads_course_owned') === '1')},
   ];
 
   function readState(){ try{ return JSON.parse(localStorage.getItem(ACH_KEY) || '{}'); }catch(e){ return {}; }}
@@ -56,6 +60,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }catch(e){ return { mined: 0 }; }
   }
   function writeCoalStats(stats){ localStorage.setItem(COAL_KEY, JSON.stringify(stats)); }
+
+  // Poker tracking
+  const POKER_KEY = 'vc_poker_stats';
+  function readPokerStats(){ 
+    try{ 
+      const data = JSON.parse(localStorage.getItem(POKER_KEY) || '{}'); 
+      return { plays: data.plays || 0 };
+    }catch(e){ return { plays: 0 }; }
+  }
+  function writePokerStats(stats){ localStorage.setItem(POKER_KEY, JSON.stringify(stats)); }
 
   function notifyUnlocked(def){ try{ if(window.vc && typeof window.vc.showBigMessage === 'function'){ window.vc.showBigMessage(`${def.title} unlocked!`, 1600); } if(window.vc && typeof window.vc.confetti === 'function'){ window.vc.confetti(36); } if(window.vc && typeof window.vc.setBuddyText === 'function'){ window.vc.setBuddyText(`Achievement unlocked: ${def.title}`); } }catch(e){}
     // also log to console for debugging
@@ -106,13 +120,40 @@ document.addEventListener('DOMContentLoaded', ()=>{
     localStorage.setItem('vc_clicked_ad', '1'); 
     render(); 
   };
+  window.vc.markSurgeryUsed = function(){ 
+    localStorage.setItem('vc_surgery_used', '1'); 
+    render(); 
+  };
+  window.vc.markAppendixUsed = function(){ 
+    localStorage.setItem('vc_appendix_used', '1'); 
+    render(); 
+  };
+  window.vc.incrementPokerPlays = function(n=1){ 
+    const stats = readPokerStats(); 
+    stats.plays += n; 
+    writePokerStats(stats); 
+    render(); 
+  };
+  window.vc.markCoursePurchased = function(){ 
+    localStorage.setItem('vc_chads_course_owned', '1'); 
+    render(); 
+  };
 
   // make checks reactive: override vc.updateBalance/updateDebt to re-render achievements
-  const origUpdateBalance = vc.updateBalance; const origUpdateDebt = vc.updateDebt;
-  vc.updateBalance = function(){ origUpdateBalance(); render(); };
-  vc.updateDebt = function(){ origUpdateDebt(); render(); };
+  if(window.vc && typeof window.vc.updateBalance === 'function' && typeof window.vc.updateDebt === 'function') {
+    const origUpdateBalance = vc.updateBalance; const origUpdateDebt = vc.updateDebt;
+    vc.updateBalance = function(){ origUpdateBalance(); render(); };
+    vc.updateDebt = function(){ origUpdateDebt(); render(); };
+  }
 
-  document.getElementById('reset-achievements')?.addEventListener('click', ()=>{ localStorage.removeItem(ACH_KEY); localStorage.removeItem(SPIN_KEY); render(); });
+  document.getElementById('reset-achievements')?.addEventListener('click', ()=>{ 
+    localStorage.removeItem(ACH_KEY); 
+    localStorage.removeItem(SPIN_KEY); 
+    localStorage.removeItem(BLACKJACK_KEY); 
+    localStorage.removeItem(COAL_KEY); 
+    localStorage.removeItem(POKER_KEY); 
+    render(); 
+  });
 
   render();
 });

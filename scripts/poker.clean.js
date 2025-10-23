@@ -208,6 +208,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
       gameActive: true
     };
     
+    // Track poker play for achievements
+    try{ if(window.vc && typeof window.vc.incrementPokerPlays === 'function') window.vc.incrementPokerPlays(1); }catch(e){}
+    
     shuffle(gameState.deck);
     balance -= ante;
     vc.writeBalance(balance);

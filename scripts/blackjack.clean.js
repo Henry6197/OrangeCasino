@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
       if(bet <= 0){ appendLog('Invalid bet.'); return; }
       if(bet > balance){ appendLog('Insufficient funds for that bet.'); vc.setBuddyText(window.TODD_DIALOGUE?.blackjack?.insufficientFunds || 'Not enough funds — lower the bet or take a loan.'); return; }
       roundActive = true;
+      
+      // Track blackjack play for achievements
+      try{ if(window.vc && typeof window.vc.incrementBlackjackPlays === 'function') window.vc.incrementBlackjackPlays(1); }catch(e){}
       deck = makeDeck(); shuffle(deck); dealer=[]; player=[];
       balance -= bet; vc.writeBalance(balance);
       player.push(deck.pop(), deck.pop()); dealer.push(deck.pop(), deck.pop());
@@ -139,6 +142,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
       else if(pv === 21 && player.length === 2 && dv !== 21) {
         // Player blackjack (21 with 2 cards) - 3:2 payout
+        try{ if(window.vc && typeof window.vc.incrementBlackjackNaturals === 'function') window.vc.incrementBlackjackNaturals(1); }catch(e){}
         const win = Math.floor(bet * 2.5); // 1.5x bet + original bet back
         balance += win;
         vc.writeBalance(balance);

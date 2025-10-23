@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout - Chad's Secret Course</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+        background-size: 400% 400%;
+        animation: gradientShift 3s ease infinite;
+        padding: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .checkout-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      
+      .site-header {
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      }
+      
+      .site-header .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .brand {
+        color: #e74c3c;
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+      
+      .main-nav {
+        display: flex;
+        gap: 20px;
+      }
+      
+      .main-nav a {
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+      
+      .main-nav a:hover {
+        background: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+      }
+      
+      .balance {
+        background: linear-gradient(45deg, #e74c3c, #f39c12);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      }
+      
+      .course-info {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(45deg, #ff6b6b, #f39c12);
+        border-radius: 10px;
+        color: white;
+      }
+      
+      .course-price {
+        font-size: 3em;
+        font-weight: bold;
+        margin: 10px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+      
+      .course-benefits {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border-left: 4px solid #e74c3c;
+      }
+      
+      .balance-display {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      
+      .insufficient-funds {
+        color: #ff4757;
+        font-weight: bold;
+      }
+      
+      .sufficient-funds {
+        color: #2ed573;
+        font-weight: bold;
+      }
+      
+      .purchase-button {
+        width: 100%;
+        padding: 20px;
+        font-size: 1.5em;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 20px 0;
+        transition: all 0.3s;
+      }
+      
+      .purchase-button:enabled {
+        background: linear-gradient(45deg, #2ed573, #1e90ff);
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      
+      .purchase-button:enabled:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      }
+      
+      .purchase-button:disabled {
+        background: #6c757d;
+        color: #fff;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      
+      .course-status {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-weight: bold;
+      }
+      
+      .owned {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      
+      .passive-income {
+        background: linear-gradient(45deg, #2ed573, #1e90ff);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px 0;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      
+      .income-timer {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+      }
+      
+      .back-link {
+        display: inline-block;
+        margin: 20px 0;
+        color: #e74c3c;
+        text-decoration: none;
+        font-weight: bold;
+        background: rgba(255,255,255,0.8);
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: all 0.3s;
+      }
+      
+      .back-link:hover {
+        background: white;
+        transform: scale(1.05);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      }
+      
+      .site-footer {
+        background: rgba(255,255,255,0.9);
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        border-radius: 10px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span></div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="checkout-container">
+        <div class="course-info">
+          <h2>🚀 Chad Moneybags' Secret Course 🚀</h2>
+          <div class="course-price">$5,000,000</div>
+          <div>"The ONLY course that GUARANTEES passive income!"</div>
+        </div>
+        
+        <div class="course-benefits">
+          <h3>What You Get:</h3>
+          <ul>
+            <li>💰 <strong>$20 every 5 seconds</strong> - GUARANTEED passive income!</li>
+            <li>🎯 Chad's personal "money magnet" technique</li>
+            <li>🔥 Exclusive billionaire mindset training</li>
+            <li>💎 VIP access to Chad's private Discord</li>
+            <li>🏆 Certificate of completion (totally legit)</li>
+            <li>⚡ 30-day money back guarantee*</li>
+          </ul>
+          <div style="font-size: 0.8em; margin-top: 10px; opacity: 0.7;">
+            *Money back guarantee void in this dimension
+          </div>
+        </div>
+        
+        <div class="balance-display">
+          <div>Your Current Balance: $<span id="current-balance">1000</span></div>
+          <div id="afford-status" class="insufficient-funds">You need $4,999,000 more to afford this course!</div>
+        </div>
+        
+        <div id="course-status">
+          <button id="purchase-btn" class="purchase-button" disabled>
+            💸 BUY NOW - TRANSFORM YOUR LIFE! 💸
+          </button>
+        </div>
+        
+        <div id="passive-income-section" style="display: none;">
+          <div class="passive-income">
+            <h3>🎉 PASSIVE INCOME ACTIVATED! 🎉</h3>
+            <div>Next payment in: <span id="income-countdown" class="income-timer">5s</span></div>
+            <div style="margin-top: 10px;">You've earned: $<span id="total-earned">0</span> from Chad's course!</div>
+          </div>
+        </div>
+        
+        <a href="popup-hell.html" class="back-link">← Back to Course Details</a>
+      </div>
+    </main>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const COURSE_KEY = 'vc_chads_course_owned';
+        const EARNED_KEY = 'vc_chads_course_earned';
+        const LAST_PAYMENT_KEY = 'vc_chads_course_last_payment';
+        
+        const currentBalanceEl = document.getElementById('current-balance');
+        const affordStatusEl = document.getElementById('afford-status');
+        const purchaseBtn = document.getElementById('purchase-btn');
+        const courseStatusEl = document.getElementById('course-status');
+        const passiveIncomeSection = document.getElementById('passive-income-section');
+        const incomeCountdownEl = document.getElementById('income-countdown');
+        const totalEarnedEl = document.getElementById('total-earned');
+        
+        const COURSE_PRICE = 5000000;
+        const INCOME_AMOUNT = 20;
+        const INCOME_INTERVAL = 5000; // 5 seconds
+        
+        let incomeTimer = null;
+        
+        function updateDisplay() {
+          const balance = vc.readBalance();
+          const hasCourse = localStorage.getItem(COURSE_KEY) === '1';
+          const totalEarned = Number(localStorage.getItem(EARNED_KEY) || 0);
+          
+          currentBalanceEl.textContent = balance.toLocaleString();
+          totalEarnedEl.textContent = totalEarned.toLocaleString();
+          
+          if (hasCourse) {
+            courseStatusEl.innerHTML = '<div class="course-status owned">✅ YOU OWN CHAD\'S COURSE! Earning $20 every 5 seconds...</div>';
+            passiveIncomeSection.style.display = 'block';
+            startIncomeTimer();
+          } else if (balance >= COURSE_PRICE) {
+            affordStatusEl.textContent = 'You can afford Chad\'s course!';
+            affordStatusEl.className = 'sufficient-funds';
+            purchaseBtn.disabled = false;
+            purchaseBtn.textContent = '💸 BUY NOW - TRANSFORM YOUR LIFE! 💸';
+          } else {
+            const needed = COURSE_PRICE - balance;
+            affordStatusEl.textContent = `You need $${needed.toLocaleString()} more to afford this course!`;
+            affordStatusEl.className = 'insufficient-funds';
+            purchaseBtn.disabled = true;
+            purchaseBtn.textContent = '💸 INSUFFICIENT FUNDS 💸';
+          }
+        }
+        
+        function startIncomeTimer() {
+          if (incomeTimer) clearInterval(incomeTimer);
+          
+          const lastPayment = Number(localStorage.getItem(LAST_PAYMENT_KEY) || 0);
+          const now = Date.now();
+          const timeSinceLastPayment = now - lastPayment;
+          
+          // If more than 5 seconds have passed, give immediate payment
+          if (timeSinceLastPayment >= INCOME_INTERVAL) {
+            givePassiveIncome();
+          }
+          
+          // Start the countdown timer
+          let timeLeft = INCOME_INTERVAL - (timeSinceLastPayment % INCOME_INTERVAL);
+          
+          incomeTimer = setInterval(() => {
+            timeLeft -= 100;
+            
+            if (timeLeft <= 0) {
+              givePassiveIncome();
+              timeLeft = INCOME_INTERVAL;
+            }
+            
+            const seconds = Math.ceil(timeLeft / 1000);
+            incomeCountdownEl.textContent = seconds + 's';
+          }, 100);
+        }
+        
+        function givePassiveIncome() {
+          const balance = vc.readBalance();
+          const newBalance = balance + INCOME_AMOUNT;
+          vc.writeBalance(newBalance);
+          
+          const totalEarned = Number(localStorage.getItem(EARNED_KEY) || 0) + INCOME_AMOUNT;
+          localStorage.setItem(EARNED_KEY, String(totalEarned));
+          localStorage.setItem(LAST_PAYMENT_KEY, String(Date.now()));
+          
+          // Show money notification
+          if (typeof vc.showBigMessage === 'function') {
+            vc.showBigMessage(`Chad's Course: +$${INCOME_AMOUNT}!`, 1200);
+          }
+          
+          if (typeof vc.setBuddyText === 'function') {
+            vc.setBuddyText(`Chad's course just earned you $${INCOME_AMOUNT}!`);
+          }
+          
+          updateDisplay();
+        }
+        
+        function purchaseCourse() {
+          const balance = vc.readBalance();
+          
+          if (balance >= COURSE_PRICE) {
+            const newBalance = balance - COURSE_PRICE;
+            vc.writeBalance(newBalance);
+            localStorage.setItem(COURSE_KEY, '1');
+            localStorage.setItem(LAST_PAYMENT_KEY, String(Date.now()));
+            
+            // Mark achievement
+            if (typeof vc.markCoursePurchased === 'function') {
+              vc.markCoursePurchased();
+            }
+            
+            if (typeof vc.showBigMessage === 'function') {
+              vc.showBigMessage('COURSE PURCHASED! Passive income activated!', 2500);
+            }
+            
+            if (typeof vc.setBuddyText === 'function') {
+              vc.setBuddyText('You bought Chad\'s course! Money will flow every 5 seconds!');
+            }
+            
+            if (typeof vc.confetti === 'function') {
+              vc.confetti(60);
+            }
+            
+            updateDisplay();
+          }
+        }
+        
+        purchaseBtn.addEventListener('click', purchaseCourse);
+        
+        // Update display when balance changes
+        const originalUpdateBalance = vc.updateBalance;
+        vc.updateBalance = function() {
+          originalUpdateBalance();
+          updateDisplay();
+        };
+        
+        // Initial display update
+        updateDisplay();
+        
+        // If course is owned, start the income timer immediately
+        if (localStorage.getItem(COURSE_KEY) === '1') {
+          startIncomeTimer();
+        }
+      });
+    </script>
+  </body>
+</html>
