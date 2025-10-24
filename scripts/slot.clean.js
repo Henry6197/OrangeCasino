@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(bet <= 0){ appendLog('Invalid bet.'); spinning = false; if(spinBtn) spinBtn.disabled = false; if(maxBtn) maxBtn.disabled = false; return; }
     if(bet > balance){ appendLog('Insufficient funds for that bet.'); vc.setBuddyText(window.TODD_DIALOGUE?.slots?.insufficientFunds || 'Not enough funds — try a smaller bet or take a loan.'); spinning = false; if(spinBtn) spinBtn.disabled = false; if(maxBtn) maxBtn.disabled = false; return; }
     balance -= bet; vc.writeBalance(balance);
+    
+    // Add to jackpot (10% of bet)
+    const jackpotContribution = vc.addToJackpot(bet);
 
     try{ if(window.vc && typeof window.vc.incrementSlotSpins === 'function') window.vc.incrementSlotSpins(1); }catch(e){}
     
@@ -119,14 +122,36 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
     }
 
+    // JACKPOT CHANCE: Very rare chance for 5 in a row (jackpot trigger)
+    if(Math.random() < 0.001) { // 0.1% chance
+      const row = rand(3);
+      const idxs = rowIndices(row);
+      const jackpotSymbol = symbols[rand(symbols.length)];
+      idxs.forEach(i => result[i] = jackpotSymbol);
+    }
+
     reels.forEach((r,i)=>{ r.classList.add('spin'); r.textContent = '🎰'; setTimeout(()=>{ r.textContent = result[i]; r.classList.remove('spin'); }, 300 + (i%5)*120 + Math.floor(i/5)*60); });
 
     setTimeout(()=>{
       try{
         const patterns = evaluatePatterns(result);
-        const payout = computePayout(bet, patterns);
+        let payout = computePayout(bet, patterns);
         
-        if(payout > 0){
+        // Check for JACKPOT WIN: Any 5 in a row
+        const jackpotWin = patterns.some(p => 
+          p.indices.length === 5 && p.type === 'row'
+        );
+        
+        if(jackpotWin) {
+          const jackpotAmount = vc.winJackpot();
+          payout += jackpotAmount;
+          balance += jackpotAmount;
+          vc.writeBalance(balance);
+          appendLog(`🎉 JACKPOT WINNER! 🎉 You won $${jackpotAmount}!`);
+          vc.confetti(100);
+          vc.showBigMessage(`JACKPOT! $${jackpotAmount.toLocaleString()}!`, 3000);
+          vc.setBuddyText('HOLY MOLY! YOU HIT THE JACKPOT! YOU\'RE RICH!');
+        } else if(payout > 0){
           balance += payout; 
           vc.writeBalance(balance);
           

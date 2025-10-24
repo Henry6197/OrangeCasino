@@ -3,402 +3,860 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Coal Mine — ORANGE CASINO</title>
+    <title>Industrial Chip Assembly Factory — ORANGE CASINO</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+      
       body {
         margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
-        color: white;
-        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0d1117 100%);
+        color: #e6e6e6;
         min-height: 100vh;
         overflow-x: hidden;
+        position: relative;
+      }
+      
+      /* Industrial background effects */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(ellipse at 20% 50%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
+          linear-gradient(90deg, transparent 0%, rgba(255, 69, 0, 0.02) 50%, transparent 100%);
+        pointer-events: none;
+        z-index: -1;
       }
       
       .container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
-        text-align: center;
-      }
-      
-      h1 {
-        color: #e74c3c;
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-      }
-      
-      .debt-warning {
-        background: #c0392b;
         padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0;
-        border: 3px solid #e74c3c;
-        font-size: 1.2em;
-        font-weight: bold;
       }
       
-      .mine-area {
-        background: #1a252f;
-        border: 3px solid #34495e;
-        border-radius: 15px;
-        padding: 30px;
+      .factory-header {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+      }
+      
+      .factory-title {
+        color: #ff4500;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin: 0;
+        text-shadow: 
+          0 0 10px rgba(255, 69, 0, 0.5),
+          0 0 20px rgba(255, 69, 0, 0.3),
+          2px 2px 4px rgba(0, 0, 0, 0.8);
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      
+      .subtitle {
+        color: #888;
+        font-size: 1.1rem;
+        margin-top: 10px;
+        font-weight: 300;
+        letter-spacing: 1px;
+      }
+      
+      .debt-alert {
+        background: linear-gradient(135deg, #8b0000, #a00000);
+        border: 2px solid #ff0000;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 25px 0;
+        text-align: center;
+        box-shadow: 
+          0 0 20px rgba(255, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        animation: debt-pulse 3s ease-in-out infinite;
+      }
+      
+      @keyframes debt-pulse {
+        0%, 100% { 
+          box-shadow: 
+            0 0 20px rgba(255, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        50% { 
+          box-shadow: 
+            0 0 30px rgba(255, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+      }
+      
+      .debt-amount {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      }
+      
+      .factory-floor {
+        background: 
+          linear-gradient(145deg, #161b22, #0d1117),
+          radial-gradient(circle at 30% 40%, rgba(255, 69, 0, 0.05) 0%, transparent 50%);
+        border: 3px solid #30363d;
+        border-radius: 20px;
+        padding: 35px;
         margin: 30px 0;
         position: relative;
-        min-height: 400px;
+        min-height: 600px;
+        box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        overflow: hidden;
       }
       
-      .coal-nodes {
+      .factory-floor::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          #ff4500 20%, 
+          #ff6600 50%, 
+          #ff4500 80%, 
+          transparent 100%);
+        animation: conveyor-light 4s linear infinite;
+      }
+      
+      @keyframes conveyor-light {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      .production-line {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-        margin: 30px 0;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+        padding: 20px 0;
       }
       
-      .coal-node {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto;
-        border-radius: 50%;
-        cursor: pointer;
+      .workstation {
+        background: linear-gradient(145deg, #1c2128, #161b22);
+        border: 2px solid #30363d;
+        border-radius: 16px;
+        padding: 25px;
         position: relative;
-        transition: transform 0.2s ease;
+        height: 220px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 3em;
-        user-select: none;
-        border: 4px solid #7f8c8d;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
       }
       
-      .coal-node.active {
-        background: linear-gradient(45deg, #2c3e50, #34495e);
-        border-color: #ecf0f1;
-        box-shadow: 0 0 20px rgba(236, 240, 241, 0.5);
+      .workstation::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #30363d;
+        transition: background 0.3s;
       }
       
-      .coal-node.depleted {
-        background: #7f8c8d;
-        border-color: #95a5a6;
+      .workstation:hover {
+        border-color: #58a6ff;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(88, 166, 255, 0.15);
+      }
+      
+      .workstation:hover::before {
+        background: #58a6ff;
+      }
+      
+      .workstation.active {
+        border-color: #ff4500;
+        background: linear-gradient(145deg, #2d1810, #1c2128);
+        animation: working-glow 2s ease-in-out infinite;
+      }
+      
+      .workstation.active::before {
+        background: linear-gradient(90deg, #ff4500, #ff6600, #ff4500);
+        animation: working-light 1s linear infinite;
+      }
+      
+      @keyframes working-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.3); }
+        50% { box-shadow: 0 0 30px rgba(255, 69, 0, 0.5); }
+      }
+      
+      @keyframes working-light {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      .workstation.broken {
+        border-color: #666;
+        background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
         cursor: not-allowed;
-        opacity: 0.5;
+        opacity: 0.6;
       }
       
-      .coal-node:hover:not(.depleted) {
-        transform: scale(1.1);
+      .workstation.broken::before {
+        background: #666;
+      }
+      
+      .station-icon {
+        font-size: 3.5rem;
+        margin-bottom: 15px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      
+      .station-label {
+        font-size: 0.9rem;
+        color: #8b949e;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
       }
       
       .progress-ring {
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        width: 140px;
-        height: 140px;
+        width: 90px;
+        height: 90px;
+        position: relative;
+        margin: 10px 0;
+      }
+      
+      .progress-ring svg {
+        width: 100%;
+        height: 100%;
         transform: rotate(-90deg);
       }
       
+      .progress-ring-bg {
+        stroke: #30363d;
+        stroke-width: 6;
+        fill: none;
+      }
+      
       .progress-ring-circle {
-        stroke: #f39c12;
+        stroke: #ff4500;
         stroke-width: 6;
         stroke-linecap: round;
-        fill: transparent;
-        stroke-dasharray: 439.8; /* 2 * PI * 70 */
-        stroke-dashoffset: 439.8;
+        fill: none;
+        stroke-dasharray: 219.9;
+        stroke-dashoffset: 219.9;
         transition: stroke-dashoffset 0.1s linear;
-      }
-      
-      .stats {
-        background: #34495e;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-      }
-      
-      .stat {
-        text-align: center;
-      }
-      
-      .stat-value {
-        font-size: 2em;
-        font-weight: bold;
-        color: #f39c12;
-      }
-      
-      .instructions {
-        background: #2c3e50;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 20px 0;
-        font-size: 1.1em;
+        filter: drop-shadow(0 0 8px rgba(255, 69, 0, 0.5));
       }
       
       .timer {
         position: absolute;
         top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #e74c3c;
+        right: 10px;
+        background: linear-gradient(135deg, #dc2626, #991b1b);
         color: white;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-weight: bold;
-        font-size: 0.9em;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: none;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
       }
       
-      .complete-btn {
-        background: #27ae60;
+      .production-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+      }
+      
+      .stat-card {
+        background: linear-gradient(145deg, #1c2128, #161b22);
+        border: 2px solid #30363d;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff4500, #ff6600);
+      }
+      
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #ff4500;
+        margin-bottom: 8px;
+        text-shadow: 0 2px 4px rgba(255, 69, 0, 0.3);
+      }
+      
+      .stat-label {
+        color: #8b949e;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      
+      .quota-progress {
+        background: #0d1117;
+        border: 2px solid #30363d;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+        position: relative;
+      }
+      
+      .quota-bar {
+        width: 100%;
+        height: 12px;
+        background: #21262d;
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
+        margin: 15px 0;
+      }
+      
+      .quota-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff4500, #ff6600);
+        border-radius: 6px;
+        transition: width 0.5s ease;
+        position: relative;
+      }
+      
+      .quota-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.3) 50%, 
+          transparent 100%);
+        animation: quota-shine 2s ease-in-out infinite;
+      }
+      
+      @keyframes quota-shine {
+        0%, 100% { transform: translateX(-100%); }
+        50% { transform: translateX(100%); }
+      }
+      
+      .action-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 40px 0;
+        flex-wrap: wrap;
+      }
+      
+      .btn-complete {
+        background: linear-gradient(135deg, #059669, #047857);
         color: white;
-        padding: 15px 30px;
+        padding: 15px 35px;
         border: none;
-        border-radius: 25px;
-        font-size: 18px;
-        font-weight: bold;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: not-allowed;
+        opacity: 0.4;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-complete.enabled {
         cursor: pointer;
-        margin: 20px;
-        opacity: 0.5;
-        pointer-events: none;
-        transition: all 0.3s;
-      }
-      
-      .complete-btn.enabled {
         opacity: 1;
-        pointer-events: auto;
-        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        background: linear-gradient(135deg, #10b981, #059669);
+        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
       }
       
-      .complete-btn:hover.enabled {
-        background: #2ecc71;
-        transform: scale(1.05);
+      .btn-complete.enabled:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+      }
+      
+      .btn-complete.enabled::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(255, 255, 255, 0.2) 50%, 
+          transparent 100%);
+        transition: left 0.5s;
+      }
+      
+      .btn-complete.enabled:hover::before {
+        left: 100%;
+      }
+      
+      .supervisor-panel {
+        background: linear-gradient(135deg, #4c1d95, #3730a3);
+        border: 2px solid #6366f1;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        text-align: center;
+        position: relative;
+      }
+      
+      .supervisor-panel::before {
+        content: '🔒';
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        background: #4c1d95;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+      }
+      
+      .supervisor-title {
+        color: #c7d2fe;
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+      
+      .code-input {
+        padding: 12px 16px;
+        border: 2px solid #4338ca;
+        border-radius: 8px;
+        background: #1e1b4b;
+        color: white;
+        font-family: 'Courier New', monospace;
+        font-size: 1rem;
+        margin: 0 10px;
+        width: 150px;
+        text-align: center;
+        transition: border-color 0.3s;
+      }
+      
+      .code-input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+      
+      .btn-override {
+        background: linear-gradient(135deg, #7c3aed, #5b21b6);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-left: 10px;
+      }
+      
+      .btn-override:hover {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        transform: translateY(-1px);
+      }
+      
+      .instructions {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border: 1px solid #334155;
+        border-left: 4px solid #ff4500;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 25px 0;
+        color: #cbd5e1;
+        line-height: 1.6;
+      }
+      
+      .instruction-title {
+        color: #ff4500;
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+      
+      /* Mobile responsiveness */
+      @media (max-width: 768px) {
+        .container {
+          padding: 15px;
+        }
+        
+        .production-line {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+        }
+        
+        .workstation {
+          height: 180px;
+          padding: 20px;
+        }
+        
+        .station-icon {
+          font-size: 2.5rem;
+        }
+        
+        .production-stats {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+        
+        .stat-value {
+          font-size: 2rem;
+        }
+        
+        .action-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .code-input {
+          width: 120px;
+          margin: 5px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .production-line {
+          grid-template-columns: 1fr;
+        }
+        
+        .workstation {
+          height: 160px;
+        }
       }
     </style>
   </head>
   <body>
+  <body>
     <div class="container">
-      <h1>⛏️ COAL MINE DEBT PRISON ⛏️</h1>
+      <header class="factory-header">
+        <h1 class="factory-title">🏭 Industrial Chip Assembly Factory</h1>
+        <p class="subtitle">Orange Casino Debt Collection Facility</p>
+      </header>
       
-      <div class="debt-warning">
-        🚨 YOUR DEBT HAS EXCEEDED $10,000! 🚨<br>
-        You must mine 100 pieces of coal to pay off your debt and return to the casino!
+      <div class="debt-alert">
+        <div class="debt-amount">Outstanding Debt: $<span id="debt-amount">0</span></div>
+        <p>⚠️ You have been assigned to the factory floor until your debt is cleared ⚠️</p>
       </div>
       
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="coal-count">0</div>
-          <div>Coal Mined</div>
+      <div class="factory-floor">
+        <div class="instructions">
+          <div class="instruction-title">📋 PRODUCTION INSTRUCTIONS</div>
+          <p><strong>Hold down</strong> on workstations to assemble casino chips. Release to stop production.</p>
+          <p>• Each chip takes 4 seconds to assemble</p>
+          <p>• Workstations may break down randomly (20% chance)</p>
+          <p>• Broken stations need 25 seconds to repair</p>
+          <p>• Complete <strong>30 chips</strong> to clear your debt and return to casino</p>
         </div>
-        <div class="stat">
-          <div class="stat-value">100</div>
-          <div>Target</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="debt-amount">$0</div>
-          <div>Current Debt</div>
-        </div>
-      </div>
-      
-      <div class="instructions">
-        🎯 Instructions: Hold your mouse down on a coal node for 5 seconds to mine it.<br>
-        ⏰ Each node regenerates after 30 seconds. Mine strategically!
-      </div>
-      
-      <div class="instructions" style="background: #8e44ad;">
-        🔑 Prison Key: Enter escape code to immediately clear debt and return to casino<br>
-        <input type="text" id="prison-code" placeholder="Enter code..." style="padding: 8px; margin: 10px; border-radius: 5px; border: none;">
-        <button id="prison-code-btn" style="padding: 8px 15px; background: #9b59b6; color: white; border: none; border-radius: 5px; cursor: pointer;">Escape</button>
-      </div>
-      
-      <div class="mine-area">
-        <h3>Coal Mining Area</h3>
-        <div class="coal-nodes">
-          <div class="coal-node active" data-node="1">
-            <span>⚫</span>
-            <svg class="progress-ring">
-              <circle class="progress-ring-circle" cx="70" cy="70" r="70"></circle>
-            </svg>
-            <div class="timer" style="display: none;">30s</div>
+        
+        <div class="production-stats">
+          <div class="stat-card">
+            <div class="stat-value" id="coal-count">0</div>
+            <div class="stat-label">Chips Assembled</div>
           </div>
-          <div class="coal-node active" data-node="2">
-            <span>⚫</span>
-            <svg class="progress-ring">
-              <circle class="progress-ring-circle" cx="70" cy="70" r="70"></circle>
-            </svg>
-            <div class="timer" style="display: none;">30s</div>
+          <div class="stat-card">
+            <div class="stat-value">30</div>
+            <div class="stat-label">Quota Required</div>
           </div>
-          <div class="coal-node active" data-node="3">
-            <span>⚫</span>
-            <svg class="progress-ring">
-              <circle class="progress-ring-circle" cx="70" cy="70" r="70"></circle>
-            </svg>
-            <div class="timer" style="display: none;">30s</div>
-          </div>
-          <div class="coal-node active" data-node="4">
-            <span>⚫</span>
-            <svg class="progress-ring">
-              <circle class="progress-ring-circle" cx="70" cy="70" r="70"></circle>
-            </svg>
-            <div class="timer" style="display: none;">30s</div>
+          <div class="stat-card">
+            <div class="stat-value" id="progress-percent">0%</div>
+            <div class="stat-label">Progress</div>
           </div>
         </div>
+        
+        <div class="quota-progress">
+          <div class="quota-bar">
+            <div class="quota-fill" id="quota-fill" style="width: 0%"></div>
+          </div>
+          <p style="margin: 0; color: #8b949e; text-align: center;">Production Progress</p>
+        </div>
+        
+        <div class="production-line">
+          <div class="workstation coal-node active" data-node="1">
+            <div class="station-icon">🔧</div>
+            <div class="station-label">Station Alpha</div>
+            <div class="progress-ring">
+              <svg>
+                <circle class="progress-ring-bg" cx="45" cy="45" r="35"></circle>
+                <circle class="progress-ring-circle" cx="45" cy="45" r="35"></circle>
+              </svg>
+            </div>
+            <div class="timer">0s</div>
+          </div>
+          
+          <div class="workstation coal-node active" data-node="2">
+            <div class="station-icon">⚙️</div>
+            <div class="station-label">Station Beta</div>
+            <div class="progress-ring">
+              <svg>
+                <circle class="progress-ring-bg" cx="45" cy="45" r="35"></circle>
+                <circle class="progress-ring-circle" cx="45" cy="45" r="35"></circle>
+              </svg>
+            </div>
+            <div class="timer">0s</div>
+          </div>
+          
+          <div class="workstation coal-node active" data-node="3">
+            <div class="station-icon">🔩</div>
+            <div class="station-label">Station Gamma</div>
+            <div class="progress-ring">
+              <svg>
+                <circle class="progress-ring-bg" cx="45" cy="45" r="35"></circle>
+                <circle class="progress-ring-circle" cx="45" cy="45" r="35"></circle>
+              </svg>
+            </div>
+            <div class="timer">0s</div>
+          </div>
+          
+          <div class="workstation coal-node active" data-node="4">
+            <div class="station-icon">🏭</div>
+            <div class="station-label">Station Delta</div>
+            <div class="progress-ring">
+              <svg>
+                <circle class="progress-ring-bg" cx="45" cy="45" r="35"></circle>
+                <circle class="progress-ring-circle" cx="45" cy="45" r="35"></circle>
+              </svg>
+            </div>
+            <div class="timer">0s</div>
+          </div>
+        </div>
+        
+        <div class="action-buttons">
+          <button class="btn-complete" id="complete-btn">
+            🎯 Complete Quota & Return to Casino
+          </button>
+        </div>
       </div>
       
-      <button class="complete-btn" id="complete-btn">🎉 DEBT PAID! RETURN TO CASINO 🎉</button>
+      <div class="supervisor-panel">
+        <div class="supervisor-title">🔐 Supervisor Override System</div>
+        <p style="color: #a5b4fc; margin-bottom: 15px;">Emergency production halt code for authorized personnel only</p>
+        <input 
+          type="text" 
+          id="prison-code" 
+          class="code-input" 
+          placeholder="Enter Code" 
+          maxlength="20"
+        />
+        <button class="btn-override" id="prison-code-btn">Execute Override</button>
+      </div>
     </div>
 
     <script src="scripts/app.js"></script>
     <script src="scripts/achievements.js"></script>
     <script>
-      let coalMined = 0;
+      let chipsAssembled = 0;
       let currentDebt = 0;
-      const MINE_TIME = 5000; // 5 seconds
-      const REGENERATE_TIME = 30000; // 30 seconds
-      const CIRCUMFERENCE = 2 * Math.PI * 70; // 439.8
+      const ASSEMBLY_TIME = 4000; // 4 seconds per chip
+      const BREAKDOWN_TIME = 25000; // 25 seconds repair time
+      const CIRCUMFERENCE = 2 * Math.PI * 35; // 219.9 (matches SVG circle radius of 35)
       
       // Load current debt
       currentDebt = Number(localStorage.getItem('vc_debt') || 0);
       document.getElementById('debt-amount').textContent = '$' + currentDebt.toLocaleString();
       
-      // Node state tracking
-      const nodeStates = {
-        1: { available: true, mining: false, regenerating: false },
-        2: { available: true, mining: false, regenerating: false },
-        3: { available: true, mining: false, regenerating: false },
-        4: { available: true, mining: false, regenerating: false }
+      // Workstation state tracking
+      const stationStates = {
+        1: { operational: true, assembling: false, broken: false },
+        2: { operational: true, assembling: false, broken: false },
+        3: { operational: true, assembling: false, broken: false },
+        4: { operational: true, assembling: false, broken: false }
       };
       
       let activeIntervals = new Map();
       
-      function updateCoalCount() {
-        document.getElementById('coal-count').textContent = coalMined;
-        if (coalMined >= 100) {
+      function updateChipCount() {
+        document.getElementById('coal-count').textContent = chipsAssembled;
+        
+        // Update progress percentage
+        const progressPercent = Math.round((chipsAssembled / 30) * 100);
+        document.getElementById('progress-percent').textContent = progressPercent + '%';
+        
+        // Update quota progress bar
+        const quotaFill = document.getElementById('quota-fill');
+        if (quotaFill) {
+          quotaFill.style.width = progressPercent + '%';
+        }
+        
+        // Enable complete button when quota is reached
+        if (chipsAssembled >= 30) {
           document.getElementById('complete-btn').classList.add('enabled');
         }
       }
       
-      function startMining(nodeId) {
-        const node = document.querySelector(`[data-node="${nodeId}"]`);
-        const circle = node.querySelector('.progress-ring-circle');
-        const state = nodeStates[nodeId];
+      function startAssembly(stationId) {
+        const station = document.querySelector(`[data-node="${stationId}"]`);
+        const circle = station.querySelector('.progress-ring-circle');
+        const timer = station.querySelector('.timer');
+        const state = stationStates[stationId];
         
-        if (!state.available || state.mining || state.regenerating) return;
+        if (!state.operational || state.assembling || state.broken) return;
         
-        state.mining = true;
+        state.assembling = true;
         let progress = 0;
+        
+        // Show and start the hold timer
+        timer.style.display = 'block';
+        timer.style.background = 'linear-gradient(135deg, #059669, #047857)';
+        timer.style.color = 'white';
         
         const interval = setInterval(() => {
           progress += 100; // 100ms intervals
-          const progressPercent = progress / MINE_TIME;
+          const progressPercent = progress / ASSEMBLY_TIME;
           const offset = CIRCUMFERENCE - (progressPercent * CIRCUMFERENCE);
           circle.style.strokeDashoffset = offset;
           
-          if (progress >= MINE_TIME) {
+          // Update timer to show hold time and remaining time
+          const holdTime = (progress / 1000).toFixed(1);
+          const remainingTime = ((ASSEMBLY_TIME - progress) / 1000).toFixed(1);
+          timer.textContent = `${holdTime}s / ${(ASSEMBLY_TIME/1000)}s`;
+          
+          if (progress >= ASSEMBLY_TIME) {
             clearInterval(interval);
-            // Mining complete!
-            coalMined++;
-            updateCoalCount();
+            // Assembly complete!
+            chipsAssembled++;
+            updateChipCount();
             
-            // Track coal mining for achievements
+            // Track chip assembly for achievements (replacing coal mining)
             if (window.vc && typeof window.vc.incrementCoalMined === 'function') {
               window.vc.incrementCoalMined(1);
             }
             
-            // Reset progress ring
+            // Reset progress ring and hide timer
             circle.style.strokeDashoffset = CIRCUMFERENCE;
+            timer.style.display = 'none';
             
-            // Start regeneration
-            startRegeneration(nodeId);
+            // Random chance for workstation breakdown (20%)
+            if (Math.random() < 0.2) {
+              startBreakdown(stationId);
+            } else {
+              state.assembling = false;
+            }
           }
         }, 100);
         
-        activeIntervals.set(nodeId, interval);
+        activeIntervals.set(stationId, interval);
       }
       
-      function stopMining(nodeId) {
-        const state = nodeStates[nodeId];
-        if (!state.mining) return;
+      function stopAssembly(stationId) {
+        const state = stationStates[stationId];
+        if (!state.assembling) return;
         
-        state.mining = false;
+        state.assembling = false;
         
         // Clear interval and reset progress
-        if (activeIntervals.has(nodeId)) {
-          clearInterval(activeIntervals.get(nodeId));
-          activeIntervals.delete(nodeId);
+        if (activeIntervals.has(stationId)) {
+          clearInterval(activeIntervals.get(stationId));
+          activeIntervals.delete(stationId);
         }
         
-        const node = document.querySelector(`[data-node="${nodeId}"]`);
-        const circle = node.querySelector('.progress-ring-circle');
+        const station = document.querySelector(`[data-node="${stationId}"]`);
+        const circle = station.querySelector('.progress-ring-circle');
+        const timer = station.querySelector('.timer');
+        
+        // Reset progress ring and hide timer
         circle.style.strokeDashoffset = CIRCUMFERENCE;
+        timer.style.display = 'none';
       }
       
-      function startRegeneration(nodeId) {
-        const node = document.querySelector(`[data-node="${nodeId}"]`);
-        const timer = node.querySelector('.timer');
-        const state = nodeStates[nodeId];
+      function startBreakdown(stationId) {
+        const station = document.querySelector(`[data-node="${stationId}"]`);
+        const timer = station.querySelector('.timer');
+        const state = stationStates[stationId];
         
-        state.available = false;
-        state.regenerating = true;
-        node.classList.remove('active');
-        node.classList.add('depleted');
+        state.operational = false;
+        state.assembling = false;
+        state.broken = true;
+        station.classList.remove('active');
+        station.classList.add('broken');
         timer.style.display = 'block';
         
-        let timeLeft = REGENERATE_TIME / 1000; // 30 seconds
+        // Style timer for repair countdown (different from hold timer)
+        timer.style.background = 'linear-gradient(135deg, #dc2626, #991b1b)';
+        timer.style.color = 'white';
         
-        const regenInterval = setInterval(() => {
+        let timeLeft = BREAKDOWN_TIME / 1000; // 25 seconds
+        
+        const repairInterval = setInterval(() => {
           timeLeft--;
-          timer.textContent = timeLeft + 's';
+          timer.textContent = `Repair: ${timeLeft}s`;
           
           if (timeLeft <= 0) {
-            clearInterval(regenInterval);
+            clearInterval(repairInterval);
             
-            // Node is available again
-            state.available = true;
-            state.regenerating = false;
-            node.classList.remove('depleted');
-            node.classList.add('active');
+            // Workstation is operational again
+            state.operational = true;
+            state.broken = false;
+            station.classList.remove('broken');
+            station.classList.add('active');
             timer.style.display = 'none';
           }
         }, 1000);
       }
       
-      // Add event listeners to nodes
-      document.querySelectorAll('.coal-node').forEach(node => {
-        const nodeId = node.dataset.node;
+      // Add event listeners to workstations
+      document.querySelectorAll('.coal-node').forEach(station => {
+        const stationId = station.dataset.node;
         
-        node.addEventListener('mousedown', (e) => {
+        station.addEventListener('mousedown', (e) => {
           e.preventDefault();
-          startMining(nodeId);
+          startAssembly(stationId);
         });
         
-        node.addEventListener('mouseup', () => {
-          stopMining(nodeId);
+        station.addEventListener('mouseup', () => {
+          stopAssembly(stationId);
         });
         
-        node.addEventListener('mouseleave', () => {
-          stopMining(nodeId);
+        station.addEventListener('mouseleave', () => {
+          stopAssembly(stationId);
         });
       });
       
       // Prevent context menu
       document.addEventListener('contextmenu', e => e.preventDefault());
       
-      // Complete button
+      // Complete quota button
       document.getElementById('complete-btn').addEventListener('click', () => {
-        if (coalMined >= 100) {
+        if (chipsAssembled >= 30) {
           // Clear debt and return to casino
           localStorage.setItem('vc_debt', '0');
           window.location.href = 'index.html';
         }
       });
       
-      // Prison Key functionality
+      // Supervisor Override functionality
       document.getElementById('prison-code-btn').addEventListener('click', () => {
         const codeInput = document.getElementById('prison-code');
         const code = (codeInput.value || '').trim().toLowerCase();
         
-        if (code === 'coal') {
-          // Testing code - instant escape with debt cleared
+        if (code === 'override') {
+          // Supervisor override - instant escape with debt cleared
           localStorage.setItem('vc_debt', '0');
           
           // Track escape achievement
@@ -406,15 +864,15 @@
             window.vc.markCoalMineEscaped();
           }
           
-          alert('🔑 Testing code activated! Debt cleared and escaping coal mine...');
+          alert('🔑 Supervisor override activated! Quota cleared and returning to casino...');
           window.location.href = 'index.html';
         } else {
-          alert('❌ Invalid prison key code!');
+          alert('❌ Invalid supervisor code!');
           codeInput.value = '';
         }
       });
       
-      // Allow Enter key to submit prison code
+      // Allow Enter key to submit supervisor code
       document.getElementById('prison-code').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
           document.getElementById('prison-code-btn').click();
@@ -422,9 +880,9 @@
       });
       
       // Initialize
-      updateCoalCount();
+      updateChipCount();
       
-      // Mark coal mine as visited for achievement when page loads
+      // Mark sweatshop as visited for achievement when page loads
       if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
         window.vc.markCoalMineVisited();
       }

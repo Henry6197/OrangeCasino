@@ -282,6 +282,47 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   font-weight: 600;
 }
 
+.jackpot-display {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  margin: 16px 0;
+  border: 3px solid #ff8533;
+  box-shadow: 0 4px 20px rgba(255, 106, 0, 0.4);
+  animation: jackpotGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes jackpotGlow {
+  0% { box-shadow: 0 4px 20px rgba(255, 106, 0, 0.4); }
+  100% { box-shadow: 0 6px 30px rgba(255, 106, 0, 0.7); }
+}
+
+.jackpot-display h4 {
+  margin: 0 0 8px;
+  font-size: 1.2em;
+  font-weight: 800;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.jackpot-amount {
+  font-size: 2.2em;
+  font-weight: 900;
+  margin: 8px 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  letter-spacing: 1px;
+  color: white;
+}
+
+.jackpot-info {
+  font-size: 0.9em;
+  opacity: 0.9;
+  font-weight: 600;
+  color: white;
+}
+
 .reels-container {
   background: linear-gradient(145deg, #2a3f52, #1f3240);
   padding: 20px;
@@ -416,6 +457,8 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   border: 2px solid var(--accent);
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .community-section {
@@ -436,6 +479,7 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   padding: 12px;
   border-radius: 8px;
   border: 2px solid var(--accent);
+  flex-wrap: wrap;
 }
 
 .poker-players {
@@ -448,6 +492,10 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 
 .poker-player {
   text-align: center;
+}
+
+.poker-player .card-row {
+  justify-content: center;
 }
 
 .player-info h4 {
@@ -473,6 +521,7 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(255, 106, 0, 0.3);
+  min-width: 120px;
 }
 
 .pot-display h4 {
@@ -492,6 +541,11 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   justify-content: center;
   margin: 20px 0;
   flex-wrap: wrap;
+}
+
+.poker-actions .btn {
+  margin: 4px;
+  min-width: 90px;
 }
 
 .fold-btn {
@@ -550,6 +604,10 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
     gap: 16px;
   }
   
+  .pot-display {
+    order: -1; /* Move pot to top on mobile */
+  }
+  
   .game-actions, .poker-actions, .machine-controls {
     flex-direction: column;
     align-items: center;
@@ -558,6 +616,19 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   .game-actions .btn, .poker-actions .btn, .machine-controls .btn {
     width: 100%;
     max-width: 200px;
+    margin: 2px 0;
+  }
+
+  .poker-table {
+    padding: 16px;
+  }
+  
+  .community-cards {
+    padding: 8px;
+  }
+  
+  .card-row {
+    justify-content: center;
   }
 }
 
@@ -676,15 +747,7 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 .bet-input:focus{outline:none;border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(255,106,0,0.2)}
 .bet-label{color:var(--text);font-weight:700;margin-right:12px}
 
-/* Advanced poker table layout */
-.poker-table{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin:20px 0;padding:20px;background:rgba(0,0,0,0.05);border-radius:12px}
-.dealer-section,.player-section{text-align:center}
-.pot-section{text-align:center;padding:16px;background:var(--accent);color:#fff;border-radius:12px;min-width:120px}
-.pot-amount{font-size:24px;font-weight:800;margin-top:8px}
-.chip-count{margin-top:8px;font-weight:600;color:var(--muted)}
-.poker-actions{margin:16px 0}
-.poker-actions .btn{margin:0 6px}
-.game-status{text-align:center;font-weight:700;color:var(--accent);padding:8px;background:rgba(255,106,0,0.1);border-radius:8px}
+/* Remove duplicate poker styles - main styles are defined above */
 
 /* Buddy chat bubble */
 .buddy{position:fixed;right:20px;bottom:20px;width:360px;max-width:calc(100% - 40px);background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#071029;padding:18px;border-radius:18px;box-shadow:0 18px 46px rgba(0,0,0,0.18);font-weight:800;display:flex;gap:16px;align-items:center}

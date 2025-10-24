@@ -28,11 +28,34 @@
   
   function updateDebt(){ const els = document.querySelectorAll('#debt-value'); els.forEach(e=>{ const v = readDebt(); e.textContent = String(v); }); }
 
-  // Check if debt exceeds $10,000 and force coal mine
+  // Progressive Jackpot system
+  function readJackpot(){ const raw = localStorage.getItem('vc_jackpot'); return raw ? Number(raw) : 5000; }
+  function writeJackpot(v){ 
+    localStorage.setItem('vc_jackpot', String(v)); 
+    updateJackpot(); 
+  }
+  function updateJackpot(){ const els = document.querySelectorAll('#jackpot-amount'); els.forEach(e=>{ const v = readJackpot(); e.textContent = String(v.toLocaleString()); }); }
+  
+  function addToJackpot(betAmount) {
+    const contribution = Math.floor(betAmount * 0.1); // 10% of bet goes to jackpot
+    const currentJackpot = readJackpot();
+    writeJackpot(currentJackpot + contribution);
+    return contribution;
+  }
+  
+  function winJackpot() {
+    const jackpotAmount = readJackpot();
+    const balance = readBalance();
+    writeBalance(balance + jackpotAmount);
+    writeJackpot(5000); // Reset to base amount
+    return jackpotAmount;
+  }
+
+  // Check if debt exceeds $5,500 and force coal mine
   function checkDebtLimit(){
     const debt = readDebt();
     
-    if(debt > 10000){
+    if(debt > 5500){
       // Mark coal mine visited for achievement
       if(window.vc && typeof window.vc.markCoalMineVisited === 'function'){
         window.vc.markCoalMineVisited();
@@ -90,11 +113,7 @@
     let balance = readBalance(); 
     let debt = readDebt(); 
     
-    // Prevent loans if balance is too high
-    if(balance > 500) {
-      setBuddyText(window.TODD_DIALOGUE?.loan?.tooRich || 'You have enough money already. No loan needed!'); 
-      return;
-    }
+    // Removed loan limit - can always take loans regardless of balance
     
     balance += 100; 
     debt += 150; 
@@ -130,17 +149,18 @@
     }
   }
 
-  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti };
+  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
     vc.updateDebt(); 
+    vc.updateJackpot();
     const brand = document.querySelector('.brand'); 
     if(brand) brand.textContent = 'ORANGE CASINO'; 
     
     // Check debt limit on page load (except on coal mine page)
     if(!window.location.href.includes('coal-mine.html')){
       const debt = readDebt();
-      if(debt > 10000){
+      if(debt > 5500){
         window.location.href = 'coal-mine.html';
       }
     }

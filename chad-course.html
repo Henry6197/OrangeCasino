@@ -184,6 +184,29 @@
         border-left: 5px solid #28a745;
       }
       
+      .account-actions {
+        margin-top: 15px;
+      }
+      
+      .withdraw-btn {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        font-weight: 700;
+        font-size: 1.1em;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+      }
+      
+      .withdraw-btn:hover {
+        background: linear-gradient(135deg, #218838, #1e9ecb);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+      }
+      
       .video-transcript {
         background: #f8f9fa;
         padding: 20px;
@@ -204,9 +227,12 @@
       </div>
 
       <div class="income-status">
-        <h3>💰 YOUR PASSIVE INCOME IS NOW ACTIVE! 💰</h3>
-        <div class="income-amount">$20 every 5 seconds</div>
-        <div>You've earned: $<span id="total-earned">0</span> since purchasing!</div>
+        <h3>💰 YOUR CHAD ACCOUNT! 💰</h3>
+        <div class="account-balance">Available Balance: $<span id="chad-balance">0</span></div>
+        <div class="account-info">Earnings accumulate here - withdraw anytime!</div>
+        <div class="account-actions">
+          <button class="btn withdraw-btn" id="withdraw-btn" onclick="withdrawChadEarnings()">💸 Withdraw All</button>
+        </div>
       </div>
 
       <div class="video-container">
@@ -273,18 +299,98 @@
 
     <script src="scripts/app.js"></script>
     <script>
-      // Update earnings display
-      function updateEarnings() {
-        const earnedEl = document.getElementById('total-earned');
-        if (earnedEl) {
-          const totalEarned = Number(localStorage.getItem('vc_chads_course_earned') || 0);
-          earnedEl.textContent = totalEarned.toLocaleString();
+      // Check if user actually owns the course
+      function checkCourseAccess() {
+        const courseOwned = localStorage.getItem('vc_chads_course_owned');
+        if (courseOwned !== '1') {
+          // Use casino-style popup for access denied
+          if (window.vc && window.vc.showBigMessage) {
+            window.vc.showBigMessage('🚫 ACCESS DENIED!', 2000);
+          }
+          if (window.vc && window.vc.setBuddyText) {
+            window.vc.setBuddyText('You must purchase Chad\'s course first!');
+          }
+          // Redirect to checkout page after showing message
+          setTimeout(() => {
+            window.location.href = 'checkout.html';
+          }, 2500);
+          return false;
+        }
+        return true;
+      }
+      
+      // Chad's course earnings system - only add earnings if course is owned
+      function addChadEarnings() {
+        if (!checkCourseAccess()) return;
+        const currentAvailable = Number(localStorage.getItem('vc_chads_course_available') || 0);
+        const newAvailable = currentAvailable + 20; // Add $20 every 5 seconds
+        localStorage.setItem('vc_chads_course_available', String(newAvailable));
+        updateWithdrawalBalance();
+      }
+      
+      // Withdraw all available Chad earnings to main balance
+      function withdrawChadEarnings() {
+        const available = Number(localStorage.getItem('vc_chads_course_available') || 0);
+        if (available <= 0) {
+          if (window.vc && window.vc.setBuddyText) {
+            window.vc.setBuddyText('No Chad earnings available to withdraw!');
+          }
+          if (window.vc && window.vc.showBigMessage) {
+            window.vc.showBigMessage('NO EARNINGS YET', 1500);
+          }
+          return;
+        }
+        
+        // Add to main balance
+        const currentBalance = Number(localStorage.getItem('vc_balance') || 1000);
+        localStorage.setItem('vc_balance', String(currentBalance + available));
+        
+        // Clear Chad account
+        localStorage.setItem('vc_chads_course_available', '0');
+        
+        // Update displays
+        if (window.vc && window.vc.updateBalance) {
+          window.vc.updateBalance();
+        }
+        updateWithdrawalBalance();
+        
+        // Show casino-style success popup with confetti
+        if (window.vc && window.vc.showBigMessage) {
+          window.vc.showBigMessage(`WITHDRAWN $${available.toLocaleString()}!`, 2000);
+        }
+        if (window.vc && window.vc.setBuddyText) {
+          window.vc.setBuddyText(`Chad's earnings transferred to your casino balance!`);
+        }
+        if (window.vc && window.vc.confetti) {
+          window.vc.confetti(30);
         }
       }
       
-      // Update earnings every second
-      setInterval(updateEarnings, 1000);
-      updateEarnings();
+      // Update earnings display
+      function updateWithdrawalBalance() {
+        const availableEl = document.getElementById('chad-balance');
+        if (availableEl) {
+          const available = Number(localStorage.getItem('vc_chads_course_available') || 0);
+          availableEl.textContent = available.toLocaleString();
+        }
+      }
+      
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check access on page load
+        if (!checkCourseAccess()) {
+          // Stop all other scripts from running and show denial
+          document.body.innerHTML = '<div style="text-align: center; padding: 50px; font-size: 24px; color: red;">🚫 ACCESS DENIED - Redirecting...</div>';
+          return;
+        }
+        
+        // Start earning $20 every 5 seconds
+        setInterval(addChadEarnings, 5000);
+        
+        // Update balance display every second
+        setInterval(updateWithdrawalBalance, 1000);
+        updateWithdrawalBalance();
+      });
     </script>
   </body>
 </html>

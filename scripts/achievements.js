@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   const ACH_KEY = 'vc_achievements';
-  const SPIN_KEY = 'vc_slot_spins';
 
   const defs = [
     {id:'earn_2k', title:'Earn $2K', check:()=> (vc.readBalance() >= 2000)},
@@ -12,25 +11,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     {id:'earn_1m', title:'Earn $1M', check:()=> (vc.readBalance() >= 1000000)},
     {id:'debt_1k', title:'Have $1K in debt', check:()=> (vc.readDebt() >= 1000)},
     {id:'debt_5k', title:'Have $5K in debt', check:()=> (vc.readDebt() >= 5000)},
-    {id:'spin_10', title:'Spin the slots 10 times', check:()=> (readSpinCount() >= 10)},
-    {id:'spin_20', title:'Spin the slots 20 times', check:()=> (readSpinCount() >= 20)},
-    {id:'spin_50', title:'Spin the slots 50 times', check:()=> (readSpinCount() >= 50)},
-    {id:'spin_100', title:'Spin the slots 100 times', check:()=> (readSpinCount() >= 100)},
-    {id:'spin_200', title:'Spin the slots 200 times', check:()=> (readSpinCount() >= 200)},
-    {id:'blackjack_natural', title:'Get a blackjack in Blackjack', check:()=> (readBlackjackStats().naturals >= 1)},
-    {id:'blackjack_5', title:'Play Blackjack 5 times', check:()=> (readBlackjackStats().plays >= 5)},
-    {id:'blackjack_10', title:'Play Blackjack 10 times', check:()=> (readBlackjackStats().plays >= 10)},
-    {id:'blackjack_20', title:'Play Blackjack 20 times', check:()=> (readBlackjackStats().plays >= 20)},
-    {id:'blackjack_50', title:'Play Blackjack 50 times', check:()=> (readBlackjackStats().plays >= 50)},
-    {id:'poker_5', title:'Play Poker 5 times', check:()=> (readPokerStats().plays >= 5)},
-    {id:'poker_10', title:'Play Poker 10 times', check:()=> (readPokerStats().plays >= 10)},
-    {id:'poker_20', title:'Play Poker 20 times', check:()=> (readPokerStats().plays >= 20)},
-    {id:'poker_50', title:'Play Poker 50 times', check:()=> (readPokerStats().plays >= 50)},
-    {id:'coal_mine', title:'Get sent to the coal mine', check:()=> (localStorage.getItem('vc_coal_mine_visited') === '1')},
-    {id:'mine_1_coal', title:'Mine 1 coal', check:()=> (readCoalStats().mined >= 1)},
-    {id:'mine_5_coal', title:'Mine 5 coal', check:()=> (readCoalStats().mined >= 5)},
-    {id:'mine_100_coal', title:'Mine 100 coal', check:()=> (readCoalStats().mined >= 100)},
-    {id:'coal_escape', title:'Secret: Escape the coal mine using the key', check:()=> (localStorage.getItem('vc_coal_mine_escaped') === '1')},
+    {id:'coal_mine', title:'Get sent to the chip factory', check:()=> (localStorage.getItem('vc_coal_mine_visited') === '1')},
+    {id:'coal_escape', title:'Secret: Escape the factory using supervisor override', check:()=> (localStorage.getItem('vc_coal_mine_escaped') === '1')},
     {id:'sell_kidney', title:'Sell a kidney', check:()=> (localStorage.getItem('vc_surgery_used') === '1')},
     {id:'sell_appendix', title:'Sell your appendix', check:()=> (localStorage.getItem('vc_appendix_used') === '1')},
     {id:'buy_course', title:"Buy Chad Moneybags' Course", check:()=> (localStorage.getItem('vc_chads_course_owned') === '1')},
@@ -38,38 +20,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   function readState(){ try{ return JSON.parse(localStorage.getItem(ACH_KEY) || '{}'); }catch(e){ return {}; }}
   function writeState(s){ localStorage.setItem(ACH_KEY, JSON.stringify(s)); }
-  function readSpinCount(){ return Number(localStorage.getItem(SPIN_KEY) || 0); }
-  function writeSpinCount(n){ localStorage.setItem(SPIN_KEY, String(n)); }
-  
-  // Blackjack tracking
-  const BLACKJACK_KEY = 'vc_blackjack_stats';
-  function readBlackjackStats(){ 
-    try{ 
-      const data = JSON.parse(localStorage.getItem(BLACKJACK_KEY) || '{}'); 
-      return { plays: data.plays || 0, naturals: data.naturals || 0 };
-    }catch(e){ return { plays: 0, naturals: 0 }; }
-  }
-  function writeBlackjackStats(stats){ localStorage.setItem(BLACKJACK_KEY, JSON.stringify(stats)); }
-
-  // Coal mining tracking
-  const COAL_KEY = 'vc_coal_stats';
-  function readCoalStats(){ 
-    try{ 
-      const data = JSON.parse(localStorage.getItem(COAL_KEY) || '{}'); 
-      return { mined: data.mined || 0 };
-    }catch(e){ return { mined: 0 }; }
-  }
-  function writeCoalStats(stats){ localStorage.setItem(COAL_KEY, JSON.stringify(stats)); }
-
-  // Poker tracking
-  const POKER_KEY = 'vc_poker_stats';
-  function readPokerStats(){ 
-    try{ 
-      const data = JSON.parse(localStorage.getItem(POKER_KEY) || '{}'); 
-      return { plays: data.plays || 0 };
-    }catch(e){ return { plays: 0 }; }
-  }
-  function writePokerStats(stats){ localStorage.setItem(POKER_KEY, JSON.stringify(stats)); }
 
   function notifyUnlocked(def){ try{ if(window.vc && typeof window.vc.showBigMessage === 'function'){ window.vc.showBigMessage(`${def.title} unlocked!`, 1600); } if(window.vc && typeof window.vc.confetti === 'function'){ window.vc.confetti(36); } if(window.vc && typeof window.vc.setBuddyText === 'function'){ window.vc.setBuddyText(`Achievement unlocked: ${def.title}`); } }catch(e){}
     // also log to console for debugging
@@ -87,37 +37,30 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
     }); }
 
-  // expose increment for slots and blackjack tracking
+  // expose increment functions as stubs to prevent errors
   window.vc = window.vc || {};
-  window.vc.incrementSlotSpins = function(n=1){ const v = readSpinCount()+n; writeSpinCount(v); render(); };
+  window.vc.incrementSlotSpins = function(n=1){ 
+    // No longer tracking slot spins for achievements
+    return;
+  };
   window.vc.incrementBlackjackPlays = function(n=1){ 
-    const stats = readBlackjackStats(); 
-    stats.plays += n; 
-    writeBlackjackStats(stats); 
-    render(); 
+    // No longer tracking blackjack plays for achievements
+    return;
   };
   window.vc.incrementBlackjackNaturals = function(n=1){ 
-    const stats = readBlackjackStats(); 
-    stats.naturals += n; 
-    writeBlackjackStats(stats); 
-    render(); 
+    // No longer tracking blackjack naturals for achievements
+    return;
+  };
+  window.vc.incrementCoalMined = function(n=1){ 
+    // No longer tracking chip assembly for achievements
+    return;
   };
   window.vc.markCoalMineVisited = function(){ 
     localStorage.setItem('vc_coal_mine_visited', '1'); 
     render(); 
   };
-  window.vc.incrementCoalMined = function(n=1){ 
-    const stats = readCoalStats(); 
-    stats.mined += n; 
-    writeCoalStats(stats); 
-    render(); 
-  };
   window.vc.markCoalMineEscaped = function(){ 
     localStorage.setItem('vc_coal_mine_escaped', '1'); 
-    render(); 
-  };
-  window.vc.markAdClicked = function(){ 
-    localStorage.setItem('vc_clicked_ad', '1'); 
     render(); 
   };
   window.vc.markSurgeryUsed = function(){ 
@@ -129,10 +72,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     render(); 
   };
   window.vc.incrementPokerPlays = function(n=1){ 
-    const stats = readPokerStats(); 
-    stats.plays += n; 
-    writePokerStats(stats); 
-    render(); 
+    // No longer tracking poker plays for achievements
+    return;
   };
   window.vc.markCoursePurchased = function(){ 
     localStorage.setItem('vc_chads_course_owned', '1'); 
@@ -148,12 +89,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   document.getElementById('reset-achievements')?.addEventListener('click', ()=>{ 
     localStorage.removeItem(ACH_KEY); 
-    localStorage.removeItem(SPIN_KEY); 
-    localStorage.removeItem(BLACKJACK_KEY); 
-    localStorage.removeItem(COAL_KEY); 
-    localStorage.removeItem(POKER_KEY); 
-    localStorage.removeItem('vc_coal_mine_visited');
-    localStorage.removeItem('vc_coal_mine_escaped');
+    localStorage.removeItem('vc_coal_mine_visited'); // Factory visit tracking
+    localStorage.removeItem('vc_coal_mine_escaped'); // Factory escape tracking
+    localStorage.removeItem('vc_surgery_used');
+    localStorage.removeItem('vc_appendix_used');
+    localStorage.removeItem('vc_chads_course_owned');
     render(); 
   });
 
