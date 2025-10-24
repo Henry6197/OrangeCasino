@@ -144,16 +144,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
         
         if(jackpotWin) {
           const jackpotAmount = vc.winJackpot();
-          payout += jackpotAmount;
-          balance += jackpotAmount;
+          const totalWin = bet + payout + jackpotAmount; // bet back + regular winnings + jackpot
+          balance += totalWin;
           vc.writeBalance(balance);
           
-          appendLog(`🎉 JACKPOT WINNER! 🎉 You won $${jackpotAmount}!`);
+          appendLog(`🎉 JACKPOT WINNER! 🎉 Total win: $${totalWin} (Bet back: $${bet} + Pattern wins: $${payout} + Jackpot: $${jackpotAmount})`);
           vc.confetti(100);
-          vc.showBigMessage(`JACKPOT! $${jackpotAmount.toLocaleString()}!`, 3000);
+          vc.showBigMessage(`JACKPOT! $${totalWin.toLocaleString()}!`, 3000);
           vc.setBuddyText('HOLY MOLY! YOU HIT THE JACKPOT! YOU\'RE RICH!');
         } else if(payout > 0){
-          balance += payout; 
+          const totalWin = bet + payout; // bet back + winnings
+          balance += totalWin; 
           vc.writeBalance(balance);
           
           // Build detailed pattern description
@@ -165,8 +166,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
             else return `${symbol}${symbol}${symbol} 3-in-row`;
           }).join(', ');
           
-          appendLog(`You won $${payout}! (${patternDesc})`);
-          showWinUI(payout);
+          appendLog(`You won $${totalWin}! (Bet back: $${bet} + Pattern wins: $${payout}) - ${patternDesc}`);
+          showWinUI(totalWin);
         }
         else { 
           appendLog(`No winning patterns — ${result.join(' ')}`); 

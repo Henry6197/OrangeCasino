@@ -34,12 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const gems = symbols.filter(s => s === '💎').length;
         const tools = symbols.filter(s => s === '⛏️').length;
         
-        if (gold >= 3) return 500;
-        if (money >= 3) return 100;
-        if (gems >= 2) return 50;
-        if (tools >= 3) return 25;
-        if (gold >= 1) return 10; // Money back
-        return 0;
+        let totalWin = 0;
+        if (gold >= 3) totalWin += 500;
+        else if (gold >= 1) totalWin += 10; // Money back only if no big gold win
+        
+        if (money >= 3) totalWin += 100;
+        if (gems >= 2) totalWin += 50;
+        if (tools >= 3) totalWin += 25;
+        
+        return totalWin;
       },
       winPatterns: ['🥇 🥇 🥇 = $500', '💰 💰 💰 = $100', '💎 💎 ? = $50', '⛏️ ⛏️ ⛏️ = $25', '🥇 ? ? = $10'],
       spots: 6
@@ -54,13 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const slots = symbols.filter(s => s === '🎰').length;
         const money = symbols.filter(s => s === '💰').length;
         
-        if (diamonds >= 4) return 5000;
-        if (crowns >= 3) return 1000;
-        if (diamonds >= 3) return 500;
-        if (slots >= 3) return 200;
-        if (money >= 3) return 100;
-        if (diamonds >= 1) return 25; // Money back
-        return 0;
+        let totalWin = 0;
+        if (diamonds >= 4) totalWin += 5000;
+        else if (diamonds >= 3) totalWin += 500;
+        else if (diamonds >= 1) totalWin += 25; // Money back only if no big diamond win
+        
+        if (crowns >= 3) totalWin += 1000;
+        if (slots >= 3) totalWin += 200;
+        if (money >= 3) totalWin += 100;
+        
+        return totalWin;
       },
       winPatterns: ['💎 💎 💎 💎 = $5000', '👑 👑 👑 = $1000', '💎 💎 💎 = $500', '🎰 🎰 🎰 = $200', '💰 💰 💰 = $100', '💎 ? ? = $25'],
       spots: 9
