@@ -186,7 +186,7 @@
         <div class="video-container">
             <div class="video-header">
                 <h1 class="video-title">🎰 Orange Casino Tutorial 🎰</h1>
-                <p class="video-subtitle">Complete walkthrough of all casino games and features</p>
+                <p class="video-subtitle">Essential guide to all casino games - 6 chapters, 30 seconds each</p>
             </div>
             
             <div class="video-frame">
@@ -204,49 +204,34 @@
                     <div class="chapter-time">0:00 - 0:30</div>
                 </button>
                 <button class="chapter-btn" onclick="seekToTime(30)">
-                    💰 Getting Started
+                    🎯 Slot Machines
                     <div class="chapter-time">0:30 - 1:00</div>
                 </button>
                 <button class="chapter-btn" onclick="seekToTime(60)">
-                    🎯 Slot Machines
+                    🃏 Blackjack
                     <div class="chapter-time">1:00 - 1:30</div>
                 </button>
                 <button class="chapter-btn" onclick="seekToTime(90)">
-                    🃏 Blackjack
+                    ♠️ Poker
                     <div class="chapter-time">1:30 - 2:00</div>
                 </button>
                 <button class="chapter-btn" onclick="seekToTime(120)">
-                    ♠️ Poker
+                    🎫 Scratch-Offs
                     <div class="chapter-time">2:00 - 2:30</div>
                 </button>
                 <button class="chapter-btn" onclick="seekToTime(150)">
-                    🎫 Scratch-Offs
-                    <div class="chapter-time">2:30 - 3:00</div>
-                </button>
-                <button class="chapter-btn" onclick="seekToTime(180)">
                     🏆 Achievements
-                    <div class="chapter-time">3:00 - 3:30</div>
-                </button>
-                <button class="chapter-btn" onclick="seekToTime(210)">
-                    💳 Financial Services
-                    <div class="chapter-time">3:30 - 4:00</div>
-                </button>
-                <button class="chapter-btn" onclick="seekToTime(240)">
-                    💡 Tips & Strategy
-                    <div class="chapter-time">4:00 - 4:30</div>
-                </button>
-                <button class="chapter-btn" onclick="seekToTime(270)">
-                    🎉 Conclusion
-                    <div class="chapter-time">4:30 - 5:00</div>
+                    <div class="chapter-time">2:30 - 3:00</div>
                 </button>
             </div>
 
             <div class="video-info">
                 <h3>📹 About This Tutorial</h3>
-                <p>This comprehensive video guide walks you through every feature of Orange Casino, from basic navigation to advanced strategies for each game.</p>
-                <p><strong>Video Length:</strong> ~5 minutes (30 seconds per section)</p>
+                <p>This streamlined video guide covers the core features of Orange Casino in 6 focused chapters.</p>
+                <p><strong>Video Length:</strong> 3 minutes (30 seconds per chapter)</p>
                 <p><strong>Format:</strong> Live demonstration of actual gameplay</p>
-                <p><strong>Best For:</strong> New players wanting to understand all casino features</p>
+                <p><strong>Chapters:</strong> Intro → Slots → Blackjack → Poker → Scratch-Offs → Achievements</p>
+                <p><strong>Perfect For:</strong> Quick overview of all main casino games</p>
                 
                 <a href="https://youtu.be/lZucjmu-F2M" target="_blank" class="youtube-link">
                     📺 Watch on YouTube
@@ -281,10 +266,10 @@
         // Add keyboard shortcuts for chapter navigation
         document.addEventListener('keydown', function(event) {
             if (event.altKey) {
-                const chapterTimes = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270];
+                const chapterTimes = [0, 30, 60, 90, 120, 150]; // 6 chapters
                 const keyNumber = parseInt(event.key);
                 
-                if (keyNumber >= 0 && keyNumber <= 9 && chapterTimes[keyNumber] !== undefined) {
+                if (keyNumber >= 0 && keyNumber <= 5 && chapterTimes[keyNumber] !== undefined) {
                     event.preventDefault();
                     seekToTime(chapterTimes[keyNumber]);
                 }
@@ -295,15 +280,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🎮 Chapter shortcuts:');
             console.log('  Alt + 0: Introduction');
-            console.log('  Alt + 1: Getting Started');
-            console.log('  Alt + 2: Slot Machines');
-            console.log('  Alt + 3: Blackjack');
-            console.log('  Alt + 4: Poker');
-            console.log('  Alt + 5: Scratch-Offs');
-            console.log('  Alt + 6: Achievements');
-            console.log('  Alt + 7: Financial Services');
-            console.log('  Alt + 8: Tips & Strategy');
-            console.log('  Alt + 9: Conclusion');
+            console.log('  Alt + 1: Slot Machines');
+            console.log('  Alt + 2: Blackjack');
+            console.log('  Alt + 3: Poker');
+            console.log('  Alt + 4: Scratch-Offs');
+            console.log('  Alt + 5: Achievements');
         });
     </script>
 
