@@ -72,15 +72,6 @@
                 <button class="btn payback-btn" onclick="vc.paybackLoan()">Pay Back</button>
               </div>
             </div>
-            
-            <div class="financial-panel emergency-panel">
-              <h4>🏥 Emergency Cash</h4>
-              <p class="emergency-desc">Desperate times call for desperate measures...</p>
-              <div class="button-group">
-                <a class="btn emergency-btn kidney-btn" href="surgery.html">Sell Kidney</a>
-                <a class="btn emergency-btn appendix-btn" href="appendix.html">Sell Appendix</a>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -90,16 +81,6 @@
           <div class="help-panel">
             <p>New to the casino? Check out our help guide to get started!</p>
             <a class="btn help-btn" href="help.html">📖 Help Guide</a>
-          </div>
-        </div>
-
-        <!-- Secret Code Section (Hidden) -->
-        <div class="secret-section" id="secret-section" style="display: none;">
-          <h3 class="section-title">🔒 Secret Access</h3>
-          <div class="secret-panel">
-            <p>Enter the underground code...</p>
-            <input type="text" id="secret-code" placeholder="Enter code..." maxlength="10">
-            <button class="btn secret-btn" onclick="checkSecretCode()">🔓 Access</button>
           </div>
         </div>
       </section>
@@ -117,74 +98,6 @@
 
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
-    
-    <script>
-      // Secret code functionality
-      let secretSequence = [];
-      const SECRET_CODE = "UNDERGROUND";
-      const UNLOCK_DEBT_THRESHOLD = 500; // Unlock after $500 debt
-      
-      // Listen for key sequences
-      document.addEventListener('keydown', function(e) {
-        // Add key to sequence
-        secretSequence.push(e.key.toUpperCase());
-        
-        // Keep only last 11 characters (length of SECRET_CODE)
-        if (secretSequence.length > SECRET_CODE.length) {
-          secretSequence.shift();
-        }
-        
-        // Check if sequence matches
-        if (secretSequence.join('') === SECRET_CODE) {
-          unlockSecretSection();
-          secretSequence = []; // Reset
-        }
-      });
-      
-      function unlockSecretSection() {
-        const debt = vc.readDebt();
-        const secretSection = document.getElementById('secret-section');
-        
-        if (debt >= UNLOCK_DEBT_THRESHOLD) {
-          secretSection.style.display = 'block';
-          secretSection.scrollIntoView({ behavior: 'smooth' });
-          vc.setBuddyText("I see you found the secret... You're in deep enough to join the real games.");
-        } else {
-          vc.setBuddyText(`You need at least $${UNLOCK_DEBT_THRESHOLD} debt to access the underground. Keep playing...`);
-        }
-      }
-      
-      function checkSecretCode() {
-        const input = document.getElementById('secret-code');
-        const code = input.value.toUpperCase().trim();
-        
-        if (code === "SHADOW" || code === "NOIR" || code === "UNDERGROUND") {
-          // Store underground mode in localStorage
-          localStorage.setItem('vc_underground_mode', 'true');
-          
-          // Show success message
-          vc.setBuddyText("Welcome to the Underground Casino. Things are different down here...");
-          vc.showBigMessage("🕶️ UNDERGROUND MODE ACTIVATED", 3000);
-          
-          // Redirect to underground homepage after delay
-          setTimeout(() => {
-            window.location.href = 'underground.html';
-          }, 2000);
-        } else {
-          vc.setBuddyText("Wrong code. Try again when you're deeper in debt...");
-          input.value = '';
-        }
-      }
-      
-      // Show secret section on page load if debt threshold is met
-      document.addEventListener('DOMContentLoaded', function() {
-        const debt = vc.readDebt();
-        if (debt >= UNLOCK_DEBT_THRESHOLD) {
-          const secretSection = document.getElementById('secret-section');
-          secretSection.style.display = 'block';
-        }
-      });
-    </script>
     
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />
