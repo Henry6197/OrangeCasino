@@ -13,6 +13,7 @@
   --text:#2b2b2b; /* dark text on cream */
 }
 *{box-sizing:border-box}
+html{background:linear-gradient(180deg,var(--bg) 0%, #ffd9c1 100%);background-attachment:fixed;min-height:100%}
 .site-header{backdrop-filter:blur(6px);background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
 .brand{margin:0;font-size:22px;color:var(--accent);display:inline-block;font-weight:800;letter-spacing:1px}
 .main-nav{display:inline-block;margin-left:28px}
@@ -21,7 +22,7 @@
 .balance{float:right;color:var(--muted);font-weight:600}
 /* debt displayed next to balance */
 .balance .debt{color:var(--danger);margin-left:12px;font-weight:800}
-html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,var(--bg) 0%, #ffd9c1 100%);color:var(--text)}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,var(--bg) 0%, #ffd9c1 100%);background-attachment:fixed;color:var(--text)}
 .container{max-width:var(--container-width);margin:0 auto;padding:24px}
 .site-header{backdrop-filter:blur(6px);background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
 .brand{margin:0;font-size:22px;color:var(--accent);display:inline-block;font-weight:800;letter-spacing:1px}
@@ -33,7 +34,7 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 .game-cards{display:flex;gap:var(--gap);margin-top:18px}
 .card{flex:1;background:linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.01));padding:18px;border-radius:var(--radius);text-decoration:none;color:var(--text);box-shadow:0 6px 30px rgba(2,6,23,0.12);display:block}
 .card h3{margin:0 0 8px}
-.site-footer{padding:18px;border-top:1px solid rgba(255,255,255,0.03);text-align:center;color:var(--muted)}
+.site-footer{padding:18px;border-top:1px solid rgba(255,255,255,0.1);text-align:center;color:var(--muted);background:linear-gradient(180deg,var(--bg) 0%, #ffd9c1 100%)}
 
 /* Game layout */
 .game-stage{display:flex;gap:20px;align-items:flex-start;padding:24px 0}
@@ -41,7 +42,7 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 .game-controls{min-width:260px}
 .reel{width:140px;height:140px;border-radius:10px;background:linear-gradient(180deg,#0b1a2b,#08121a);display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--accent);box-shadow:inset 0 -6px 24px rgba(0,0,0,0.6)}
 .reels{display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:84px;gap:12px;justify-items:center;align-items:center;padding:8px}
-.reel{width:84px;height:84px;border-radius:10px;background:linear-gradient(180deg,#0d2436,#071029);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent);box-shadow:inset 0 -6px 24px rgba(0,0,0,0.6);transition:transform 260ms ease}
+.reel{width:84px;height:84px;border-radius:10px;background:linear-gradient(180deg,#2d4a5c,#1e3444);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--accent);box-shadow:inset 0 -6px 24px rgba(0,0,0,0.4);transition:transform 260ms ease}
 .reel.spin{transform:translateY(-10px) scale(1.05)}
 .btn{display:inline-block;background:var(--accent);color:#071019;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;cursor:pointer;border:none}
 .muted{color:var(--muted)}
@@ -49,6 +50,614 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 
 /* Responsive */
 @media (max-width:880px){.game-cards{flex-direction:column}.balance{display:none}.game-stage{flex-direction:column}}
+
+/* New Homepage Styles */
+.welcome-banner {
+  text-align: center;
+  padding: 24px 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(255, 106, 0, 0.3);
+}
+
+.welcome-banner h2 {
+  margin: 0 0 8px;
+  font-size: 2.2em;
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.welcome-subtitle {
+  margin: 0;
+  font-size: 1.1em;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.section-title {
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 16px;
+  font-size: 1.4em;
+  border-left: 4px solid var(--accent);
+  padding-left: 12px;
+}
+
+.games-section {
+  margin-bottom: 32px;
+}
+
+.game-card {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(2,6,23,0.2);
+}
+
+.card-icon {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.card-footer {
+  margin-top: 12px;
+  padding: 8px;
+  background: var(--accent);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.financial-section {
+  margin-bottom: 32px;
+}
+
+.financial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+}
+
+.financial-panel {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px rgba(2,6,23,0.1);
+}
+
+.financial-panel h4 {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.debt-display {
+  background: rgba(176, 0, 32, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.emergency-desc {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.loan-btn {
+  background: #28a745;
+  color: white;
+}
+
+.payback-btn {
+  background: #007bff;
+  color: white;
+}
+
+.emergency-btn {
+  flex: 1;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.kidney-btn {
+  background: #ff7b7b;
+  color: white;
+}
+
+.appendix-btn {
+  background: #ffd27a;
+  color: #222;
+}
+
+.help-section {
+  margin-bottom: 24px;
+}
+
+.help-panel {
+  background: linear-gradient(135deg, #8ec5ff, #6ba3ff);
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 20px rgba(142, 197, 255, 0.3);
+}
+
+.help-panel p {
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+.help-btn {
+  background: white;
+  color: #022;
+  font-weight: 700;
+}
+
+/* Responsive adjustments for new layout */
+@media (max-width: 768px) {
+  .financial-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .welcome-banner h2 {
+    font-size: 1.8em;
+  }
+}
+
+/* Game Page Layouts */
+.page-header {
+  text-align: center;
+  padding: 20px 0;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 2em;
+  font-weight: 800;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.1em;
+}
+
+.control-panel {
+  background: var(--card);
+  padding: 16px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(2,6,23,0.1);
+}
+
+.control-panel h4 {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Slots Specific Styles */
+.slot-machine-panel {
+  background: linear-gradient(135deg, var(--card), #f0d5b8);
+}
+
+.machine-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.machine-header h3 {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 1.4em;
+}
+
+.machine-status {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.reels-container {
+  background: linear-gradient(145deg, #2a3f52, #1f3240);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: inset 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.machine-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.spin-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: white;
+  font-size: 1.1em;
+  padding: 12px 24px;
+  font-weight: 700;
+}
+
+.max-btn {
+  background: linear-gradient(135deg, #6ee7b7, #10b981);
+  color: #064e3b;
+  font-weight: 700;
+}
+
+.results-log h4 {
+  margin: 16px 0 8px;
+  color: var(--accent);
+}
+
+.payout-list {
+  font-size: 0.9em;
+}
+
+.payout-item {
+  padding: 4px 0;
+  color: var(--muted);
+}
+
+/* Blackjack Specific Styles */
+.blackjack-table {
+  background: linear-gradient(135deg, #0f4c3a, #1a5c47);
+  color: white;
+  padding: 24px;
+  border-radius: var(--radius);
+}
+
+.table-section {
+  margin: 16px 0;
+}
+
+.player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.player-header h3 {
+  margin: 0;
+  color: #ffd700;
+}
+
+.score-display {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.card-row {
+  min-height: 60px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.table-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  margin: 16px 0;
+}
+
+.game-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.deal-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.hit-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.stand-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.game-log h4 {
+  margin: 16px 0 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.rules-list {
+  font-size: 0.9em;
+}
+
+.rule-item {
+  padding: 3px 0;
+  color: var(--muted);
+}
+
+/* Poker Specific Styles */
+.poker-table {
+  background: linear-gradient(135deg, #f0f8f5, #e6f3ed);
+  color: var(--text);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  border: 2px solid var(--accent);
+}
+
+.community-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.community-section h3 {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.community-cards {
+  min-height: 80px;
+  justify-content: center;
+  background: rgba(255, 106, 0, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+}
+
+.poker-players {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.poker-player {
+  text-align: center;
+}
+
+.player-info h4 {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.chip-display {
+  background: var(--accent-2);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  margin-bottom: 12px;
+  border: 1px solid var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pot-display {
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 106, 0, 0.3);
+}
+
+.pot-display h4 {
+  margin: 0 0 8px;
+  color: white;
+}
+
+.pot-amount {
+  font-size: 1.4em;
+  font-weight: 700;
+  color: white;
+}
+
+.poker-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.fold-btn {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+}
+
+.call-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.raise-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.check-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.bet-btn {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+}
+
+.game-status-section {
+  margin-top: 20px;
+}
+
+.game-status {
+  text-align: center;
+  background: var(--accent-2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  color: var(--text);
+}
+
+.rankings-list {
+  font-size: 0.85em;
+}
+
+.ranking-item {
+  padding: 2px 0;
+  color: var(--muted);
+}
+
+/* Responsive for game pages */
+@media (max-width: 768px) {
+  .poker-players {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .game-actions, .poker-actions, .machine-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .game-actions .btn, .poker-actions .btn, .machine-controls .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Achievements Page Styles */
+.achievements-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.achievements-info {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.achievements-desc {
+  color: var(--muted);
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.achievements-grid {
+  margin-bottom: 32px;
+}
+
+.achievements-list {
+  display: grid;
+  gap: 16px;
+}
+
+.achievement {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  border-left: 4px solid var(--muted);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(2,6,23,0.1);
+}
+
+.achievement.unlocked {
+  border-left-color: var(--accent);
+  background: linear-gradient(135deg, var(--card), #fff8f0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 106, 0, 0.2);
+}
+
+.achievement-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.achievement-icon {
+  font-size: 1.8em;
+  width: 40px;
+  text-align: center;
+}
+
+.achievement-title {
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.achievement-description {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.achievement-status {
+  margin-top: 8px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.achievement.unlocked .achievement-status {
+  color: var(--accent);
+}
+
+.achievement:not(.unlocked) .achievement-status {
+  color: var(--muted);
+}
+
+.achievements-controls {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  font-weight: 700;
+}
+
+.reset-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
 
 /* small helpers */
 .row{display:flex;gap:12px;align-items:center}

@@ -40,12 +40,23 @@
     </header>
 
     <main class="container">
-      <h2>Achievements</h2>
-      <p class="muted">Earn these by playing. Achievements persist in localStorage.</p>
-      <div id="achievements" class="achievements-list"></div>
-      <div style="height:16px"></div>
-      <div class="row">
-        <button class="btn" id="reset-achievements">Reset Achievements</button>
+      <div class="page-header">
+        <h2>🏆 Achievements</h2>
+        <p class="page-subtitle">Track your progress and unlock rewards as you play!</p>
+      </div>
+
+      <div class="achievements-section">
+        <div class="achievements-info">
+          <p class="achievements-desc">Complete various challenges to earn achievements. Your progress is automatically saved!</p>
+        </div>
+        
+        <div class="achievements-grid">
+          <div id="achievements" class="achievements-list"></div>
+        </div>
+        
+        <div class="achievements-controls">
+          <button class="btn reset-btn" id="reset-achievements">🔄 Reset All Achievements</button>
+        </div>
       </div>
     </main>
 

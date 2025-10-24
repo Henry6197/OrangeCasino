@@ -23,40 +23,75 @@
 
     <main class="container">
       <section class="hero">
-        <h2>Welcome to ORANGE CASINO</h2>
-        <p>Pick a game from the menu and have fun. The UI is styled with CSS variables so you can easily tweak colors and spacing in <code>style.css</code>.</p>
-        <div class="game-cards">
-          <a class="card" href="slot.html">
-            <h3>Slots</h3>
-            <p>Spin the reels and enjoy the orange glow.</p>
-          </a>
-          <a class="card" href="blackjack.html">
-            <h3>Blackjack</h3>
-            <p>Beat the dealer.</p>
-          </a>
-          <a class="card" href="poker.html">
-            <h3>Poker</h3>
-            <p>Simplified 5-card draw.</p>
-          </a>
+        <div class="welcome-banner">
+          <h2>🎰 Welcome to ORANGE CASINO 🎰</h2>
+          <p class="welcome-subtitle">The hottest casino experience on the web! Pick your game and start winning big!</p>
         </div>
-        <div style="height:12px"></div>
-        <div class="row">
-          <div class="game-panel" style="padding:12px;display:inline-block;">
-            <div>Debt: $<span class="debt-value">0</span></div>
-            <div style="height:8px"></div>
-            <button class="btn" onclick="vc.loan100()" style="margin-right:8px">Loan $100</button>
-            <button class="btn" onclick="vc.paybackLoan()">Payback Loan</button>
-            <a class="btn" href="surgery.html" style="margin-left:12px;background:#ff7b7b;color:#fff">Sell a kidney</a>
-            <a class="btn" href="appendix.html" style="margin-left:12px;background:#ffd27a;color:#222">Sell appendix</a>
-            <a class="btn" href="help.html" style="margin-left:12px;background:#8ec5ff;color:#022">Help</a>
+
+        <!-- Main Games Section -->
+        <div class="games-section">
+          <h3 class="section-title">🎲 Choose Your Game</h3>
+          <div class="game-cards">
+            <a class="card game-card" href="slot.html">
+              <div class="card-icon">🎰</div>
+              <h3>Slots</h3>
+              <p>Spin the reels and watch the orange magic happen!</p>
+              <div class="card-footer">Click to Play</div>
+            </a>
+            <a class="card game-card" href="blackjack.html">
+              <div class="card-icon">🃏</div>
+              <h3>Blackjack</h3>
+              <p>Beat the dealer in this classic card game.</p>
+              <div class="card-footer">Click to Play</div>
+            </a>
+            <a class="card game-card" href="poker.html">
+              <div class="card-icon">♠️</div>
+              <h3>Poker</h3>
+              <p>Texas Hold'em with multiple betting rounds.</p>
+              <div class="card-footer">Click to Play</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Financial Services Section -->
+        <div class="financial-section">
+          <h3 class="section-title">💰 Financial Services</h3>
+          <div class="financial-grid">
+            <div class="financial-panel loan-panel">
+              <h4>💳 Quick Loans</h4>
+              <div class="debt-display">Current Debt: $<span class="debt-value">0</span></div>
+              <div class="button-group">
+                <button class="btn loan-btn" onclick="vc.loan100()">Loan $100</button>
+                <button class="btn payback-btn" onclick="vc.paybackLoan()">Pay Back</button>
+              </div>
+            </div>
+            
+            <div class="financial-panel emergency-panel">
+              <h4>🏥 Emergency Cash</h4>
+              <p class="emergency-desc">Desperate times call for desperate measures...</p>
+              <div class="button-group">
+                <a class="btn emergency-btn kidney-btn" href="surgery.html">Sell Kidney</a>
+                <a class="btn emergency-btn appendix-btn" href="appendix.html">Sell Appendix</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+          <h3 class="section-title">ℹ️ Need Help?</h3>
+          <div class="help-panel">
+            <p>New to the casino? Check out our help guide to get started!</p>
+            <a class="btn help-btn" href="help.html">📖 Help Guide</a>
           </div>
         </div>
       </section>
-     <div class="ad-container right ad-4" onclick="window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
-      <img src="images/ad-house.svg" class="ad-svg" alt="Ad 4">
-      <div class="ad-text">Lugi House!</div>
-    </div> 
       
+      <!-- Advertisement -->
+      <div class="ad-container right ad-4" onclick="window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
+        <img src="images/ad-house.svg" class="ad-svg" alt="Ad 4">
+        <div class="ad-text">Luigi House!</div>
+      </div> 
     </main>
 
     <footer class="site-footer">

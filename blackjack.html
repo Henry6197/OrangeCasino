@@ -40,35 +40,68 @@
     </header>
 
     <main class="container">
-      <h2>Blackjack</h2>
+      <div class="page-header">
+        <h2>🃏 Blackjack</h2>
+        <p class="page-subtitle">Beat the dealer and get as close to 21 as you can!</p>
+      </div>
+      
       <div class="game-stage">
-        <div class="game-panel">
-          <h3>Dealer <span id="dealer-score" class="score-counter"></span></h3>
-          <div id="dealer-hand" class="row"></div>
-          <h3>Player <span id="player-score" class="score-counter"></span></h3>
-          <div id="player-hand" class="row"></div>
-          <div style="height:12px"></div>
-          <div class="center">
-            <button class="btn" id="deal">Deal</button>
-            <button class="btn" id="hit">Hit</button>
-            <button class="btn" id="stand">Stand</button>
+        <div class="game-panel blackjack-table">
+          <div class="table-section dealer-section">
+            <div class="player-header">
+              <h3>🎩 Dealer</h3>
+              <span id="dealer-score" class="score-display"></span>
+            </div>
+            <div id="dealer-hand" class="card-row"></div>
           </div>
-          <div style="height:12px"></div>
-          <div class="log" id="bj-log"></div>
+          
+          <div class="table-divider"></div>
+          
+          <div class="table-section player-section">
+            <div class="player-header">
+              <h3>👤 You</h3>
+              <span id="player-score" class="score-display"></span>
+            </div>
+            <div id="player-hand" class="card-row"></div>
+          </div>
+          
+          <div class="game-actions">
+            <button class="btn deal-btn" id="deal">🆕 Deal New Hand</button>
+            <button class="btn hit-btn" id="hit">👆 Hit</button>
+            <button class="btn stand-btn" id="stand">✋ Stand</button>
+          </div>
+          
+          <div class="game-log">
+            <h4>📋 Game History</h4>
+            <div class="log" id="bj-log"></div>
+          </div>
         </div>
 
         <aside class="game-controls">
-          <div class="bet-section">
-            <h4>💰 Place Your Bet</h4>
-            <div class="row"><label class="bet-label">Bet Amount:</label><input id="bj-bet" class="bet-input" type="number" value="20" min="1"></div>
+          <div class="control-panel bet-panel">
+            <h4>💰 Betting Controls</h4>
+            <div class="bet-section">
+              <label class="bet-label">Bet Amount:</label>
+              <input id="bj-bet" class="bet-input" type="number" value="20" min="1">
+            </div>
           </div>
-          <div class="game-panel">
-            <h3>Game Info</h3>
-            <div class="muted">Basic single-deck blackjack rules. Dealer stands on 17.</div>
+          
+          <div class="control-panel rules-panel">
+            <h4>📖 Game Rules</h4>
+            <div class="rules-list">
+              <div class="rule-item">🎯 Get as close to 21 as possible</div>
+              <div class="rule-item">🎯 Dealer stands on 17</div>
+              <div class="rule-item">🎯 Aces count as 1 or 11</div>
+              <div class="rule-item">🎯 Face cards worth 10</div>
+            </div>
           </div>
         </aside>
       </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">Made with ❤️ — demo only. No real money.</div>
+    </footer>
 
   <script src="scripts/todd-dialogue.js"></script>
   <script src="scripts/app.js"></script>

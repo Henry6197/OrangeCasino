@@ -40,48 +40,75 @@
     </header>
 
     <main class="container">
-      <h2>Slot Machine</h2>
+      <div class="page-header">
+        <h2>🎰 Slot Machine</h2>
+        <p class="page-subtitle">Spin the reels and watch the orange magic happen!</p>
+      </div>
+      
       <div class="game-stage">
-        <div class="game-panel">
-          <div class="reels" id="reels">
-            <!-- 5 columns x 3 rows -->
-            <div class="reel" data-index="0">🍒</div>
-            <div class="reel" data-index="1">🍋</div>
-            <div class="reel" data-index="2">⭐</div>
-            <div class="reel" data-index="3">🍇</div>
-            <div class="reel" data-index="4">🔔</div>
-            <div class="reel" data-index="5">🍋</div>
-            <div class="reel" data-index="6">🍒</div>
-            <div class="reel" data-index="7">🍋</div>
-            <div class="reel" data-index="8">⭐</div>
-            <div class="reel" data-index="9">🍇</div>
-            <div class="reel" data-index="10">🔔</div>
-            <div class="reel" data-index="11">🍉</div>
-            <div class="reel" data-index="12">🍒</div>
-            <div class="reel" data-index="13">🍋</div>
-            <div class="reel" data-index="14">⭐</div>
+        <div class="game-panel slot-machine-panel">
+          <div class="machine-header">
+            <h3>🎯 Orange Slot Machine</h3>
+            <div class="machine-status">Ready to spin!</div>
           </div>
-          <div style="height:12px"></div>
-          <div class="center">
-            <button class="btn" id="spin">Spin</button>
-            <button class="btn" id="max" style="background:#6ee7b7;color:#06201a">Max</button>
+          
+          <div class="reels-container">
+            <div class="reels" id="reels">
+              <!-- 5 columns x 3 rows -->
+              <div class="reel" data-index="0">🍒</div>
+              <div class="reel" data-index="1">🍋</div>
+              <div class="reel" data-index="2">⭐</div>
+              <div class="reel" data-index="3">🍇</div>
+              <div class="reel" data-index="4">🔔</div>
+              <div class="reel" data-index="5">🍋</div>
+              <div class="reel" data-index="6">🍒</div>
+              <div class="reel" data-index="7">🍋</div>
+              <div class="reel" data-index="8">⭐</div>
+              <div class="reel" data-index="9">🍇</div>
+              <div class="reel" data-index="10">🔔</div>
+              <div class="reel" data-index="11">🍉</div>
+              <div class="reel" data-index="12">🍒</div>
+              <div class="reel" data-index="13">🍋</div>
+              <div class="reel" data-index="14">⭐</div>
+            </div>
           </div>
-          <div style="height:12px"></div>
-          <div class="log" id="slot-log"></div>
+          
+          <div class="machine-controls">
+            <button class="btn spin-btn" id="spin">🎰 SPIN</button>
+            <button class="btn max-btn" id="max">💎 MAX BET</button>
+          </div>
+          
+          <div class="results-log">
+            <h4>📋 Recent Spins</h4>
+            <div class="log" id="slot-log"></div>
+          </div>
         </div>
 
         <aside class="game-controls">
-          <div class="bet-section">
-            <h4>🎰 Set Your Bet</h4>
-            <div class="row"><label class="bet-label">Bet Amount:</label><input id="bet" class="bet-input" type="number" value="10" min="1"></div>
+          <div class="control-panel bet-panel">
+            <h4>💰 Betting Controls</h4>
+            <div class="bet-section">
+              <label class="bet-label">Bet Amount:</label>
+              <input id="bet" class="bet-input" type="number" value="10" min="1">
+            </div>
           </div>
-          <div class="game-panel">
-            <h3>Payouts</h3>
-            <div class="muted">3-in-row = 2x, 4-in-row = 4x, full row = 8x, full column = 5x.</div>
+          
+          <div class="control-panel payout-panel">
+            <h4>🏆 Payout Table</h4>
+            <div class="payout-list">
+              <div class="payout-item">🎯 3 in a row = 2x bet</div>
+              <div class="payout-item">🎯 4 in a row = 4x bet</div>
+              <div class="payout-item">🎯 Full row = 8x bet</div>
+              <div class="payout-item">🎯 Full column = 5x bet</div>
+            </div>
           </div>
         </aside>
       </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="container">Made with ❤️ — demo only. No real money.</div>
+    </footer>
 
   <script src="scripts/todd-dialogue.js"></script>
   <script src="scripts/app.js"></script>
