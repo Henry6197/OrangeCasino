@@ -22,6 +22,7 @@ Orange Casino is a fully-featured casino demo built with vanilla HTML, CSS, and 
 - **⛏️ Coal Mine Mini-Game** - Alternative earning mechanism
 - **🏥 Medical Services** - Humorous "organ selling" for emergency cash
 - **📊 Statistics Tracking** - Detailed win/loss records and playing history
+- **🕶️ Underground Casino Mode** - Secret dark theme with illegal games (unlocked via secret code after accumulating debt)
 
 ## 🚀 Getting Started
 
@@ -69,10 +70,12 @@ Edit CSS variables in `style.css`:
 ```
 OrangeCasino/
 ├── index.html          # Homepage and main navigation
+├── underground.html    # Secret underground casino mode
 ├── slot.html           # Slot machine game
 ├── blackjack.html      # Blackjack game
 ├── poker.html          # Texas Hold'em poker
 ├── scratch-offs.html   # Scratch-off tickets
+├── russian-roulette.html # Dangerous underground game
 ├── achievements.html   # Achievement tracking
 ├── help-video.html     # Tutorial video player
 ├── coal-mine.html      # Mining mini-game
@@ -104,6 +107,8 @@ OrangeCasino/
 - **Lucky Scratcher**: Win big on scratch-off tickets
 - **Debt Collector**: Accumulate significant virtual debt
 - **Organ Donor**: Use emergency cash services
+- **Underground Access**: Discover and enter the secret underground casino
+- **Russian Roulette Survivor**: Survive multiple rounds of Russian Roulette
 
 ## ⚠️ Disclaimer
 

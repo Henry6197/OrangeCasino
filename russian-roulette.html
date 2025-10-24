@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en" class="underground-mode">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Russian Roulette - Underground Casino</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Underground Mode Dark Theme */
+        .underground-mode {
+            --primary-orange: #1a1a1a;
+            --secondary-orange: #2d2d2d;
+            --accent-gold: #ff4444;
+            --text-color: #ffffff;
+            --background-color: #0d0d0d;
+        }
+        
+        .underground-mode body {
+            background: #000000;
+            color: var(--text-color);
+        }
+        
+        .underground-mode .site-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border-bottom: 2px solid #ff4444;
+        }
+        
+        .underground-mode .site-footer {
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            border-top: 2px solid #ff4444;
+            color: #ffffff;
+        }
+        
+        .underground-mode .brand {
+            color: #ff4444;
+            text-shadow: 0 0 10px #ff4444;
+        }
+        
+        .underground-mode .main-nav a {
+            color: #ffffff;
+        }
+        
+        .underground-mode .main-nav a:hover {
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
+        }
+        
+        .underground-mode .card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+            color: #ffffff;
+        }
+        
+        .underground-mode .card p {
+            color: #cccccc;
+        }
+        
+        .underground-mode .card:hover {
+            border-color: #ff6666;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
+        }
+        
+        .underground-mode .btn {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            border: 1px solid #ff6666;
+            color: #ffffff;
+        }
+        
+        .underground-mode .btn:hover {
+            background: linear-gradient(135deg, #ff6666 0%, #ff0000 100%);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+        }
+        
+        .underground-mode .buddy {
+            filter: contrast(1.2) brightness(0.8);
+        }
+        
+        .underground-mode .buddy img {
+            filter: grayscale(0.5) sepia(0.3) hue-rotate(340deg);
+        }
+        
+        .underground-mode .card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+            color: #ffffff;
+        }
+        
+        .underground-mode .card p {
+            color: #cccccc;
+        }
+        
+        .underground-mode .card:hover {
+            border-color: #ff6666;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
+        }
+        
+        .underground-mode .balance {
+            color: #ffffff;
+        }
+        
+        .underground-mode .debt {
+            color: #ff6666;
+        }
+        
+        .exit-underground {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid #ff4444;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9em;
+            z-index: 1000;
+        }
+        
+        .exit-underground:hover {
+            background: rgba(255, 68, 68, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .roulette-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+            border: 2px solid #ff4444;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
+        }
+        
+        .roulette-container h2 {
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff4444;
+        }
+        
+        .gun-chamber {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .chamber {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #ff4444;
+            border-radius: 50%;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        
+        .chamber.active {
+            background: #ff4444;
+            box-shadow: 0 0 20px #ff4444;
+        }
+        
+        .chamber.bullet {
+            background: #ff0000;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .roulette-container p,
+        .roulette-container div,
+        .roulette-container span {
+            color: #ffffff;
+        }
+        
+        .roulette-status h3,
+        .bet-section h3 {
+            color: #ff4444;
+        }
+        
+        .bet-section {
+            text-align: center;
+            margin: 25px 0;
+            background: rgba(255, 68, 68, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff4444;
+        }
+        
+        .danger-warning {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            animation: dangerFlash 2s infinite;
+        }
+        
+        @keyframes dangerFlash {
+            0%, 100% { border-color: #ff0000; }
+            50% { border-color: #ff6666; }
+        }
+        
+        .pull-trigger-btn {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            border: 2px solid #ff4444;
+            color: white;
+            padding: 20px 40px;
+            font-size: 1.5em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: throb 1.5s infinite;
+        }
+        
+        @keyframes throb {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .pull-trigger-btn:hover {
+            background: linear-gradient(135deg, #ff3333 0%, #ff0000 100%);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+        }
+        
+        .pull-trigger-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            animation: none;
+        }
+        
+        .round-info {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+        
+        .survival-count {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="brand">🔫 RUSSIAN ROULETTE</h1>
+            <nav class="main-nav">
+                <a href="underground.html">Underground Hub</a>
+                <a href="organ-market.html">Organ Market</a>
+                <a href="russian-roulette.html">Russian Roulette</a>
+                <a href="index.html" onclick="exitUnderground()">🚪 Exit Underground</a>
+            </nav>
+            <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="roulette-container">
+            <h2 style="text-align: center; color: #ff4444;">🔫 RUSSIAN ROULETTE 🔫</h2>
+            
+            <div class="danger-warning">
+                <h3>⚠️ EXTREME DANGER ⚠️</h3>
+                <p>One bullet, six chambers. Pull the trigger and pray.</p>
+                <p><strong>WIN: Triple your bet | LOSE: Lose everything and start over</strong></p>
+            </div>
+            
+            <div class="gun-chamber" id="gun-chamber">
+                <div class="chamber" data-chamber="1"></div>
+                <div class="chamber" data-chamber="2"></div>
+                <div class="chamber" data-chamber="3"></div>
+                <div class="chamber" data-chamber="4"></div>
+                <div class="chamber" data-chamber="5"></div>
+                <div class="chamber" data-chamber="6"></div>
+            </div>
+            
+            <div class="round-info">
+                <div>Round: <span id="round-number">1</span>/6</div>
+                <div>Chamber: <span id="current-chamber">1</span></div>
+                <div class="survival-count">Survived: <span id="survival-count">0</span> rounds</div>
+            </div>
+            
+            <div class="bet-section">
+                <h3>Place Your Life on the Line</h3>
+                <label for="bet-amount">Bet Amount: $</label>
+                <input type="number" id="bet-amount" min="1" max="10000" value="100" />
+                <p style="color: #ff6666; font-size: 0.9em;">
+                    <strong>Warning:</strong> If you hit the bullet, you lose EVERYTHING and restart with $100.
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="pull-trigger-btn" id="pull-trigger" onclick="pullTrigger()">
+                    🔫 PULL TRIGGER
+                </button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" onclick="newGame()" style="margin: 10px;">🔄 New Game</button>
+                <button class="btn" onclick="walkAway()" style="margin: 10px;">🚶 Walk Away</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">Made with 🖤 — No real bullets, but real consequences for your balance.</div>
+    </footer>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        let bulletChamber = 0;
+        let currentChamber = 1;
+        let gameActive = false;
+        let survivedRounds = 0;
+        
+        function newGame() {
+            // Reset game state
+            bulletChamber = Math.floor(Math.random() * 6) + 1;
+            currentChamber = 1;
+            gameActive = true;
+            survivedRounds = 0;
+            
+            // Reset chamber display
+            const chambers = document.querySelectorAll('.chamber');
+            chambers.forEach((chamber, index) => {
+                chamber.classList.remove('active', 'bullet');
+                chamber.textContent = '';
+            });
+            
+            // Highlight first chamber
+            chambers[0].classList.add('active');
+            
+            // Update display
+            document.getElementById('round-number').textContent = currentChamber;
+            document.getElementById('current-chamber').textContent = currentChamber;
+            document.getElementById('survival-count').textContent = survivedRounds;
+            document.getElementById('pull-trigger').disabled = false;
+            
+            setBuddyText("New game loaded. One bullet is in there somewhere...");
+        }
+        
+        function pullTrigger() {
+            if (!gameActive) return;
+            
+            const betAmount = parseInt(document.getElementById('bet-amount').value);
+            const balance = vc.readBalance();
+            
+            if (betAmount > balance) {
+                setBuddyText("You don't have enough to bet that much. Lower your bet or find more money.");
+                return;
+            }
+            
+            // Deduct bet from balance
+            vc.writeBalance(balance - betAmount);
+            
+            const chambers = document.querySelectorAll('.chamber');
+            const currentChamberEl = chambers[currentChamber - 1];
+            
+            // Show bullet if this is the bullet chamber
+            if (currentChamber === bulletChamber) {
+                currentChamberEl.classList.add('bullet');
+                currentChamberEl.textContent = '💥';
+                
+                // GAME OVER - Hit the bullet
+                gameActive = false;
+                document.getElementById('pull-trigger').disabled = true;
+                
+                setBuddyText("BANG! You hit the bullet. Everything is gone. Here's $100 to start over.");
+                vc.showBigMessage("💀 GAME OVER 💀", 3000);
+                
+                // Reset player to $100, clear all debt
+                setTimeout(() => {
+                    vc.writeBalance(100);
+                    vc.writeDebt(0);
+                    setBuddyText("You're lucky to be alive. Don't push your luck again.");
+                }, 2000);
+                
+            } else {
+                // Safe chamber
+                currentChamberEl.textContent = '✓';
+                survivedRounds++;
+                
+                // Calculate winnings (triple the bet)
+                const winnings = betAmount * 3;
+                vc.writeBalance(vc.readBalance() + winnings);
+                
+                setBuddyText(`Click! Safe for now. You won $${winnings}. Keep going or walk away while you can.`);
+                
+                // Move to next chamber
+                currentChamber++;
+                document.getElementById('round-number').textContent = currentChamber;
+                document.getElementById('current-chamber').textContent = currentChamber;
+                document.getElementById('survival-count').textContent = survivedRounds;
+                
+                // Update chamber highlighting
+                chambers.forEach(chamber => chamber.classList.remove('active'));
+                if (currentChamber <= 6) {
+                    chambers[currentChamber - 1].classList.add('active');
+                }
+                
+                // Check if survived all 6 chambers
+                if (currentChamber > 6) {
+                    gameActive = false;
+                    document.getElementById('pull-trigger').disabled = true;
+                    
+                    // Bonus for surviving all chambers
+                    const bonus = betAmount * 10;
+                    vc.writeBalance(vc.readBalance() + bonus);
+                    
+                    setBuddyText(`Incredible! You survived all 6 chambers! Bonus: $${bonus}`);
+                    vc.showBigMessage("🎉 PERFECT SURVIVAL! 🎉", 4000);
+                }
+            }
+        }
+        
+        function walkAway() {
+            if (gameActive && survivedRounds > 0) {
+                setBuddyText("Smart choice. You walked away while you still could.");
+                gameActive = false;
+                document.getElementById('pull-trigger').disabled = true;
+            } else {
+                setBuddyText("Nothing to walk away from. Start a game first.");
+            }
+        }
+        
+        function setBuddyText(s) {
+            const b = document.getElementById('buddy-text');
+            if (b) b.textContent = s;
+        }
+        
+        function exitUnderground() {
+            localStorage.removeItem('vc_underground_mode');
+            window.location.href = 'index.html';
+        }
+        
+        // Initialize game on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            newGame();
+            
+            const undergroundName = localStorage.getItem('vc_underground_name') || 'Ghost';
+            setBuddyText(`Welcome to Russian Roulette, ${undergroundName}. Feeling lucky?`);
+        });
+    </script>
+    
+    <div class="buddy" id="buddy">
+        <img src="images/buddy.svg" alt="Todd (Underground)" />
+        <div>
+            <div class="name">Todd 🕶️</div>
+            <div class="text" id="buddy-text">One bullet, six chances...</div>
+        </div>
+    </div>
+</body>
+</html>

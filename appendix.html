@@ -5,53 +5,313 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Appendix Table — ORANGE CASINO</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .appendix-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border: 3px solid #c8e6c9;
+      }
+
+      .appendix-header {
+        background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+      }
+
+      .appendix-header::before {
+        content: "🏥";
+        font-size: 3rem;
+        position: absolute;
+        top: 1rem;
+        left: 2rem;
+        opacity: 0.3;
+      }
+
+      .appendix-header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+      }
+
+      .appendix-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+      }
+
+      .procedure-room {
+        padding: 3rem;
+        background: linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%);
+      }
+
+      .procedure-info {
+        background: #c8e6c9;
+        border-left: 5px solid #4caf50;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 0 10px 10px 0;
+      }
+
+      .procedure-info h3 {
+        margin: 0 0 0.5rem 0;
+        color: #2e7d32;
+        font-size: 1.2rem;
+      }
+
+      .procedure-info p {
+        margin: 0;
+        color: #424242;
+        line-height: 1.6;
+      }
+
+      .procedure-benefits {
+        background: #e8f5e8;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+      }
+
+      .procedure-benefits h4 {
+        margin: 0 0 1rem 0;
+        color: #2e7d32;
+        font-size: 1rem;
+      }
+
+      .benefits-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .benefits-list li {
+        background: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+        font-size: 0.9rem;
+      }
+
+      .appendix-monitor {
+        background: #1b5e20;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: #81c784;
+        font-family: 'Courier New', monospace;
+        position: relative;
+        border: 3px solid #2e7d32;
+      }
+
+      .appendix-monitor::before {
+        content: "PROCEDURE MONITOR";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: #1b5e20;
+        padding: 0 10px;
+        font-size: 0.8rem;
+        color: #a5d6a7;
+      }
+
+      .timer-display {
+        text-align: center;
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 1rem 0;
+        text-shadow: 0 0 20px currentColor;
+        letter-spacing: 5px;
+      }
+
+      .procedure-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+
+      .procedure-stat {
+        text-align: center;
+        padding: 0.5rem;
+        background: rgba(129, 199, 132, 0.1);
+        border-radius: 5px;
+      }
+
+      .procedure-stat .label {
+        font-size: 0.8rem;
+        color: #a5d6a7;
+        margin-bottom: 0.25rem;
+      }
+
+      .procedure-stat .value {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .procedure-log {
+        background: rgba(129, 199, 132, 0.05);
+        border: 1px solid rgba(129, 199, 132, 0.2);
+        border-radius: 8px;
+        padding: 1rem;
+        max-height: 200px;
+        overflow-y: auto;
+        margin: 1rem 0;
+      }
+
+      .procedure-log div {
+        padding: 0.25rem 0;
+        border-bottom: 1px solid rgba(129, 199, 132, 0.1);
+        font-size: 0.9rem;
+      }
+
+      .procedure-log div:last-child {
+        border-bottom: none;
+      }
+
+      .nav-back {
+        text-align: center;
+        margin: 2rem 0;
+      }
+
+      .nav-back a {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .nav-back a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+      }
+
+      /* Hide original header and footer for clean look */
+      .site-header, .site-footer {
+        display: none;
+      }
+
+      /* Animations */
+      @keyframes gentle-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+      }
+
+      .timer-display {
+        animation: gentle-pulse 3s infinite;
+      }
+
+      @keyframes steady-beat {
+        0% { opacity: 1; }
+        50% { opacity: 0.8; }
+        100% { opacity: 1; }
+      }
+
+      .procedure-stat .value {
+        animation: steady-beat 2s infinite;
+      }
+
+      .payment-highlight {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border: 2px solid #ff9800;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      .payment-highlight h4 {
+        margin: 0 0 0.5rem 0;
+        color: #e65100;
+        font-size: 1.3rem;
+      }
+
+      .payment-highlight .amount {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #ff6f00;
+        text-shadow: 0 2px 4px rgba(255, 111, 0, 0.3);
+      }
+    </style>
   </head>
   <body>
-    <!-- Advertisement System -->
-    <div class="ad-container left ad-1" onclick="window.open('popup-hell.html', '_blank')">
-      <img src="images/ad1.svg" class="ad-svg" alt="Ad 1">
-      <div class="ad-text">Kraft Singles!</div>
-    </div>
-    <div class="ad-container left ad-2" onclick="window.open('popup-hell.html', '_blank')">
-      <img src="images/ad2.svg" class="ad-svg" alt="Ad 2">
-      <div class="ad-text">Doctors Hate This!</div>
-    </div>
-    <div class="ad-container right ad-3" onclick="window.open('popup-hell.html', '_blank')">
-      <img src="images/ad3.svg" class="ad-svg" alt="Ad 3">
-      <div class="ad-text">Make Money!</div>
-    </div>
-    <div class="ad-container right ad-4" onclick="window.open('popup-hell.html', '_blank')">
-      <img src="images/ad4.svg" class="ad-svg" alt="Ad 4">
-      <div class="ad-text">You Won't Believe!</div>
-    </div>
-
-    <header class="site-header">
-      <div class="container">
-  <h1 class="brand">ORANGE CASINO</h1>
-        <nav class="main-nav">
-          <a href="index.html">Home</a>
-          <a href="slot.html">Slots</a>
-          <a href="blackjack.html">Blackjack</a>
-          <a href="poker.html">Poker</a>
-          <a href="achievements.html">Achievements</a>
-        </nav>
-  <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+    <div class="appendix-container">
+      <div class="appendix-header">
+        <h1>APPENDIX TABLE</h1>
+        <p>Minor Surgical Procedure Suite</p>
       </div>
-    </header>
 
-    <main class="container">
-      <h2>Appendix Table</h2>
-      <p class="muted">Sell your appendix for a small payment. Wait 10 minutes on the table and receive $3. This action can be used multiple times.</p>
-      <div id="appendix-status" class="game-panel" style="padding:18px;">
-        <div id="appendix-timer" style="font-size:28px;font-weight:800">10:00</div>
-        <div style="height:12px"></div>
-        <div id="appendix-log" class="log"></div>
+      <div class="procedure-room">
+        <div class="procedure-info">
+          <h3>🫄 Appendix Removal Procedure</h3>
+          <p>You have selected appendix removal - a quick and safe outpatient procedure. Please remain comfortable on the procedure table for 10 minutes. This minimally invasive procedure can be repeated as needed.</p>
+        </div>
+
+        <div class="payment-highlight">
+          <h4>💰 Procedure Compensation</h4>
+          <div class="amount">$3.00</div>
+          <p style="margin: 0.5rem 0 0 0; color: #666;">Payment upon completion</p>
+        </div>
+
+        <div class="procedure-benefits">
+          <h4>✨ Procedure Benefits</h4>
+          <ul class="benefits-list">
+            <li>🚀 Quick 10-minute procedure</li>
+            <li>🔄 Can be repeated multiple times</li>
+            <li>💊 Minimal recovery time</li>
+            <li>🏥 Outpatient procedure</li>
+          </ul>
+        </div>
+
+        <div class="appendix-monitor">
+          <div class="timer-display" id="appendix-timer">10:00</div>
+          
+          <div class="procedure-stats">
+            <div class="procedure-stat">
+              <div class="label">HEART RATE</div>
+              <div class="value">68 BPM</div>
+            </div>
+            <div class="procedure-stat">
+              <div class="label">COMFORT LEVEL</div>
+              <div class="value">GOOD</div>
+            </div>
+            <div class="procedure-stat">
+              <div class="label">PROCEDURE</div>
+              <div class="value">ACTIVE</div>
+            </div>
+            <div class="procedure-stat">
+              <div class="label">ESTIMATED TIME</div>
+              <div class="value">10 MIN</div>
+            </div>
+          </div>
+
+          <div class="procedure-log" id="appendix-log"></div>
+        </div>
+
+        <div class="nav-back">
+          <a href="index.html">🏠 Return to Casino</a>
+        </div>
       </div>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container">Made with ❤️ — demo only. No real money.</div>
-    </footer>
+    </div>
 
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>

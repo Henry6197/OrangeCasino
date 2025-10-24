@@ -1399,3 +1399,92 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 
 @media (max-width:880px){ .ad-root{display:none} }
 
+/* Secret Underground Casino Section */
+.secret-section {
+  margin-top: 30px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 2px solid #ff4444;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 0 30px rgba(255, 68, 68, 0.2);
+  text-align: center;
+}
+
+.secret-section .section-title {
+  color: #ff4444;
+  text-shadow: 0 0 10px #ff4444;
+  margin-bottom: 20px;
+}
+
+.secret-panel {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.secret-panel p {
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+#secret-code {
+  background: #1a1a1a;
+  border: 2px solid #ff4444;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 0 10px;
+  font-size: 1.1em;
+  text-align: center;
+  width: 200px;
+}
+
+#secret-code:focus {
+  outline: none;
+  border-color: #ff6666;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
+.secret-btn {
+  background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+  border: 2px solid #ff6666;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.secret-btn:hover {
+  background: linear-gradient(135deg, #ff6666 0%, #ff0000 100%);
+  box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Global Blood Debt Timer Animation */
+@keyframes dangerPulse {
+  0%, 100% { 
+    border-color: #ff0000; 
+    background: rgba(255, 0, 0, 0.9);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  }
+  50% { 
+    border-color: #ff6666; 
+    background: rgba(255, 0, 0, 0.7);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+  }
+}
+
+/* Todd scrolling smooth transitions */
+#buddy {
+  transition: transform 0.3s ease-out;
+}
+
+/* Fix background attachment for all pages */
+html, body {
+  background-attachment: fixed !important;
+}
+
