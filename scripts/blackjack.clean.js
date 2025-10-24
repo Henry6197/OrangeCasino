@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     function hit(){ 
       if(!roundActive) return; 
+      
       player.push(deck.pop()); 
       showCards(playerEl, player); 
       updateScores(true); 
@@ -77,6 +78,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     function stand(){ 
       if(!roundActive) return; 
+      
       appendLog('Player stands.'); 
       
       // Disable buttons during dealer actions
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       
       setTimeout(() => {
         appendLog('Dealer reveals hole card...');
+        
         revealDealer(); 
         updateScores(); 
         

@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
           payout += jackpotAmount;
           balance += jackpotAmount;
           vc.writeBalance(balance);
+          
           appendLog(`🎉 JACKPOT WINNER! 🎉 You won $${jackpotAmount}!`);
           vc.confetti(100);
           vc.showBigMessage(`JACKPOT! $${jackpotAmount.toLocaleString()}!`, 3000);

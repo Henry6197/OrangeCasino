@@ -48,6 +48,29 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 .muted{color:var(--muted)}
 .log{height:140px;overflow:auto;padding:8px;background:rgba(255,255,255,0.02);border-radius:8px}
 
+/* Enhanced button hover effects with sound hints */
+.btn:hover,
+.control-btn:hover,
+.scratch-ticket:hover {
+  position: relative;
+}
+
+.btn:hover::after,
+.control-btn:hover::after {
+  content: '🔊';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.7em;
+  opacity: 0.7;
+  animation: fadeInOut 1s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
 /* Responsive */
 @media (max-width:880px){.game-cards{flex-direction:column}.balance{display:none}.game-stage{flex-direction:column}}
 
