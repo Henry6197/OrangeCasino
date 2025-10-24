@@ -16,7 +16,7 @@ Orange Casino is a fully-featured casino demo built with vanilla HTML, CSS, and 
 - **🏆 Achievement System** - Track milestones and earn bonus rewards
 - **💰 Financial Management** - Balance tracking, debt system, and "emergency" cash options
 - **📹 Video Tutorial** - Comprehensive guide covering all games (6 chapters, 30 seconds each)
-- **🎯 Todd the Casino Host** - Interactive character providing tips and encouragement
+- **🎯 Donny Boy the Casino Host** - Interactive character providing tips and encouragement
 
 ### Additional Content
 - **⛏️ Coal Mine Mini-Game** - Alternative earning mechanism
@@ -88,7 +88,7 @@ OrangeCasino/
 │   ├── poker.clean.js  # Poker game mechanics
 │   ├── achievements.js # Achievement system
 │   ├── surgery.js      # Medical services logic
-│   └── todd-dialogue.js # Interactive host character
+│   └── todd-dialogue.js # Interactive host character (Donny Boy)
 └── images/             # Game assets and graphics
 ```
 

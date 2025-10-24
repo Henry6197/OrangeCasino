@@ -90,7 +90,7 @@
         updateBalance();
         updateDebt();
         
-        setBuddyText(window.TODD_DIALOGUE?.loan?.autoPaidOff || `Auto-paid off $${debt} debt! You still have $${newBalance} left.`);
+        setBuddyText(window.DONNY_RAMBLE?.getRamble() || generateRandomRamble());
         
         // Show a celebration message
         if(typeof vc.confetti === 'function') vc.confetti(30);
@@ -119,19 +119,19 @@
     debt += 150; 
     writeBalance(balance); 
     writeDebt(debt); 
-    setBuddyText(window.TODD_DIALOGUE?.loan?.granted || 'Loan granted — spend wisely.'); 
+    setBuddyText(window.DONNY_RAMBLE?.getRamble() || 'Uhh, tremendous loan, really tremendous.'); 
   }
 
   function paybackLoan(){ 
     let balance = readBalance(); 
     let debt = readDebt(); 
     if(debt <= 0){ 
-      setBuddyText(window.TODD_DIALOGUE?.loan?.noDebt || 'No debt to pay.'); 
+      setBuddyText(window.DONNY_RAMBLE?.getRamble() || 'Uhh, no debt, amazing.'); 
       return; 
     } 
     const pay = Math.min(balance, debt); 
     if(pay <= 0){ 
-      setBuddyText(window.TODD_DIALOGUE?.loan?.insufficientFunds || 'Not enough balance to pay debt.'); 
+      setBuddyText(window.DONNY_RAMBLE?.getRamble() || 'Uhh, not enough money, believe me.'); 
       return; 
     } 
     balance -= pay; 
@@ -144,7 +144,7 @@
       stopGlobalBloodDebtTimer();
       setBuddyText('Smart move! Debt paid in full. You avoided the surgery table.');
     } else {
-      setBuddyText(window.TODD_DIALOGUE?.loan?.thanksPaid || 'Thanks! Debt lowered.'); 
+      setBuddyText(window.DONNY_RAMBLE?.getRamble() || 'Tremendous payment, really tremendous.'); 
     }
   }
 
@@ -327,21 +327,21 @@
     document.body.style.animation = '';
   }
 
-  // Todd scrolling functionality
-  function initToddScrolling() {
+  // Donny Boy scrolling functionality
+  function initDonnyBoyScrolling() {
     const buddy = document.getElementById('buddy');
     if (!buddy) return;
     
     let ticking = false;
     
-    function updateToddPosition() {
+    function updateDonnyBoyPosition() {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       
-      // Calculate Todd's position based on scroll percentage
+      // Calculate Donny Boy's position based on scroll percentage
       const scrollPercent = scrollY / (documentHeight - windowHeight);
-      const maxMovement = 50; // Maximum pixels Todd can move
+      const maxMovement = 50; // Maximum pixels Donny Boy can move
       const movement = Math.sin(scrollPercent * Math.PI * 2) * maxMovement;
       
       buddy.style.transform = `translateY(${movement}px)`;
@@ -350,14 +350,14 @@
       ticking = false;
     }
     
-    function requestToddUpdate() {
+    function requestDonnyBoyUpdate() {
       if (!ticking) {
-        requestAnimationFrame(updateToddPosition);
+        requestAnimationFrame(updateDonnyBoyPosition);
         ticking = true;
       }
     }
     
-    window.addEventListener('scroll', requestToddUpdate);
+    window.addEventListener('scroll', requestDonnyBoyUpdate);
   }
   
   // Fix background color changes on scroll
@@ -366,7 +366,53 @@
     document.body.style.backgroundAttachment = 'fixed';
   }
 
-  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects };
+  // Bonus code functionality
+  function applyBonusCode() {
+    const codeInput = document.getElementById('bonus-code');
+    const messageDiv = document.getElementById('code-message');
+    
+    if (!codeInput || !messageDiv) return;
+    
+    const enteredCode = codeInput.value.trim();
+    const correctCode = 'adesxuhabb';
+    
+    if (enteredCode === correctCode) {
+      // Add 10 million dollars to balance
+      const currentBalance = readBalance();
+      writeBalance(currentBalance + 10000000);
+      
+      // Show success message
+      messageDiv.textContent = '🎉 Bonus applied! +$10,000,000 added to your balance!';
+      messageDiv.style.color = '#4CAF50';
+      
+      // Clear the input
+      codeInput.value = '';
+      
+      // Show confetti effect if available
+      if (typeof confetti === 'function') {
+        confetti();
+      }
+      
+      // Clear message after 5 seconds
+      setTimeout(() => {
+        messageDiv.textContent = '';
+      }, 5000);
+      
+    } else if (enteredCode === '') {
+      messageDiv.textContent = 'Please enter a bonus code.';
+      messageDiv.style.color = '#ff6b35';
+    } else {
+      messageDiv.textContent = 'Invalid bonus code. Try again!';
+      messageDiv.style.color = '#ff6b35';
+      
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        messageDiv.textContent = '';
+      }, 3000);
+    }
+  }
+
+  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, applyBonusCode };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
     vc.updateDebt(); 
@@ -377,8 +423,8 @@
     // Apply any existing organ effects globally on every page
     applyGlobalOrganEffects();
     
-    // Initialize Todd scrolling and background fix
-    initToddScrolling();
+    // Initialize Donny Boy scrolling and background fix
+    initDonnyBoyScrolling();
     fixBackgroundScroll();
     
     // Check for active blood debt timer

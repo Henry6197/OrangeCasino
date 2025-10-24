@@ -72,6 +72,12 @@
                 <button class="btn payback-btn" onclick="vc.paybackLoan()">Pay Back</button>
               </div>
             </div>
+            <div class="financial-panel emergency-panel">
+              <h4>� Emergency Surgery</h4>
+              <p>Sell your kidney for quick cash!</p>
+              <div class="surgery-warning">⚠️ 30-second procedure</div>
+              <a class="btn surgery-btn" href="surgery.html">💰 Earn $5,000</a>
+            </div>
           </div>
         </div>
 
@@ -81,6 +87,19 @@
           <div class="help-panel">
             <p>New to the casino? Check out our help guide to get started!</p>
             <a class="btn help-btn" href="help.html">📖 Help Guide</a>
+          </div>
+        </div>
+
+        <!-- Bonus Code Section -->
+        <div class="bonus-section">
+          <h3 class="section-title">� Bonus Codes</h3>
+          <div class="bonus-panel">
+            <p>Have a special bonus code? Enter it below to unlock rewards!</p>
+            <div class="code-input-group">
+              <input type="text" id="bonus-code" placeholder="Enter bonus code..." maxlength="20">
+              <button class="btn code-btn" onclick="vc.applyBonusCode()">Apply Code</button>
+            </div>
+            <div class="code-message" id="code-message"></div>
           </div>
         </div>
       </section>
@@ -102,7 +121,7 @@
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />
       <div>
-        <div class="name">Todd</div>
+        <div class="name">Donny Boy</div>
         <div class="text" id="buddy-text">Welcome back!</div>
       </div>
     </div>

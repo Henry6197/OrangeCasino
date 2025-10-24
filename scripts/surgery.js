@@ -23,26 +23,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
         uses += 1; localStorage.setItem('vc_surgery_uses', String(uses));
         localStorage.removeItem(usedKey); // allow another surgery
         append('Code accepted — you may now undergo surgery again.');
-        timerEl.textContent = '02:00';
+        timerEl.textContent = '00:30';
         // start new timer
-        const newTarget = Date.now() + 2*60*1000;
+        const newTarget = Date.now() + 30*1000;
         localStorage.setItem(TIMER_KEY, String(newTarget));
         location.reload();
       } else if(val === 'money'){
         // instant completion for testing
         append('Testing code activated — surgery instantly completed!');
         timerEl.textContent = '00:00';
-        // pay user 30,000 instantly
-        const balance = vc.readBalance(); vc.writeBalance(balance + 30000);
+        // pay user 5,000 instantly
+        const balance = vc.readBalance(); vc.writeBalance(balance + 5000);
         localStorage.setItem(usedKey, '1');
         localStorage.removeItem(TIMER_KEY);
         
         // Mark achievement for selling kidney
         try{ if(window.vc && typeof window.vc.markSurgeryUsed === 'function') window.vc.markSurgeryUsed(); }catch(e){}
         
-        append('Surgery complete. You received $30,000.');
-        vc.setBuddyText('Testing mode: Surgery completed instantly!');
-        vc.showBigMessage('Surgery complete! $30,000', 2000);
+        append('Surgery complete. You received $5,000.');
+        vc.setBuddyText(window.generateRandomRamble ? window.generateRandomRamble() : 'Uhh, tremendous surgery, really tremendous.');
+        vc.showBigMessage('Surgery complete! $5,000', 2000);
         // clear any active intervals and unlock navigation
         setTimeout(() => { unlockNavigation(); }, 100);
       } else { append('Invalid code.'); }
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // intercept main nav links
     const links = document.querySelectorAll('.main-nav a');
     links.forEach(a=>{
-      const h = (ev)=>{ ev.preventDefault(); append('You cannot leave during surgery.'); vc.setBuddyText('Wait until surgery finishes.'); };
+      const h = (ev)=>{ ev.preventDefault(); append('You cannot leave during surgery.'); vc.setBuddyText(window.generateRandomRamble ? window.generateRandomRamble() : 'Uhh, wait for surgery, believe me.'); };
       a.addEventListener('click', h);
       navHandlers.push({el:a, handler:h});
     });
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // If timer previously set, check completion
   const finishAt = Number(localStorage.getItem(TIMER_KEY) || 0);
   const start = Date.now();
-  let target = finishAt && finishAt > start ? finishAt : (Date.now() + 2*60*1000);
+  let target = finishAt && finishAt > start ? finishAt : (Date.now() + 30*1000);
   localStorage.setItem(TIMER_KEY, String(target));
 
   append('Lying down... surgery started. Please wait.');
@@ -88,17 +88,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(remain <= 0){
       clearInterval(iv);
       timerEl.textContent = '00:00';
-      // pay user 30,000 once
-      const balance = vc.readBalance(); vc.writeBalance(balance + 30000);
+      // pay user 5,000 once
+      const balance = vc.readBalance(); vc.writeBalance(balance + 5000);
       localStorage.setItem(usedKey, '1');
       localStorage.removeItem(TIMER_KEY);
       
       // Mark achievement for selling kidney
       try{ if(window.vc && typeof window.vc.markSurgeryUsed === 'function') window.vc.markSurgeryUsed(); }catch(e){}
       
-      append('Surgery complete. You received $30,000.');
-      vc.setBuddyText('You made $30,000. Take care of yourself.');
-      vc.showBigMessage('Surgery complete! $30,000', 2000);
+      append('Surgery complete. You received $5,000.');
+      vc.setBuddyText(window.generateRandomRamble ? window.generateRandomRamble() : 'Tremendous money, really tremendous.');
+      vc.showBigMessage('Surgery complete! $5,000', 2000);
       // unlock navigation now surgery is done
       unlockNavigation();
     }

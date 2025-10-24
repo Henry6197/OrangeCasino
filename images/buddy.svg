@@ -9,37 +9,36 @@
   <!-- Shirt -->
   <ellipse cx="100" cy="135" rx="35" ry="35" fill="url(#shirtGradient)"/>
   
-  <!-- Tie -->
-  <polygon points="100,120 95,130 100,160 105,130" fill="url(#tieGradient)"/>
+  <!-- Tie (Trump's signature red tie) -->
+  <polygon points="100,120 95,130 100,160 105,130" fill="url(#trumpTieGradient)"/>
   <circle cx="100" cy="125" r="3" fill="#ffd700"/>
+  <rect x="98" y="135" width="4" height="8" fill="#b71c1c"/>
   
   <!-- Head -->
-  <circle cx="100" cy="80" r="40" fill="url(#faceGradient)"/>
+  <circle cx="100" cy="80" r="40" fill="url(#trumpFaceGradient)"/>
   
-  <!-- Hair (slicked back) -->
-  <path d="M 65 60 Q 100 45 135 60 Q 120 55 100 55 Q 80 55 65 60" fill="url(#hairGradient)"/>
+  <!-- Trump's distinctive hair -->
+  <path d="M 60 55 Q 75 35 100 38 Q 125 35 140 55 Q 135 45 125 50 Q 110 40 100 42 Q 90 40 75 50 Q 65 45 60 55" fill="url(#trumpHairGradient)"/>
+  <path d="M 95 40 Q 105 35 115 42 Q 110 38 105 40 Q 100 38 95 40" fill="url(#trumpHairGradient)"/>
   
-  <!-- Sunglasses (aviator style) -->
-  <g id="aviators">
-    <!-- Left lens -->
-    <ellipse cx="85" cy="75" rx="15" ry="12" fill="url(#aviatorLens)" stroke="#gold" stroke-width="2"/>
-    <!-- Right lens -->
-    <ellipse cx="115" cy="75" rx="15" ry="12" fill="url(#aviatorLens)" stroke="#gold" stroke-width="2"/>
-    <!-- Bridge -->
-    <path d="M 100 70 Q 100 68 100 66" stroke="#gold" stroke-width="2" fill="none"/>
-    <!-- Left temple -->
-    <line x1="70" y1="75" x2="55" y2="78" stroke="#gold" stroke-width="2"/>
-    <!-- Right temple -->
-    <line x1="130" y1="75" x2="145" y2="78" stroke="#gold" stroke-width="2"/>
-    <!-- Nose bridge detail -->
-    <circle cx="100" cy="70" r="2" fill="#gold"/>
-  </g>
+  <!-- Trump's Eyes -->
+  <ellipse cx="90" cy="75" rx="8" ry="6" fill="#fff"/>
+  <ellipse cx="110" cy="75" rx="8" ry="6" fill="#fff"/>
+  <circle cx="90" cy="75" r="4" fill="#4a90e2"/>
+  <circle cx="110" cy="75" r="4" fill="#4a90e2"/>
+  <circle cx="91" cy="74" r="2" fill="#000"/>
+  <circle cx="111" cy="74" r="2" fill="#000"/>
   
-  <!-- Confident smile -->
-  <path d="M 85 90 Q 100 100 115 90" stroke="#2d3748" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyebrows -->
+  <path d="M 80 68 Q 90 65 98 68" stroke="#d2691e" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 102 68 Q 110 65 120 68" stroke="#d2691e" stroke-width="3" fill="none" stroke-linecap="round"/>
   
-  <!-- Mustache (classy) -->
-  <ellipse cx="100" cy="87" rx="8" ry="2" fill="#4a5568"/>
+  <!-- Trump's distinctive smile/mouth -->
+  <ellipse cx="100" cy="92" rx="12" ry="4" fill="#d4584a"/>
+  <path d="M 90 90 Q 100 95 110 90" stroke="#b8321f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Nose -->
+  <ellipse cx="100" cy="82" rx="4" ry="6" fill="url(#noseGradient)"/>
   
   <!-- Arms in confident pose -->
   <ellipse cx="55" cy="125" rx="15" ry="30" fill="url(#suitGradient)" transform="rotate(-25 55 125)"/>
@@ -65,9 +64,9 @@
   <rect x="98" y="117" width="4" height="6" fill="#c23616"/>
   
   <!-- Name badge (VIP style) -->
-  <rect x="75" y="170" width="50" height="20" rx="5" fill="url(#badgeGradient)" stroke="#ffd700" stroke-width="2"/>
+  <rect x="70" y="170" width="60" height="20" rx="5" fill="url(#badgeGradient)" stroke="#ffd700" stroke-width="2"/>
   <text x="100" y="177" font-family="Arial" font-size="8" fill="#fff" text-anchor="middle" font-weight="bold">CASINO HOST</text>
-  <text x="100" y="186" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">TODD</text>
+    <text x="100" y="186" font-family="Arial" font-size="10" fill="#ffd700" text-anchor="middle" font-weight="bold">DONNY BOY</text>
   
   <!-- Floating casino elements -->
   <g id="floatingElements">
@@ -133,9 +132,10 @@
       <stop offset="100%" stop-color="#f39c12"/>
     </linearGradient>
     
-    <linearGradient id="faceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffeaa7"/>
-      <stop offset="100%" stop-color="#fdcb6e"/>
+    <linearGradient id="trumpFaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="50%" stop-color="#ff8c42"/>
+      <stop offset="100%" stop-color="#ff7518"/>
     </linearGradient>
     
     <linearGradient id="suitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -148,14 +148,21 @@
       <stop offset="100%" stop-color="#f8f9fa"/>
     </linearGradient>
     
-    <linearGradient id="tieGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#e17055"/>
-      <stop offset="100%" stop-color="#d63031"/>
+    <linearGradient id="trumpTieGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f44336"/>
+      <stop offset="50%" stop-color="#d32f2f"/>
+      <stop offset="100%" stop-color="#b71c1c"/>
     </linearGradient>
     
-    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2d3436"/>
-      <stop offset="100%" stop-color="#636e72"/>
+    <linearGradient id="trumpHairGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffb347"/>
+      <stop offset="100%" stop-color="#d2691e"/>
+    </linearGradient>
+    
+    <linearGradient id="noseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="100%" stop-color="#ff8c42"/>
     </linearGradient>
     
     <linearGradient id="handGradient" x1="0%" y1="0%" x2="0%" y2="100%">
