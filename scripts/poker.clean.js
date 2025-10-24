@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const callBtn = document.getElementById('call-btn');
   const raiseBtn = document.getElementById('raise-btn');
   const checkBtn = document.getElementById('check-btn');
+  const betBtn = document.getElementById('bet-btn');
   
   const log = document.getElementById('poker-log');
   const dealerEl = document.getElementById('dealer-hand');
@@ -165,13 +166,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const canAct = gameState.gameActive && gameState.phase !== 'showdown';
     foldBtn.disabled = !canAct;
     
+    // If dealer has bet more than player, show call button
     if(gameState.dealerBet > gameState.playerBet) {
       callBtn.disabled = !canAct;
       callBtn.textContent = `Call $${gameState.dealerBet - gameState.playerBet}`;
       checkBtn.disabled = true;
-    } else {
+      betBtn.disabled = true;
+    } else if(gameState.dealerBet === 0 && gameState.playerBet === 0) {
+      // No one has bet yet - player can check or bet
       callBtn.disabled = true;
       checkBtn.disabled = !canAct;
+      betBtn.disabled = !canAct;
+    } else {
+      // Bets are equal - player can check or raise
+      callBtn.disabled = true;
+      checkBtn.disabled = !canAct;
+      betBtn.disabled = true;
     }
     
     raiseBtn.disabled = !canAct;
@@ -238,15 +248,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
     );
     
     gameState.phase = 'flop';
-    gameState.dealerBet = gameState.playerBet; // Reset betting
-    gameStatusEl.textContent = "Flop: Community cards revealed";
-    appendLog("Flop dealt");
+    gameState.dealerBet = 0; // Reset betting for new round
+    gameState.playerBet = 0;
+    gameStatusEl.textContent = "Flop: Make your move";
+    appendLog("Flop dealt - betting round begins");
     
     updateUI();
     updateButtons();
     
-    // Dealer AI decision
-    setTimeout(dealerAction, 1000);
+    // Player gets to act first in flop
   }
 
   function dealTurn() {
@@ -256,14 +266,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
     gameState.communityCards.push(gameState.deck.pop());
     
     gameState.phase = 'turn';
-    gameState.dealerBet = gameState.playerBet;
-    gameStatusEl.textContent = "Turn: Fourth community card";
-    appendLog("Turn card dealt");
+    gameState.dealerBet = 0; // Reset betting for new round
+    gameState.playerBet = 0;
+    gameStatusEl.textContent = "Turn: Make your move";
+    appendLog("Turn card dealt - betting round begins");
     
     updateUI();
     updateButtons();
     
-    setTimeout(dealerAction, 1000);
+    // Player gets to act first in turn
   }
 
   function dealRiver() {
@@ -273,14 +284,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
     gameState.communityCards.push(gameState.deck.pop());
     
     gameState.phase = 'river';
-    gameState.dealerBet = gameState.playerBet;
-    gameStatusEl.textContent = "River: Final community card";
-    appendLog("River card dealt");
+    gameState.dealerBet = 0; // Reset betting for new round
+    gameState.playerBet = 0;
+    gameStatusEl.textContent = "River: Make your final move";
+    appendLog("River card dealt - final betting round begins");
     
     updateUI();
     updateButtons();
     
-    setTimeout(dealerAction, 1000);
+    // Player gets to act first in river
   }
 
   function showdown() {
@@ -362,7 +374,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     
     appendLog(`You called $${callAmount}`);
     
-    // Move to next phase
+    // Move to next phase since calling means bets are now equal
     nextPhase();
   }
 
@@ -370,7 +382,36 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(!gameState.gameActive) return;
     
     appendLog("You checked");
-    nextPhase();
+    
+    // Trigger dealer action after player checks
+    setTimeout(dealerAction, 1000);
+  }
+
+  function bet() {
+    if(!gameState.gameActive) return;
+    
+    const betAmount = Number(betInput.value || 10);
+    let balance = vc.readBalance();
+    
+    if(betAmount <= 0) {
+      appendLog('Invalid bet amount.');
+      return;
+    }
+    
+    if(betAmount > balance) {
+      appendLog('Insufficient funds for that bet.');
+      return;
+    }
+    
+    balance -= betAmount;
+    vc.writeBalance(balance);
+    gameState.playerBet = betAmount;
+    gameState.pot += betAmount;
+    
+    appendLog(`You bet $${betAmount}`);
+    
+    // Trigger dealer action after player bets
+    setTimeout(dealerAction, 1000);
   }
 
   function raise() {
@@ -402,6 +443,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     updateUI();
     updateButtons();
     
+    // Check if betting round is complete (both players have acted and bets are equal)
+    if(gameState.dealerBet !== gameState.playerBet) {
+      // Betting not complete, wait for more action
+      return;
+    }
+    
     if(gameState.phase === 'preflop') {
       setTimeout(() => dealFlop(), 1000);
     } else if(gameState.phase === 'flop') {
@@ -427,18 +474,30 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(handStrength > 0.6 || (handStrength > 0.3 && random < 0.3)) {
       // Dealer raises
       const raiseAmount = gameState.playerBet + 10 + Math.floor(Math.random() * 20);
-      if(raiseAmount <= gameState.dealerChips) {
+      if(raiseAmount <= gameState.dealerChips + gameState.dealerBet) {
+        const additionalBet = raiseAmount - gameState.dealerBet;
+        gameState.dealerChips -= additionalBet;
+        gameState.pot += additionalBet;
         gameState.dealerBet = raiseAmount;
-        gameState.dealerChips -= (raiseAmount - gameState.dealerBet);
-        gameState.pot += (raiseAmount - gameState.dealerBet);
         appendLog(`Dealer raises to $${raiseAmount}`);
+        updateUI();
         updateButtons();
         return;
       }
     }
     
-    // Dealer always checks/calls - never folds
-    appendLog("Dealer checks");
+    // Dealer checks if player checked, calls if player bet
+    if(gameState.playerBet > gameState.dealerBet) {
+      const callAmount = gameState.playerBet - gameState.dealerBet;
+      gameState.dealerChips -= callAmount;
+      gameState.pot += callAmount;
+      gameState.dealerBet = gameState.playerBet;
+      appendLog("Dealer calls");
+    } else {
+      appendLog("Dealer checks");
+    }
+    
+    // Move to next phase now that both players have acted and bets are equal
     nextPhase();
   }
 
@@ -464,6 +523,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   callBtn && callBtn.addEventListener('click', call);
   checkBtn && checkBtn.addEventListener('click', check);
   raiseBtn && raiseBtn.addEventListener('click', raise);
+  betBtn && betBtn.addEventListener('click', bet);
 
   // Initialize
   updateUI();

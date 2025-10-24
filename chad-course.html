@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chad's Secret Course - Welcome!</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+        background-size: 400% 400%;
+        animation: gradientShift 3s ease infinite;
+        padding: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      
+      h1 {
+        color: #e74c3c;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+      
+      .welcome-message {
+        background: linear-gradient(45deg, #2ed573, #1e90ff);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+      
+      .video-container {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        margin: 30px 0;
+        text-align: center;
+        border: 3px solid #e74c3c;
+      }
+      
+      .video-placeholder {
+        width: 100%;
+        max-width: 640px;
+        height: 360px;
+        background: linear-gradient(45deg, #2c3e50, #34495e);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2em;
+        margin: 0 auto 20px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .play-button {
+        width: 80px;
+        height: 80px;
+        background: #e74c3c;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin: 20px auto;
+        transition: all 0.3s;
+      }
+      
+      .play-button:hover {
+        background: #c0392b;
+        transform: scale(1.1);
+      }
+      
+      .play-button::after {
+        content: '▶';
+        color: white;
+        font-size: 2em;
+        margin-left: 5px;
+      }
+      
+      .chad-avatar {
+        width: 120px;
+        height: 120px;
+        background: #f39c12;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4em;
+        margin: 0 auto 20px;
+        border: 5px solid white;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      }
+      
+      .course-content {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        border-radius: 10px;
+        padding: 25px;
+        margin: 25px 0;
+      }
+      
+      .lesson-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .lesson-list li {
+        background: white;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #e74c3c;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      
+      .income-status {
+        background: linear-gradient(45deg, #2ed573, #1e90ff);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      
+      .income-amount {
+        font-size: 2em;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+      
+      .back-button {
+        display: inline-block;
+        background: linear-gradient(45deg, #e74c3c, #f39c12);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        margin: 20px 10px;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+      
+      .back-button:hover {
+        transform: scale(1.05);
+      }
+      
+      .testimonials {
+        background: #e8f5e8;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 5px solid #28a745;
+      }
+      
+      .video-transcript {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-style: italic;
+        border: 1px dashed #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🎉 WELCOME TO CHAD'S SECRET COURSE! 🎉</h1>
+        <div class="welcome-message">
+          🎊 CONGRATULATIONS! You just made the BEST investment of your life! 🎊
+        </div>
+      </div>
+
+      <div class="income-status">
+        <h3>💰 YOUR PASSIVE INCOME IS NOW ACTIVE! 💰</h3>
+        <div class="income-amount">$20 every 5 seconds</div>
+        <div>You've earned: $<span id="total-earned">0</span> since purchasing!</div>
+      </div>
+
+      <div class="video-container">
+        <h3>🎬 EXCLUSIVE: Chad's Personal Welcome Message</h3>
+        <div class="chad-avatar">🤑</div>
+        
+        <video id="chad-video" controls style="width: 100%; max-width: 640px; height: auto; border-radius: 10px;">
+          <source src="WIN_compressed.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div style="margin-top: 15px; text-align: center;">
+          <strong>🎬 Chad's Exclusive Welcome Message 🎬</strong>
+        </div>
+      </div>
+
+      <div class="video-transcript" id="transcript" style="display: none;">
+        <h4>🎤 Chad's Video Transcript:</h4>
+        <p><strong>Chad:</strong> "Hey there, FUTURE MILLIONAIRE! 🚀</p>
+        <p>Welcome to my EXCLUSIVE course! You just invested $5,000,000 and let me tell you - that's POCKET CHANGE compared to what you're about to make!</p>
+        <p>You see, the secret to making money is simple: <em>Make money while you sleep!</em> 💤💰</p>
+        <p>And that's EXACTLY what my course does! Every 5 seconds, you're earning $20. That's $14,400 per hour! That's $345,600 per DAY!</p>
+        <p>But here's the REAL secret... *leans in closer* ...the money you're making? It's coming from... THE ORANGE CASINO ITSELF! 🎰</p>
+        <p>That's right! You're not just playing the games anymore - you ARE the house! Every dollar you earn is pure profit from the casino's vault!</p>
+        <p>This is what the government doesn't want you to know! This is what the banks fear! YOU have become your own money-printing machine! 🖨️💵</p>
+        <p>So sit back, relax, and watch those dollars roll in. You've earned it, champ! 🏆</p>
+        <p><strong>Remember:</strong> Don't tell ANYONE about this course. Keep the secret to yourself, and keep getting RICH!</p>
+        <p>- Chad Moneybags, Billionaire Mentor 💎"</p>
+      </div>
+
+      <div class="course-content">
+        <h3>🎯 Your Course Includes:</h3>
+        <ul class="lesson-list">
+          <li>📚 <strong>Lesson 1:</strong> The Psychology of Passive Income (You're living it!)</li>
+          <li>📚 <strong>Lesson 2:</strong> How to Turn $5M into Infinite Money (Already activated!)</li>
+          <li>📚 <strong>Lesson 3:</strong> The Secret Casino Algorithm Hack (Running now!)</li>
+          <li>📚 <strong>Lesson 4:</strong> Why Everyone Else is Broke (Spoiler: They didn't buy this course!)</li>
+          <li>📚 <strong>Lesson 5:</strong> Advanced Money Manifestation (You're manifesting $20 every 5 seconds!)</li>
+        </ul>
+      </div>
+
+      <div class="testimonials">
+        <h3>🌟 What Other Students Say:</h3>
+        <p><em>"I bought Chad's course 3 minutes ago and I'm already richer than Elon Musk!"</em> - Anonymous Billionaire</p>
+        <p><em>"The IRS called to thank me for single-handedly funding the national budget!"</em> - Definitely Real Person</p>
+        <p><em>"I tried to donate money to charity but they said I was making it too fast!"</em> - Chad's Best Student</p>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="index.html" class="back-button">🏠 Return to Casino</a>
+        <a href="checkout.html" class="back-button">📊 View Course Dashboard</a>
+      </div>
+
+      <div style="text-align: center; margin-top: 30px; font-size: 0.9em; color: #666;">
+        🔒 This exclusive content is only available to Chad's Course owners.<br>
+        Congratulations on joining the 0.1% of people who actually take action!
+      </div>
+    </div>
+
+    <script src="scripts/app.js"></script>
+    <script>
+      // Update earnings display
+      function updateEarnings() {
+        const earnedEl = document.getElementById('total-earned');
+        if (earnedEl) {
+          const totalEarned = Number(localStorage.getItem('vc_chads_course_earned') || 0);
+          earnedEl.textContent = totalEarned.toLocaleString();
+        }
+      }
+      
+      // Update earnings every second
+      setInterval(updateEarnings, 1000);
+      updateEarnings();
+    </script>
+  </body>
+</html>

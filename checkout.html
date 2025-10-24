@@ -254,10 +254,16 @@
         </div>
         
         <div id="course-status">
-          <button id="purchase-btn" class="purchase-button" disabled>
-            💸 BUY NOW - TRANSFORM YOUR LIFE! 💸
-          </button>
+          <!-- Course status will be displayed here -->
         </div>
+        
+        <button id="purchase-btn" class="purchase-button" disabled>
+          💸 BUY NOW - TRANSFORM YOUR LIFE! 💸
+        </button>
+        
+        <button id="course-access-btn" class="purchase-button" style="display: none; background: linear-gradient(45deg, #f39c12, #e67e22); margin-top: 10px;" onclick="window.location.href='chad-course.html'">
+          🎬 WATCH YOUR COURSE HERE! 🎬
+        </button>
         
         <div id="passive-income-section" style="display: none;">
           <div class="passive-income">
@@ -282,6 +288,7 @@
         const currentBalanceEl = document.getElementById('current-balance');
         const affordStatusEl = document.getElementById('afford-status');
         const purchaseBtn = document.getElementById('purchase-btn');
+        const courseAccessBtn = document.getElementById('course-access-btn');
         const courseStatusEl = document.getElementById('course-status');
         const passiveIncomeSection = document.getElementById('passive-income-section');
         const incomeCountdownEl = document.getElementById('income-countdown');
@@ -297,25 +304,45 @@
           const balance = vc.readBalance();
           const hasCourse = localStorage.getItem(COURSE_KEY) === '1';
           const totalEarned = Number(localStorage.getItem(EARNED_KEY) || 0);
+          const multiplier = Number(localStorage.getItem('vc_course_multiplier') || 1);
+          
+          console.log('Debug - Balance:', balance, 'Course Price:', COURSE_PRICE, 'Has Course:', hasCourse);
           
           currentBalanceEl.textContent = balance.toLocaleString();
           totalEarnedEl.textContent = totalEarned.toLocaleString();
           
           if (hasCourse) {
-            courseStatusEl.innerHTML = '<div class="course-status owned">✅ YOU OWN CHAD\'S COURSE! Earning $20 every 5 seconds...</div>';
+            courseStatusEl.innerHTML = `<div class="course-status owned">✅ YOU OWN CHAD'S COURSE! Earning $${INCOME_AMOUNT * multiplier} every 5 seconds...</div>`;
             passiveIncomeSection.style.display = 'block';
+            courseAccessBtn.style.display = 'block';
             startIncomeTimer();
+            
+            // Always allow repurchase regardless of balance for testing
+            affordStatusEl.textContent = 'You can buy Chad\'s course again for even MORE passive income!';
+            affordStatusEl.className = 'sufficient-funds';
+            purchaseBtn.disabled = false;
+            purchaseBtn.textContent = '💸 BUY AGAIN - DOUBLE YOUR INCOME! 💸';
+            
+            if (balance < COURSE_PRICE) {
+              const needed = COURSE_PRICE - balance;
+              affordStatusEl.textContent = `You need $${needed.toLocaleString()} more to buy again!`;
+              affordStatusEl.className = 'insufficient-funds';
+              purchaseBtn.disabled = true;
+              purchaseBtn.textContent = '💸 INSUFFICIENT FUNDS 💸';
+            }
           } else if (balance >= COURSE_PRICE) {
             affordStatusEl.textContent = 'You can afford Chad\'s course!';
             affordStatusEl.className = 'sufficient-funds';
             purchaseBtn.disabled = false;
             purchaseBtn.textContent = '💸 BUY NOW - TRANSFORM YOUR LIFE! 💸';
+            courseAccessBtn.style.display = 'none';
           } else {
             const needed = COURSE_PRICE - balance;
             affordStatusEl.textContent = `You need $${needed.toLocaleString()} more to afford this course!`;
             affordStatusEl.className = 'insufficient-funds';
             purchaseBtn.disabled = true;
             purchaseBtn.textContent = '💸 INSUFFICIENT FUNDS 💸';
+            courseAccessBtn.style.display = 'none';
           }
         }
         
@@ -348,21 +375,24 @@
         }
         
         function givePassiveIncome() {
+          const multiplier = Number(localStorage.getItem('vc_course_multiplier') || 1);
+          const incomeAmount = INCOME_AMOUNT * multiplier;
+          
           const balance = vc.readBalance();
-          const newBalance = balance + INCOME_AMOUNT;
+          const newBalance = balance + incomeAmount;
           vc.writeBalance(newBalance);
           
-          const totalEarned = Number(localStorage.getItem(EARNED_KEY) || 0) + INCOME_AMOUNT;
+          const totalEarned = Number(localStorage.getItem(EARNED_KEY) || 0) + incomeAmount;
           localStorage.setItem(EARNED_KEY, String(totalEarned));
           localStorage.setItem(LAST_PAYMENT_KEY, String(Date.now()));
           
           // Show money notification
           if (typeof vc.showBigMessage === 'function') {
-            vc.showBigMessage(`Chad's Course: +$${INCOME_AMOUNT}!`, 1200);
+            vc.showBigMessage(`Chad's Course: +$${incomeAmount}!`, 1200);
           }
           
           if (typeof vc.setBuddyText === 'function') {
-            vc.setBuddyText(`Chad's course just earned you $${INCOME_AMOUNT}!`);
+            vc.setBuddyText(`Chad's course just earned you $${incomeAmount}! (${multiplier}x multiplier)`);
           }
           
           updateDisplay();
@@ -374,20 +404,47 @@
           if (balance >= COURSE_PRICE) {
             const newBalance = balance - COURSE_PRICE;
             vc.writeBalance(newBalance);
+            
+            // Check if they already own the course (for multiple purchases)
+            const alreadyOwned = localStorage.getItem(COURSE_KEY) === '1';
+            
             localStorage.setItem(COURSE_KEY, '1');
             localStorage.setItem(LAST_PAYMENT_KEY, String(Date.now()));
             
-            // Mark achievement
-            if (typeof vc.markCoursePurchased === 'function') {
-              vc.markCoursePurchased();
-            }
-            
-            if (typeof vc.showBigMessage === 'function') {
-              vc.showBigMessage('COURSE PURCHASED! Passive income activated!', 2500);
-            }
-            
-            if (typeof vc.setBuddyText === 'function') {
-              vc.setBuddyText('You bought Chad\'s course! Money will flow every 5 seconds!');
+            if (alreadyOwned) {
+              // Multiple purchase - increase income rate
+              const currentMultiplier = Number(localStorage.getItem('vc_course_multiplier') || 1);
+              const newMultiplier = currentMultiplier + 1;
+              localStorage.setItem('vc_course_multiplier', String(newMultiplier));
+              
+              if (typeof vc.showBigMessage === 'function') {
+                vc.showBigMessage(`COURSE UPGRADED! Now earning $${INCOME_AMOUNT * newMultiplier} every 5 seconds!`, 2500);
+              }
+              
+              if (typeof vc.setBuddyText === 'function') {
+                vc.setBuddyText(`You upgraded Chad's course! Income multiplier: ${newMultiplier}x`);
+              }
+            } else {
+              // First purchase
+              localStorage.setItem('vc_course_multiplier', '1');
+              
+              // Mark achievement
+              if (typeof vc.markCoursePurchased === 'function') {
+                vc.markCoursePurchased();
+              }
+              
+              if (typeof vc.showBigMessage === 'function') {
+                vc.showBigMessage('COURSE PURCHASED! Passive income activated!', 2500);
+              }
+              
+              if (typeof vc.setBuddyText === 'function') {
+                vc.setBuddyText('You bought Chad\'s course! Money will flow every 5 seconds!');
+              }
+              
+              // Redirect to course page after a short delay (only on first purchase)
+              setTimeout(() => {
+                window.location.href = 'chad-course.html';
+              }, 2000);
             }
             
             if (typeof vc.confetti === 'function') {
