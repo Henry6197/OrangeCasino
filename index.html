@@ -28,7 +28,57 @@
           <h2>🎰 Welcome to ORANGE CASINO 🎰</h2>
           <p class="welcome-subtitle">The hottest casino experience on the web! Pick your game and start winning big!</p>
         </div>
-
+                <div class="promo-section">
+          <h3 class="section-title">🎁 Promo Code</h3>
+          <div class="promo-panel">
+            <p>Enter a promo code to claim your bonus!</p>
+            <div class="promo-input-group">
+              <input type="text" id="promo-code-input" placeholder="Enter promo code..." class="promo-input">
+              <button class="btn promo-btn" onclick="redeemPromoCode()">Redeem</button>
+            </div>
+            <div id="promo-message" class="promo-message"></div>
+          </div>
+        </div>
+            <!-- Promo Code Script -->
+    <script>
+      function redeemPromoCode() {
+        const input = document.getElementById('promo-code-input');
+        const message = document.getElementById('promo-message');
+        const code = input.value.trim();
+        
+        if (code === 'adesxuhabb') {
+          // Add 10 million to balance
+          if (typeof vc !== 'undefined' && vc.addMoney) {
+            vc.addMoney(10000000);
+          } else {
+            // Fallback if vc object doesn't exist
+            const balanceElement = document.getElementById('balance-value');
+            const currentBalance = parseInt(balanceElement.textContent.replace(/,/g, ''));
+            const newBalance = currentBalance + 10000000;
+            balanceElement.textContent = newBalance.toLocaleString();
+          }
+          
+          message.innerHTML = '<span style="color: #4CAF50;">✅ Success! $10,000,000 added to your balance!</span>';
+          input.value = '';
+        } else if (code === '') {
+          message.innerHTML = '<span style="color: #ff6b6b;">❌ Please enter a promo code.</span>';
+        } else {
+          message.innerHTML = '<span style="color: #ff6b6b;">❌ Invalid promo code. Try again!</span>';
+        }
+        
+        // Clear message after 3 seconds
+        setTimeout(() => {
+          message.innerHTML = '';
+        }, 3000);
+      }
+      
+      // Allow Enter key to redeem code
+      document.getElementById('promo-code-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          redeemPromoCode();
+        }
+      });
+    </script>
         <!-- Main Games Section -->
         <div class="games-section">
           <h3 class="section-title">🎲 Choose Your Game</h3>
