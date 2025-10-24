@@ -1,0 +1,1040 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Help Video - ORANGE CASINO</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .video-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 50%, #ffd700 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .video-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .video-title {
+            font-size: 2.5em;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .video-subtitle {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .video-frame {
+            background: linear-gradient(45deg, #000, #1a1a1a);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            margin-bottom: 25px;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            box-shadow: inset 0 0 50px rgba(255, 107, 53, 0.1);
+        }
+
+        .scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .scene.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .scene.exiting {
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+        }
+
+        .scene h2 {
+            font-size: clamp(1.8em, 4vw, 2.8em);
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.7);
+            background: linear-gradient(45deg, #ff6b35, #ffd700, #ff6b35);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-weight: bold;
+        }
+
+        .scene p {
+            font-size: clamp(1em, 2.5vw, 1.4em);
+            line-height: 1.6;
+            max-width: 85%;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .scene-content {
+            max-width: 95%;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .game-demo {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 107, 53, 0.5);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .slot-demo {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .reel {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(45deg, #333, #555);
+            border: 4px solid #ff6b35;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            animation: spinReel 3s ease-in-out infinite;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .reel::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2), transparent);
+            border-radius: 50%;
+        }
+
+        .card-demo {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 70px;
+            height: 95px;
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            color: #000;
+            border: 3px solid #333;
+            animation: cardFlip 4s ease-in-out infinite;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            position: relative;
+            font-weight: bold;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .scratch-demo {
+            position: relative;
+            width: 250px;
+            height: 150px;
+            background: linear-gradient(45deg, #c0c0c0, #e0e0e0);
+            border-radius: 15px;
+            margin: 25px auto;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid #999;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .scratch-demo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .scratch-surface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #bbb, #ddd);
+            transition: opacity 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .scratch-surface::before {
+            content: 'CLICK TO SCRATCH';
+        }
+
+        .scratch-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #000;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(145deg, #ff6b35, #ff8c42);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            min-width: 120px;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.6);
+            background: linear-gradient(145deg, #ff8c42, #ffa500);
+        }
+
+        .control-btn:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            background: linear-gradient(145deg, #666, #888);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #ff6b35, #ffd700, #ff6b35);
+            background-size: 200% 100%;
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: progressShimmer 3s ease-in-out infinite;
+        }
+
+        .scene-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .scene-counter {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .time-remaining {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .todd-avatar {
+            width: 140px;
+            height: 140px;
+            margin: 20px auto;
+            animation: toddBounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+        }
+
+        .todd-speech {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 25px;
+            margin: 25px auto;
+            max-width: 85%;
+            position: relative;
+            font-style: italic;
+            font-size: 1.1em;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            border: 3px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .todd-speech::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .tip-highlight {
+            background: rgba(255, 215, 0, 0.25);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border-left: 6px solid #ffd700;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes spinReel {
+            0%, 100% { transform: rotateY(0deg); }
+            25% { transform: rotateY(90deg); }
+            50% { transform: rotateY(180deg); }
+            75% { transform: rotateY(270deg); }
+        }
+
+        @keyframes cardFlip {
+            0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
+            25% { transform: rotateY(90deg) rotateX(5deg); }
+            50% { transform: rotateY(180deg) rotateX(0deg); }
+            75% { transform: rotateY(270deg) rotateX(-5deg); }
+        }
+
+        @keyframes toddBounce {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        @keyframes progressShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .auto-play-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .auto-play-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auto-play-toggle label {
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auto-play-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #ff6b35;
+        }
+
+        .floating-icon {
+            position: absolute;
+            animation: floatAround 6s ease-in-out infinite;
+            font-size: 2.5em;
+            z-index: 1;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(-5deg); }
+            75% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        .achievement-demo {
+            background: linear-gradient(45deg, #ffd700, #ff6b35);
+            padding: 18px 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: #000;
+            font-weight: bold;
+            animation: achievementPulse 3s ease-in-out infinite;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes achievementPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .video-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .video-title {
+                font-size: 2em;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+                min-width: 100px;
+            }
+            
+            .scene h2 {
+                font-size: 1.8em;
+            }
+            
+            .todd-avatar {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .floating-icon {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-container {
+                padding: 15px;
+            }
+            
+            .slot-demo, .card-demo {
+                gap: 8px;
+            }
+            
+            .reel {
+                width: 70px;
+                height: 70px;
+                font-size: 2em;
+            }
+            
+            .card {
+                width: 60px;
+                height: 80px;
+                font-size: 1.2em;
+            }
+            
+            .scratch-demo {
+                width: 200px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="brand">ORANGE CASINO</h1>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="slot.html">Slots</a>
+                <a href="blackjack.html">Blackjack</a>
+                <a href="poker.html">Poker</a>
+                <a href="scratch-offs.html">Scratch-Offs</a>
+                <a href="achievements.html">Achievements</a>
+            </nav>
+            <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="video-container">
+            <div class="video-header">
+                <h1 class="video-title">🎰 Orange Casino Guide 🎰</h1>
+                <p class="video-subtitle">Your complete interactive tutorial with Todd, your casino host!</p>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="scene-info">
+                <div class="scene-counter" id="scene-counter">Scene 1 of 10</div>
+                <div class="time-remaining" id="time-remaining">Auto-advance in 5s</div>
+            </div>
+            
+            <div class="video-frame" id="video-frame">
+                <!-- Scene 1: Welcome -->
+                <div class="scene active" id="scene-1">
+                    <div class="floating-icon" style="top: 10%; left: 10%;">🎰</div>
+                    <div class="floating-icon" style="top: 20%; right: 15%;">🎲</div>
+                    <div class="floating-icon" style="bottom: 15%; left: 20%;">🃏</div>
+                    <div class="floating-icon" style="bottom: 10%; right: 10%;">💰</div>
+                    
+                    <div class="scene-content">
+                        <h2>🎰 Welcome to Orange Casino! 🎰</h2>
+                        <div class="todd-avatar">
+                            <img src="images/buddy.svg" alt="Todd" style="width: 100%; height: 100%;" />
+                        </div>
+                        <div class="todd-speech">
+                            "Hey there! I'm Todd, your personal casino host. Ready to learn how to win big at Orange Casino?"
+                        </div>
+                        <p>The hottest casino experience on the web awaits you!</p>
+                    </div>
+                </div>
+
+                <!-- Scene 2: Getting Started -->
+                <div class="scene" id="scene-2">
+                    <div class="scene-content">
+                        <h2>💰 Getting Started</h2>
+                        <div class="game-demo">
+                            <h3>Your Balance: $1000</h3>
+                            <p>This is your starting money - use it wisely!</p>
+                            <div style="background: rgba(255,0,0,0.2); padding: 10px; border-radius: 5px; margin: 10px 0;">
+                                <strong>Debt: $0</strong> (Keep an eye on this!)
+                            </div>
+                        </div>
+                        <div class="todd-speech">
+                            "Navigate using the menu at the top. Each game has its own page, and don't forget to check your achievements!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 3: Slots -->
+                <div class="scene" id="scene-3">
+                    <div class="scene-content">
+                        <h2>🎰 Slots - The Classic</h2>
+                        <div class="slot-demo">
+                            <div class="reel">🍊</div>
+                            <div class="reel">🍊</div>
+                            <div class="reel">🍊</div>
+                        </div>
+                        <div class="game-demo">
+                            <p><strong>How to Play:</strong></p>
+                            <p>• Enter your bet ($1-$100)</p>
+                            <p>• Hit spin and watch the reels</p>
+                            <p>• Match symbols to win!</p>
+                            <p>🍊🍊🍊 = JACKPOT!</p>
+                        </div>
+                        <div class="todd-speech">
+                            "Three oranges in a row? That's the big one! Start small and work your way up!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 4: Blackjack -->
+                <div class="scene" id="scene-4">
+                    <div class="scene-content">
+                        <h2>🃏 Blackjack Strategy</h2>
+                        <div class="card-demo">
+                            <div class="card">A♠</div>
+                            <div class="card">K♥</div>
+                            <div class="card">?</div>
+                        </div>
+                        <div class="game-demo">
+                            <p><strong>Goal:</strong> Get to 21 without going over</p>
+                            <p><strong>Beat the dealer's hand</strong></p>
+                            <p>• Hit = Take another card</p>
+                            <p>• Stand = Keep current total</p>
+                            <p>• Dealer hits on 16, stands on 17</p>
+                        </div>
+                        <div class="todd-speech">
+                            "This one takes skill! Learn basic strategy and you'll be beating the house in no time!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 5: Poker -->
+                <div class="scene" id="scene-5">
+                    <div class="scene-content">
+                        <h2>♠️ Texas Hold'em Poker</h2>
+                        <div class="card-demo">
+                            <div class="card">A♠</div>
+                            <div class="card">A♥</div>
+                            <div class="card">-</div>
+                            <div class="card">K♣</div>
+                            <div class="card">Q♦</div>
+                        </div>
+                        <div class="game-demo">
+                            <p><strong>Your Cards:</strong> 2 hole cards (private)</p>
+                            <p><strong>Community:</strong> 5 shared cards</p>
+                            <p>• Call = Match the bet</p>
+                            <p>• Raise = Increase the bet</p>
+                            <p>• Fold = Give up your hand</p>
+                        </div>
+                        <div class="todd-speech">
+                            "Poker is about reading the table and knowing when to hold 'em or fold 'em!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 6: Scratch-Offs -->
+                <div class="scene" id="scene-6">
+                    <div class="scene-content">
+                        <h2>🎫 Scratch-Offs</h2>
+                        <div class="scratch-demo" onclick="scratchTicket()">
+                            <div class="scratch-surface" id="scratch-surface"></div>
+                            <div class="scratch-content">WIN $100!</div>
+                        </div>
+                        <p style="font-size: 0.9em;">Click the ticket above to scratch!</p>
+                        <div class="game-demo">
+                            <p><strong>6 Ticket Types:</strong> $1 to $20</p>
+                            <p>• Buy a ticket</p>
+                            <p>• Scratch off the spots</p>
+                            <p>• Match winning patterns</p>
+                            <p>• Use "Buy Another" for auto-purchase!</p>
+                        </div>
+                        <div class="todd-speech">
+                            "Instant excitement! Each ticket type has different odds and prizes!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 7: Achievements -->
+                <div class="scene" id="scene-7">
+                    <div class="scene-content">
+                        <h2>🏆 Achievements</h2>
+                        <div class="achievement-demo">
+                            🎰 High Roller: Bet $100 in slots
+                        </div>
+                        <div class="achievement-demo">
+                            🃏 Blackjack Master: Win 10 hands
+                        </div>
+                        <div class="achievement-demo">
+                            🎫 Lucky Scratcher: Win big on scratch-offs
+                        </div>
+                        <div class="game-demo">
+                            <p>• Track your casino milestones</p>
+                            <p>• Earn bonus rewards</p>
+                            <p>• Reset anytime for a fresh start</p>
+                        </div>
+                        <div class="todd-speech">
+                            "Complete achievements to earn bonus cash and show off your skills!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 8: Financial Services -->
+                <div class="scene" id="scene-8">
+                    <div class="scene-content">
+                        <h2>💳 Financial Services</h2>
+                        <div class="game-demo">
+                            <p><strong>Quick Loans:</strong> Get $100 instantly</p>
+                            <p style="color: #ff6b35;"><strong>⚠️ Debt accumulates!</strong></p>
+                            <div style="background: rgba(255,0,0,0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <p><strong>Emergency Cash:</strong></p>
+                                <p>🏥 Sell Kidney: $5000</p>
+                                <p>🏥 Sell Appendix: $2000</p>
+                                <p style="font-size: 0.8em; font-style: italic;">(Don't worry - it's all pretend!)</p>
+                            </div>
+                        </div>
+                        <div class="todd-speech">
+                            "Running low? We've got options! But remember to pay back your loans!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 9: Tips & Strategy -->
+                <div class="scene" id="scene-9">
+                    <div class="scene-content">
+                        <h2>💡 Todd's Pro Tips</h2>
+                        <div class="tip-highlight">
+                            <strong>Tip #1:</strong> Set limits before you play
+                        </div>
+                        <div class="tip-highlight">
+                            <strong>Tip #2:</strong> Try all games for variety
+                        </div>
+                        <div class="tip-highlight">
+                            <strong>Tip #3:</strong> Chase achievements for bonuses
+                        </div>
+                        <div class="tip-highlight">
+                            <strong>Tip #4:</strong> Track your scratch-off stats
+                        </div>
+                        <div class="tip-highlight">
+                            <strong>Tip #5:</strong> Have fun - it's all about entertainment!
+                        </div>
+                        <div class="todd-speech">
+                            "Follow these tips and you'll be a casino pro in no time!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene 10: Closing -->
+                <div class="scene" id="scene-10">
+                    <div class="scene-content">
+                        <h2>🎉 Ready to Play!</h2>
+                        <div class="todd-avatar">
+                            <img src="images/buddy.svg" alt="Todd" style="width: 100%; height: 100%;" />
+                        </div>
+                        <div class="todd-speech">
+                            "That's everything you need to know! I'll be with you every step of the way with tips and encouragement!"
+                        </div>
+                        <div class="game-demo">
+                            <p style="font-size: 1.4em; font-weight: bold;">🍊 Welcome to Orange Casino! 🍊</p>
+                            <p>Where every spin could be your lucky spin!</p>
+                        </div>
+                        <p style="font-size: 1.1em; font-style: italic;">Demo money only - no real cash involved!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="prev-btn" onclick="previousScene()" disabled>⏮️ Previous</button>
+                <button class="control-btn" id="play-pause-btn" onclick="toggleAutoPlay()">⏸️ Pause</button>
+                <button class="control-btn" id="next-btn" onclick="nextScene()">Next ⏭️</button>
+            </div>
+            
+            <div class="auto-play-controls">
+                <div class="auto-play-toggle">
+                    <label>
+                        <input type="checkbox" id="auto-play" checked onchange="updateAutoPlay()">
+                        Auto-play (5 seconds per scene)
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">Made with ❤️ — demo only. No real money.</div>
+    </footer>
+
+    <script>
+        let currentScene = 1;
+        const totalScenes = 10;
+        let autoPlayInterval;
+        let isAutoPlaying = true;
+        let timeRemaining = 5;
+        let countdownInterval;
+
+        function updateProgress() {
+            const progressPercent = (currentScene / totalScenes) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            document.getElementById('scene-counter').textContent = `Scene ${currentScene} of ${totalScenes}`;
+        }
+
+        function updateTimeDisplay() {
+            const timeDisplay = document.getElementById('time-remaining');
+            if (isAutoPlaying && currentScene < totalScenes) {
+                timeDisplay.textContent = `Auto-advance in ${timeRemaining}s`;
+                timeDisplay.style.opacity = '1';
+            } else if (currentScene >= totalScenes) {
+                timeDisplay.textContent = 'Tutorial Complete!';
+                timeDisplay.style.opacity = '0.7';
+            } else {
+                timeDisplay.textContent = 'Paused';
+                timeDisplay.style.opacity = '0.7';
+            }
+        }
+
+        function startCountdown() {
+            timeRemaining = 5;
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            countdownInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimeDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+        function stopCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+
+        function showScene(sceneNumber) {
+            // Hide all scenes
+            for (let i = 1; i <= totalScenes; i++) {
+                const scene = document.getElementById(`scene-${i}`);
+                if (scene) {
+                    scene.classList.remove('active', 'exiting');
+                    if (i < sceneNumber) {
+                        scene.classList.add('exiting');
+                    }
+                }
+            }
+
+            // Show current scene with delay for smooth transition
+            const activeScene = document.getElementById(`scene-${sceneNumber}`);
+            if (activeScene) {
+                setTimeout(() => {
+                    activeScene.classList.add('active');
+                }, 150);
+            }
+
+            currentScene = sceneNumber;
+            updateProgress();
+            updateControls();
+            updateTimeDisplay();
+            
+            // Restart countdown if auto-playing
+            if (isAutoPlaying && currentScene < totalScenes) {
+                startCountdown();
+            } else {
+                stopCountdown();
+            }
+        }
+
+        function nextScene() {
+            if (currentScene < totalScenes) {
+                showScene(currentScene + 1);
+            } else {
+                stopAutoPlay();
+            }
+        }
+
+        function previousScene() {
+            if (currentScene > 1) {
+                showScene(currentScene - 1);
+            }
+        }
+
+        function updateControls() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentScene === 1;
+            nextBtn.disabled = currentScene === totalScenes;
+            
+            if (currentScene === totalScenes) {
+                nextBtn.textContent = '🏁 Finished';
+            } else {
+                nextBtn.textContent = 'Next ⏭️';
+            }
+        }
+
+        function startAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+            
+            autoPlayInterval = setInterval(() => {
+                if (currentScene < totalScenes) {
+                    nextScene();
+                } else {
+                    stopAutoPlay();
+                }
+            }, 5000);
+            
+            startCountdown();
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            stopCountdown();
+            isAutoPlaying = false;
+            document.getElementById('play-pause-btn').innerHTML = '▶️ Play';
+            document.getElementById('auto-play').checked = false;
+            updateTimeDisplay();
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                if (currentScene < totalScenes) {
+                    isAutoPlaying = true;
+                    document.getElementById('play-pause-btn').innerHTML = '⏸️ Pause';
+                    document.getElementById('auto-play').checked = true;
+                    startAutoPlay();
+                }
+            }
+        }
+
+        function updateAutoPlay() {
+            const checkbox = document.getElementById('auto-play');
+            if (checkbox.checked && !isAutoPlaying && currentScene < totalScenes) {
+                isAutoPlaying = true;
+                document.getElementById('play-pause-btn').innerHTML = '⏸️ Pause';
+                startAutoPlay();
+            } else if (!checkbox.checked && isAutoPlaying) {
+                stopAutoPlay();
+            }
+        }
+
+        function scratchTicket() {
+            const surface = document.getElementById('scratch-surface');
+            if (surface) {
+                surface.style.opacity = '0';
+                surface.innerHTML = '';
+                setTimeout(() => {
+                    surface.style.opacity = '1';
+                    surface.innerHTML = '<span style="font-size: 0.9em;">CLICK TO SCRATCH</span>';
+                }, 3000);
+            }
+        }
+
+        // Keyboard navigation with enhanced features
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowRight':
+                case ' ':
+                    event.preventDefault();
+                    nextScene();
+                    break;
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    previousScene();
+                    break;
+                case 'Escape':
+                case 'p':
+                case 'P':
+                    event.preventDefault();
+                    toggleAutoPlay();
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    showScene(1);
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    showScene(totalScenes);
+                    break;
+            }
+        });
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateControls();
+            updateTimeDisplay();
+            startAutoPlay();
+            
+            // Add keyboard shortcut info
+            console.log('🎮 Keyboard shortcuts:');
+            console.log('  → or Space: Next scene');
+            console.log('  ←: Previous scene');
+            console.log('  P or Escape: Play/Pause');
+            console.log('  Home: First scene');
+            console.log('  End: Last scene');
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            stopAutoPlay();
+            stopCountdown();
+        });
+    </script>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+</html>

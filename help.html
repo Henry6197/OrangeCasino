@@ -33,6 +33,7 @@
           <a href="slot.html">Slots</a>
           <a href="blackjack.html">Blackjack</a>
           <a href="poker.html">Poker</a>
+          <a href="scratch-offs.html">Scratch-Offs</a>
           <a href="achievements.html">Achievements</a>
         </nav>
   <div class="balance" id="balance">Balance: $<span id="balance-value">1000</span><span class="debt">Debt: $<span id="debt-value">0</span></span></div>
@@ -40,14 +41,131 @@
     </header>
 
     <main class="container">
-      <h2>Help Video</h2>
-      <div class="game-panel" style="padding:18px;">
-        <video id="help-video" controls style="width:100%;max-width:800px;">
-          <source src="IMG_0438.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+      <h2>Help Guide</h2>
+      <div class="game-panel" style="padding:18px; text-align: center;">
+        <p style="font-size: 1.2em; margin-bottom: 20px;">
+          Welcome to Orange Casino! Choose how you'd like to learn:
+        </p>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+          <a href="help-video.html" class="btn" style="background: linear-gradient(45deg, #ff6b35, #ff8c42); color: white; text-decoration: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1em; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3); transition: all 0.3s ease;">
+            🎬 Interactive Help Video
+          </a>
+          <a href="#quick-guide" class="btn" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; text-decoration: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1em; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); transition: all 0.3s ease;" onclick="document.getElementById('quick-guide').scrollIntoView({behavior: 'smooth'});">
+            📖 Quick Reference Guide
+          </a>
+        </div>
+      </div>
+
+      <div id="quick-guide" class="game-panel" style="margin-top: 30px; padding: 20px;">
+        <h3>🎯 Quick Reference Guide</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+          
+          <div class="help-card">
+            <h4>🎰 Slots</h4>
+            <ul style="text-align: left;">
+              <li>Bet $1-$100 per spin</li>
+              <li>Match symbols across paylines</li>
+              <li>🍊🍊🍊 = Jackpot!</li>
+              <li>Start small, work your way up</li>
+            </ul>
+          </div>
+
+          <div class="help-card">
+            <h4>🃏 Blackjack</h4>
+            <ul style="text-align: left;">
+              <li>Get to 21 without going over</li>
+              <li>Beat the dealer's hand</li>
+              <li>Hit = take card, Stand = keep total</li>
+              <li>Dealer hits on 16, stands on 17</li>
+            </ul>
+          </div>
+
+          <div class="help-card">
+            <h4>♠️ Poker</h4>
+            <ul style="text-align: left;">
+              <li>Texas Hold'em style</li>
+              <li>2 hole cards + 5 community cards</li>
+              <li>Call, Raise, or Fold each round</li>
+              <li>Best 5-card hand wins</li>
+            </ul>
+          </div>
+
+          <div class="help-card">
+            <h4>🎫 Scratch-Offs</h4>
+            <ul style="text-align: left;">
+              <li>6 ticket types ($1-$20)</li>
+              <li>Click spots to scratch</li>
+              <li>Match winning patterns</li>
+              <li>Use "Buy Another" for auto-purchase</li>
+            </ul>
+          </div>
+
+          <div class="help-card">
+            <h4>🏆 Achievements</h4>
+            <ul style="text-align: left;">
+              <li>Track casino milestones</li>
+              <li>Earn bonus rewards</li>
+              <li>Reset anytime</li>
+              <li>Show off your skills</li>
+            </ul>
+          </div>
+
+          <div class="help-card">
+            <h4>💰 Financial Services</h4>
+            <ul style="text-align: left;">
+              <li>Quick $100 loans available</li>
+              <li>Emergency cash options</li>
+              <li>Pay back debt to stay healthy</li>
+              <li>All pretend money!</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 107, 53, 0.1); border-radius: 10px; border-left: 4px solid #ff6b35;">
+          <h4>💡 Todd's Pro Tips</h4>
+          <ul style="text-align: left;">
+            <li><strong>Set limits:</strong> Decide how much you're willing to lose before playing</li>
+            <li><strong>Try everything:</strong> Each game offers different excitement and odds</li>
+            <li><strong>Chase achievements:</strong> They give you goals and bonus rewards</li>
+            <li><strong>Track performance:</strong> Use stats to understand your patterns</li>
+            <li><strong>Have fun:</strong> This is entertainment first, everything else second!</li>
+          </ul>
+        </div>
+
       </div>
     </main>
+
+    <style>
+      .help-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 107, 53, 0.3);
+      }
+      
+      .help-card h4 {
+        margin-top: 0;
+        color: #ff6b35;
+        font-size: 1.3em;
+      }
+      
+      .help-card ul {
+        margin: 10px 0;
+        padding-left: 20px;
+      }
+      
+      .help-card li {
+        margin: 8px 0;
+        line-height: 1.4;
+      }
+      
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+      }
+    </style>
 
     <footer class="site-footer">
       <div class="container">Made with ❤️ — demo only. No real money.</div>

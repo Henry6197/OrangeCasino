@@ -1,7 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <rect width="100%" height="100%" fill="#ffebd6"/>
-  <circle cx="100" cy="70" r="38" fill="#ff6a00"/>
-  <rect x="50" y="120" width="100" height="60" rx="12" fill="#ffb86b"/>
-  <text x="100" y="155" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#2b2b2b" text-anchor="middle">Todd</text>
+  <!-- Background with casino vibes -->
+  <circle cx="100" cy="100" r="95" fill="url(#casinoGlow)" stroke="url(#goldBorder)" stroke-width="4"/>
+  
+  <!-- Body (suit jacket) -->
+  <ellipse cx="100" cy="145" rx="50" ry="50" fill="url(#suitGradient)"/>
+  
+  <!-- Shirt -->
+  <ellipse cx="100" cy="135" rx="35" ry="35" fill="url(#shirtGradient)"/>
+  
+  <!-- Tie -->
+  <polygon points="100,120 95,130 100,160 105,130" fill="url(#tieGradient)"/>
+  <circle cx="100" cy="125" r="3" fill="#ffd700"/>
+  
+  <!-- Head -->
+  <circle cx="100" cy="80" r="40" fill="url(#faceGradient)"/>
+  
+  <!-- Hair (slicked back) -->
+  <path d="M 65 60 Q 100 45 135 60 Q 120 55 100 55 Q 80 55 65 60" fill="url(#hairGradient)"/>
+  
+  <!-- Sunglasses (aviator style) -->
+  <g id="aviators">
+    <!-- Left lens -->
+    <ellipse cx="85" cy="75" rx="15" ry="12" fill="url(#aviatorLens)" stroke="#gold" stroke-width="2"/>
+    <!-- Right lens -->
+    <ellipse cx="115" cy="75" rx="15" ry="12" fill="url(#aviatorLens)" stroke="#gold" stroke-width="2"/>
+    <!-- Bridge -->
+    <path d="M 100 70 Q 100 68 100 66" stroke="#gold" stroke-width="2" fill="none"/>
+    <!-- Left temple -->
+    <line x1="70" y1="75" x2="55" y2="78" stroke="#gold" stroke-width="2"/>
+    <!-- Right temple -->
+    <line x1="130" y1="75" x2="145" y2="78" stroke="#gold" stroke-width="2"/>
+    <!-- Nose bridge detail -->
+    <circle cx="100" cy="70" r="2" fill="#gold"/>
+  </g>
+  
+  <!-- Confident smile -->
+  <path d="M 85 90 Q 100 100 115 90" stroke="#2d3748" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Mustache (classy) -->
+  <ellipse cx="100" cy="87" rx="8" ry="2" fill="#4a5568"/>
+  
+  <!-- Arms in confident pose -->
+  <ellipse cx="55" cy="125" rx="15" ry="30" fill="url(#suitGradient)" transform="rotate(-25 55 125)"/>
+  <ellipse cx="145" cy="125" rx="15" ry="30" fill="url(#suitGradient)" transform="rotate(25 145 125)"/>
+  
+  <!-- Hands with casino chips -->
+  <g id="leftHand" transform="translate(40,140) rotate(-30)">
+    <circle cx="0" cy="0" r="10" fill="url(#handGradient)"/>
+    <!-- Casino chip -->
+    <circle cx="-5" cy="-8" r="5" fill="#ff4757" stroke="#fff" stroke-width="1"/>
+    <text x="-5" y="-6" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">$100</text>
+  </g>
+  
+  <g id="rightHand" transform="translate(160,140) rotate(30)">
+    <circle cx="0" cy="0" r="10" fill="url(#handGradient)"/>
+    <!-- Casino chip -->
+    <circle cx="5" cy="-8" r="5" fill="#2ed573" stroke="#fff" stroke-width="1"/>
+    <text x="5" y="-6" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">$500</text>
+  </g>
+  
+  <!-- Bow tie -->
+  <polygon points="90,115 110,115 105,120 110,125 90,125 95,120" fill="#ff6348"/>
+  <rect x="98" y="117" width="4" height="6" fill="#c23616"/>
+  
+  <!-- Name badge (VIP style) -->
+  <rect x="75" y="170" width="50" height="20" rx="5" fill="url(#badgeGradient)" stroke="#ffd700" stroke-width="2"/>
+  <text x="100" y="177" font-family="Arial" font-size="8" fill="#fff" text-anchor="middle" font-weight="bold">CASINO HOST</text>
+  <text x="100" y="186" font-family="Arial" font-size="12" fill="#ffd700" text-anchor="middle" font-weight="bold">TODD</text>
+  
+  <!-- Floating casino elements -->
+  <g id="floatingElements">
+    <!-- Dice -->
+    <g transform="translate(35,45)">
+      <rect x="0" y="0" width="12" height="12" rx="2" fill="#fff" stroke="#ddd">
+        <animateTransform attributeName="transform" type="rotate" values="0 6 6;360 6 6" dur="4s" repeatCount="indefinite"/>
+      </rect>
+      <circle cx="3" cy="3" r="1" fill="#333"/>
+      <circle cx="9" cy="9" r="1" fill="#333"/>
+      <circle cx="3" cy="9" r="1" fill="#333"/>
+      <circle cx="9" cy="3" r="1" fill="#333"/>
+    </g>
+    
+    <!-- Playing card -->
+    <g transform="translate(155,35)">
+      <rect x="0" y="0" width="15" height="20" rx="2" fill="#fff" stroke="#ddd">
+        <animateTransform attributeName="transform" type="rotate" values="0 7.5 10;-10 7.5 10;0 7.5 10" dur="3s" repeatCount="indefinite"/>
+      </rect>
+      <text x="7.5" y="8" font-family="Arial" font-size="6" fill="#ff4757" text-anchor="middle">A</text>
+      <text x="7.5" y="16" font-family="Arial" font-size="8" fill="#ff4757" text-anchor="middle">♠</text>
+    </g>
+    
+    <!-- Gold coins -->
+    <circle cx="45" cy="160" r="4" fill="#ffd700" stroke="#ffbe00" stroke-width="1">
+      <animate attributeName="cy" values="160;155;160" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="155" cy="165" r="3" fill="#ffd700" stroke="#ffbe00" stroke-width="1">
+      <animate attributeName="cy" values="165;170;165" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Sparkle effects -->
+  <g id="luxurySparkles">
+    <g transform="translate(75,50)">
+      <path d="M0,-8 L2,0 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,0 Z" fill="#ffd700" opacity="0.8">
+        <animateTransform attributeName="transform" type="scale" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g transform="translate(125,55)">
+      <path d="M0,-6 L1.5,0 L6,0 L1.5,1.5 L0,6 L-1.5,1.5 L-6,0 L-1.5,0 Z" fill="#ffd700" opacity="0.6">
+        <animateTransform attributeName="transform" type="scale" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g transform="translate(60,130)">
+      <path d="M0,-4 L1,0 L4,0 L1,1 L0,4 L-1,1 L-4,0 L-1,0 Z" fill="#ffd700" opacity="0.7">
+        <animateTransform attributeName="transform" type="scale" values="0.4;0.9;0.4" dur="1.8s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+  
+  <!-- Gradients and effects -->
+  <defs>
+    <radialGradient id="casinoGlow" cx="50%" cy="40%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="70%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#0f1419"/>
+    </radialGradient>
+    
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffed4e"/>
+      <stop offset="100%" stop-color="#f39c12"/>
+    </linearGradient>
+    
+    <linearGradient id="faceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffeaa7"/>
+      <stop offset="100%" stop-color="#fdcb6e"/>
+    </linearGradient>
+    
+    <linearGradient id="suitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d3436"/>
+      <stop offset="100%" stop-color="#636e72"/>
+    </linearGradient>
+    
+    <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8f9fa"/>
+    </linearGradient>
+    
+    <linearGradient id="tieGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e17055"/>
+      <stop offset="100%" stop-color="#d63031"/>
+    </linearGradient>
+    
+    <linearGradient id="hairGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d3436"/>
+      <stop offset="100%" stop-color="#636e72"/>
+    </linearGradient>
+    
+    <linearGradient id="handGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffeaa7"/>
+      <stop offset="100%" stop-color="#fdcb6e"/>
+    </linearGradient>
+    
+    <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d3436"/>
+      <stop offset="100%" stop-color="#636e72"/>
+    </linearGradient>
+    
+    <linearGradient id="aviatorLens" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#74b9ff"/>
+      <stop offset="50%" stop-color="#0984e3"/>
+      <stop offset="100%" stop-color="#2d3436"/>
+    </linearGradient>
+  </defs>
 </svg>

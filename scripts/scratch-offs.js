@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ticketsBought: 0,
     totalSpent: 0,
     totalWon: 0,
-    activeTicket: null
+    activeTicket: null,
+    lastTicketType: null
   };
 
   // Ticket definitions with realistic odds
@@ -138,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gameState.ticketsBought = parseInt(localStorage.getItem('vc_scratch_tickets_bought') || '0');
     gameState.totalSpent = parseInt(localStorage.getItem('vc_scratch_total_spent') || '0');
     gameState.totalWon = parseInt(localStorage.getItem('vc_scratch_total_won') || '0');
+    gameState.lastTicketType = localStorage.getItem('vc_scratch_last_ticket_type') || null;
     updateStatsDisplay();
   }
 
@@ -146,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('vc_scratch_tickets_bought', gameState.ticketsBought.toString());
     localStorage.setItem('vc_scratch_total_spent', gameState.totalSpent.toString());
     localStorage.setItem('vc_scratch_total_won', gameState.totalWon.toString());
+    if (gameState.lastTicketType) {
+      localStorage.setItem('vc_scratch_last_ticket_type', gameState.lastTicketType);
+    }
   }
 
   // Reset stats
@@ -154,11 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
       gameState.ticketsBought = 0;
       gameState.totalSpent = 0;
       gameState.totalWon = 0;
+      gameState.lastTicketType = null;
       
       // Clear localStorage
       localStorage.removeItem('vc_scratch_tickets_bought');
       localStorage.removeItem('vc_scratch_total_spent');
       localStorage.removeItem('vc_scratch_total_won');
+      localStorage.removeItem('vc_scratch_last_ticket_type');
       
       // Clear log
       const log = document.getElementById('scratch-log');
@@ -256,6 +263,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function createActiveTicket(ticketType, symbols) {
     const ticket = ticketTypes[ticketType];
     const ticketHtml = `
+      <div class="winning-patterns">
+        <h4>🎯 Winning Patterns</h4>
+        <div class="patterns-list">
+          ${ticket.winPatterns.map(pattern => `
+            <div class="pattern-item">${pattern}</div>
+          `).join('')}
+        </div>
+      </div>
       <div class="scratch-ticket ${ticketType}-active">
         <div class="ticket-header">
           <h4>${ticket.name}</h4>
@@ -277,14 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       </div>
-      <div class="winning-patterns">
-        <h4>🎯 Winning Patterns</h4>
-        <div class="patterns-list">
-          ${ticket.winPatterns.map(pattern => `
-            <div class="pattern-item">${pattern}</div>
-          `).join('')}
-        </div>
-      </div>
     `;
     
     return ticketHtml;
@@ -303,9 +310,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Deduct cost
     vc.writeBalance(balance - ticket.price);
     
-    // Update stats
+    // Update stats and store last ticket type
     gameState.ticketsBought++;
     gameState.totalSpent += ticket.price;
+    gameState.lastTicketType = ticketType;
     saveStats();
     updateStatsDisplay();
     
@@ -326,6 +334,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add scratch event listeners
     addScratchListeners();
+    
+    // Update the buy again button text
+    updateBuyAgainButton();
     
     vc.setBuddyText(`Bought ${ticket.name} ticket! Good luck scratching!`);
     logResult(ticket.name, ticket.price, 0); // Log purchase
@@ -445,6 +456,26 @@ document.addEventListener('DOMContentLoaded', () => {
     gameState.activeTicket = null;
   }
 
+  // Auto-buy same ticket type
+  function buySameTicket() {
+    if (gameState.lastTicketType) {
+      buyTicket(gameState.lastTicketType);
+    } else {
+      showTicketSelection();
+    }
+  }
+
+  // Update buy again button text
+  function updateBuyAgainButton() {
+    const btn = document.getElementById('new-ticket-btn');
+    if (gameState.lastTicketType && ticketTypes[gameState.lastTicketType]) {
+      const ticket = ticketTypes[gameState.lastTicketType];
+      btn.textContent = `Buy ${ticket.name} Again - $${ticket.price}`;
+    } else {
+      btn.textContent = 'Buy Another Ticket';
+    }
+  }
+
   // Event listeners
   document.querySelectorAll('.buy-ticket-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -454,9 +485,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('scratch-all-btn').addEventListener('click', scratchAll);
-  document.getElementById('new-ticket-btn').addEventListener('click', showTicketSelection);
+  document.getElementById('new-ticket-btn').addEventListener('click', buySameTicket);
   document.getElementById('reset-stats-btn').addEventListener('click', resetStats);
 
   // Initialize
   loadStats();
+  updateBuyAgainButton();
 });
