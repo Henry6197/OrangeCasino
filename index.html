@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Orange Casino</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="new-styles.css" />
   </head>
   <body>
+    <!-- Dark Mode Toggle for Underground Access -->
+    <button class="dark-mode-toggle" id="underground-toggle" onclick="enterUnderground()">
+      � Dark Mode
+    </button>
+    
     <header class="site-header">
       <div class="container">
   <h1 class="brand">ORANGE CASINO</h1>
@@ -117,6 +123,49 @@
 
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
+    <script>
+      // Underground Casino Access
+      function enterUnderground() {
+        const toggle = document.getElementById('underground-toggle');
+        toggle.textContent = '🕳️ Entering...';
+        toggle.style.background = 'linear-gradient(45deg, #dc143c, #ff073a)';
+        
+        // Show warning message
+        if (window.vc && window.vc.showBigMessage) {
+          window.vc.showBigMessage('ENTERING UNDERGROUND...', 2000);
+        }
+        if (window.vc && window.vc.setBuddyText) {
+          window.vc.setBuddyText('Wait... where are you going? That place is dangerous!');
+        }
+        
+        // Delay for dramatic effect
+        setTimeout(() => {
+          window.location.href = 'underground.html';
+        }, 2000);
+      }
+      
+      // Add some mystery to the toggle
+      document.addEventListener('DOMContentLoaded', function() {
+        const toggle = document.getElementById('underground-toggle');
+        
+        // Random flicker effect
+        setInterval(() => {
+          if (Math.random() < 0.1) { // 10% chance every second
+            toggle.style.opacity = '0.5';
+            setTimeout(() => {
+              toggle.style.opacity = '1';
+            }, 200);
+          }
+        }, 1000);
+        
+        // Hover warning
+        toggle.addEventListener('mouseenter', function() {
+          if (window.vc && window.vc.setBuddyText) {
+            window.vc.setBuddyText('That button leads somewhere dark... Are you sure?');
+          }
+        });
+      });
+    </script>
     
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />

@@ -229,7 +229,7 @@
       <div class="income-status">
         <h3>💰 YOUR CHAD ACCOUNT! 💰</h3>
         <div class="account-balance">Available Balance: $<span id="chad-balance">0</span></div>
-        <div class="account-info">Earnings accumulate here - withdraw anytime!</div>
+        <div class="account-info" id="earnings-info">Earnings accumulate here - withdraw anytime!</div>
         <div class="account-actions">
           <button class="btn withdraw-btn" id="withdraw-btn" onclick="withdrawChadEarnings()">💸 Withdraw All</button>
         </div>
@@ -323,7 +323,9 @@
       function addChadEarnings() {
         if (!checkCourseAccess()) return;
         const currentAvailable = Number(localStorage.getItem('vc_chads_course_available') || 0);
-        const newAvailable = currentAvailable + 20; // Add $20 every 5 seconds
+        const multiplier = Number(localStorage.getItem('vc_course_multiplier') || 1);
+        const earnAmount = 20 * multiplier; // Add $20 * multiplier every 5 seconds
+        const newAvailable = currentAvailable + earnAmount;
         localStorage.setItem('vc_chads_course_available', String(newAvailable));
         updateWithdrawalBalance();
       }
@@ -369,9 +371,15 @@
       // Update earnings display
       function updateWithdrawalBalance() {
         const availableEl = document.getElementById('chad-balance');
+        const earningsInfoEl = document.getElementById('earnings-info');
         if (availableEl) {
           const available = Number(localStorage.getItem('vc_chads_course_available') || 0);
           availableEl.textContent = available.toLocaleString();
+        }
+        if (earningsInfoEl) {
+          const multiplier = Number(localStorage.getItem('vc_course_multiplier') || 1);
+          const earnRate = 20 * multiplier;
+          earningsInfoEl.textContent = `Earning $${earnRate.toLocaleString()} every 5 seconds! (${multiplier}x multiplier)`;
         }
       }
       

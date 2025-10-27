@@ -1,0 +1,185 @@
+/* Underground Casino Theme CSS */
+/* Created on October 27, 2025 */
+
+/* Dark Underground Casino Theme */
+.underground-theme {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-accent: #2a1810;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --text-gold: #d4af37;
+  --text-red: #dc143c;
+  --border-color: #333;
+  --shadow-color: rgba(212, 175, 55, 0.3);
+  --neon-glow: #ff073a;
+}
+
+.underground-theme body {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-accent) 100%);
+  color: var(--text-primary);
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Smoky background effect */
+.underground-theme body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 7, 58, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Container styling */
+.underground-theme .container {
+  background: rgba(26, 26, 26, 0.9);
+  border: 2px solid var(--border-color);
+  box-shadow: 
+    0 0 30px var(--shadow-color),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+/* Header styling */
+.underground-theme h1 {
+  color: var(--text-gold);
+  text-shadow: 
+    0 0 10px var(--text-gold),
+    0 0 20px var(--text-gold),
+    2px 2px 4px rgba(0, 0, 0, 0.8);
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: 2px;
+}
+
+.underground-theme h2, .underground-theme h3 {
+  color: var(--text-gold);
+  text-shadow: 0 0 5px var(--text-gold);
+}
+
+/* Button styling */
+.underground-theme .game-button {
+  background: linear-gradient(45deg, var(--bg-secondary), var(--bg-accent));
+  color: var(--text-gold);
+  border: 2px solid var(--text-gold);
+  box-shadow: 
+    0 0 15px rgba(212, 175, 55, 0.4),
+    inset 0 0 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 5px var(--text-gold);
+  transition: all 0.3s ease;
+}
+
+.underground-theme .game-button:hover {
+  background: linear-gradient(45deg, var(--bg-accent), var(--text-gold));
+  color: var(--bg-primary);
+  box-shadow: 
+    0 0 25px var(--text-gold),
+    inset 0 0 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Balance display */
+.underground-theme .balance-display {
+  background: linear-gradient(45deg, var(--bg-primary), var(--bg-secondary));
+  border: 2px solid var(--neon-glow);
+  color: var(--text-gold);
+  box-shadow: 
+    0 0 20px var(--neon-glow),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.underground-theme .balance-amount {
+  color: var(--neon-glow);
+  text-shadow: 0 0 10px var(--neon-glow);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+/* Game cards/sections */
+.underground-theme .game-section {
+  background: rgba(42, 24, 16, 0.8);
+  border: 1px solid var(--border-color);
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Neon accent lines */
+.underground-theme .neon-line {
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--neon-glow) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 10px var(--neon-glow);
+  margin: 20px 0;
+}
+
+/* Underground casino specific elements */
+.underground-theme .casino-logo {
+  filter: drop-shadow(0 0 10px var(--text-gold));
+}
+
+.underground-theme .warning-text {
+  color: var(--text-red);
+  text-shadow: 0 0 5px var(--text-red);
+  font-style: italic;
+}
+
+/* Flickering neon effect */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+  75% { opacity: 0.9; }
+}
+
+.underground-theme .flicker {
+  animation: flicker 2s infinite;
+}
+
+/* Dark mode toggle */
+.dark-mode-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(45deg, #333, #666);
+  border: 2px solid #888;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode-toggle:hover {
+  background: linear-gradient(45deg, #666, #999);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode-toggle.active {
+  background: linear-gradient(45deg, #dc143c, #ff073a);
+  border-color: #ff073a;
+  box-shadow: 0 0 20px rgba(255, 7, 58, 0.5);
+}
+
+/* Smooth transition between themes */
+body {
+  transition: all 0.5s ease;
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
