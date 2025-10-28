@@ -395,17 +395,7 @@
                 <h2>🏴‍☠️ Welcome to the Underground 🏴‍☠️</h2>
                 <p class="welcome-subtitle">⚠️ Where the stakes are higher and the rules don't apply. Enter at your own risk. ⚠️</p>
             </div>
-            
-            <!-- Underground Code Section -->
-            <div class="underground-code-section">
-                <h3 class="underground-code-title">🌑 Got a Black Market Code? 🌑</h3>
-                <div class="underground-code-input-group">
-                    <input type="text" id="undergroundCodeInput" placeholder="Enter dark code..." maxlength="20" onkeypress="handleUndergroundKeyPress(event)">
-                    <button onclick="checkUndergroundCode()" class="underground-code-button">ACTIVATE</button>
-                </div>
-                <div id="underground-code-message" class="underground-code-message"></div>
-            </div>
-            
+
             <!-- Underground Games Section -->
             <div class="games-section">
                 <h3 class="section-title">🎲 Underground Games</h3>
@@ -507,12 +497,25 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Underground Code Section -->
+        <div class="underground-code-section">
+            <h3 class="underground-code-title">🌑 Got a Black Market Code? 🌑</h3>
+            <div class="underground-code-input-group">
+                <input type="text" id="undergroundCodeInput" placeholder="Enter dark code..." maxlength="20" onkeypress="handleUndergroundKeyPress(event)">
+                <button onclick="checkUndergroundCode()" class="underground-code-button">ACTIVATE</button>
+            </div>
+            <div id="underground-code-message" class="underground-code-message"></div>
+        </div>
     </main>
 
     <footer class="site-footer">
         <div class="container">🏴‍☠️ Underground Casino — Where legends are made. No rules apply.</div>
     </footer>
 
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
         // Underground Casino System - Completely Independent
         let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);

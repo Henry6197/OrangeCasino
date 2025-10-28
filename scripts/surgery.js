@@ -16,14 +16,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // navigation lock utilities
   let navHandlers = [];
   function lockNavigation(){
-    // beforeunload prompt
+    // Allow leaving but redirect back if surgery not complete
     window.addEventListener('beforeunload', beforeUnloadHandler);
-    // intercept main nav links
-    const links = document.querySelectorAll('.main-nav a');
-    links.forEach(a=>{
-      const h = (ev)=>{ ev.preventDefault(); append('You cannot leave during surgery.'); vc.setBuddyText(window.generateRandomRamble ? window.generateRandomRamble() : 'Uhh, wait for surgery, believe me.'); };
-      a.addEventListener('click', h);
-      navHandlers.push({el:a, handler:h});
+    
+    // Check if user returns to page during surgery
+    document.addEventListener('visibilitychange', function() {
+      const finishAt = Number(localStorage.getItem(TIMER_KEY) || 0);
+      const now = Date.now();
+      if (document.visibilityState === 'visible' && finishAt > now) {
+        setTimeout(function() {
+          if (window.location.pathname.includes('surgery.html')) {
+            append('You cannot leave during surgery - redirected back!');
+            vc.setBuddyText('Surgery must be completed!');
+          }
+        }, 100);
+      }
     });
   }
   function unlockNavigation(){
@@ -31,7 +38,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
     navHandlers.forEach(o=> o.el.removeEventListener('click', o.handler));
     navHandlers = [];
   }
-  function beforeUnloadHandler(e){ const msg = 'Surgery in progress — leaving will cancel it.'; e.returnValue = msg; return msg; }
+  function beforeUnloadHandler(e){ 
+    const finishAt = Number(localStorage.getItem(TIMER_KEY) || 0);
+    const now = Date.now();
+    if (finishAt > now) {
+      // Surgery in progress - allow leaving but set up redirect
+      setTimeout(function() {
+        if (finishAt > Date.now()) {
+          window.location.href = 'surgery.html';
+        }
+      }, 1000);
+    }
+  }
 
   // If timer previously set, check completion
   const finishAt = Number(localStorage.getItem(TIMER_KEY) || 0);

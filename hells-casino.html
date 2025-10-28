@@ -395,16 +395,6 @@
             </div>
         </div>
         
-        <!-- Escape Code Interface -->
-        <div class="hell-escape-panel">
-            <div class="hell-escape-title">👹 Demonic Override System</div>
-            <div class="hell-escape-input-group">
-                <input type="text" id="hellsEscapeCodeInput" placeholder="Enter infernal code..." maxlength="20">
-                <button onclick="checkHellsEscapeCode()" class="hell-escape-button">INVOKE</button>
-            </div>
-            <div class="hell-escape-hint">🔥 Some say there's a word that can break even Hell's chains...</div>
-        </div>
-        
         <div class="escape-progress">
             <h4 style="color: var(--hell-fire);">Path to Redemption</h4>
             <div class="progress-bar">
@@ -454,8 +444,21 @@
                 <div class="stat-label">Soul Debt</div>
             </div>
         </div>
+        
+        <!-- Escape Code Interface -->
+        <div class="hell-escape-panel">
+            <div class="hell-escape-title">👹 Demonic Override System</div>
+            <div class="hell-escape-input-group">
+                <input type="text" id="hellsEscapeCodeInput" placeholder="Enter infernal code..." maxlength="20">
+                <button onclick="checkHellsEscapeCode()" class="hell-escape-button">INVOKE</button>
+            </div>
+            <div class="hell-escape-hint">🔥 Some say there's a word that can break even Hell's chains...</div>
+        </div>
     </div>
 
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
         // Hell's Casino Game State
         let totalSpins = Number(localStorage.getItem('hells_casino_spins') || 0);
@@ -604,21 +607,25 @@
             localStorage.setItem('hells_casino_wins', String(totalWins));
         }
         
-        // Prevent leaving the page
-        window.addEventListener('beforeunload', function(e) {
-            if (totalWins < winsNeeded) {
-                const message = 'You cannot escape Hell\'s Casino until you win 10 times!';
-                e.returnValue = message;
-                return message;
-            }
+        // Check on page visibility change - redirect back if user tries to leave without completing
+        document.addEventListener('visibilitychange', function() {
+            setTimeout(function() {
+                if (document.visibilityState === 'visible' && totalWins < winsNeeded) {
+                    // User came back to page but hasn't completed - they tried to leave
+                    logMessage('👹 You cannot escape Hell that easily... You are bound here until 10 wins!', 'system');
+                }
+            }, 100);
         });
         
-        // Prevent back button (doesn't work in all browsers but adds to the theme)
-        history.pushState(null, null, location.href);
-        window.addEventListener('popstate', function() {
+        // Intercept navigation attempts and redirect back
+        window.addEventListener('beforeunload', function(e) {
             if (totalWins < winsNeeded) {
-                history.pushState(null, null, location.href);
-                logMessage('👹 You cannot escape that easily...', 'system');
+                // Allow leaving but set up redirect back
+                setTimeout(function() {
+                    if (totalWins < winsNeeded) {
+                        window.location.href = 'hells-casino.html';
+                    }
+                }, 1000);
             }
         });
         
@@ -629,17 +636,22 @@
             
             if (code === 'hellout') {
                 logMessage('🔑 ESCAPE CODE ACTIVATED: HELLOUT', 'win');
-                logMessage('👹 The demons are not pleased, but a deal is a deal...', 'system');
+                logMessage('👹 The demons grant you instant victory! All 10 wins achieved!', 'system');
                 
-                // Clear soul debt and escape immediately
-                localStorage.setItem('baccarat_soul_debt', '0');
-                localStorage.removeItem('hells_casino_spins');
-                localStorage.removeItem('hells_casino_wins');
+                // Set wins to 10 to complete the objective properly
+                totalWins = 10;
+                saveProgress(); // Save the updated progress
+                updateDisplay(); // Update all displays
                 
-                setTimeout(() => {
-                    alert('🔑 ESCAPE CODE SUCCESS! You used "HELLOUT" to escape Hell\'s Casino!');
-                    window.location.href = 'underground.html';
-                }, 2000);
+                // Clear input
+                codeInput.value = '';
+                
+                // Check if we can escape now (should trigger since totalWins >= winsNeeded)
+                if (totalWins >= winsNeeded) {
+                    setTimeout(() => {
+                        escape();
+                    }, 1000);
+                }
             } else {
                 logMessage('❌ Invalid escape code! The demons laugh at your feeble attempt...', 'loss');
                 codeInput.value = '';

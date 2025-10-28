@@ -59,6 +59,11 @@
     const debt = readDebt();
     
     if(debt > 5500){
+      // Check for Financial Ruin achievement before coal mine redirect
+      if(window.vc && typeof window.vc.render === 'function'){
+        window.vc.render(); // This will check all achievements including Financial Ruin
+      }
+      
       // Mark coal mine visited for achievement
       if(window.vc && typeof window.vc.markCoalMineVisited === 'function'){
         window.vc.markCoalMineVisited();
@@ -67,7 +72,7 @@
       // Force redirect to coal mine (can happen multiple times)
       setTimeout(() => {
         window.location.href = 'coal-mine.html';
-      }, 1000); // Small delay to show the debt first
+      }, 1000); // Small delay to show the debt first and let achievement trigger
     }
   }
 

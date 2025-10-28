@@ -306,6 +306,32 @@
           showPopup();
         }
       }, 10000);
+      
+      // Survival timer - if user stays for 60 seconds, they survive popup hell
+      let survivalTimer = 0;
+      const survivalInterval = setInterval(() => {
+        survivalTimer++;
+        if (survivalTimer >= 60) { // 60 seconds = survived
+          clearInterval(survivalInterval);
+          
+          // Mark popup survival achievement
+          if (window.vc && window.vc.markPopupSurvived) {
+            window.vc.markPopupSurvived();
+          }
+          
+          // Show survival message
+          alert('🎉 CONGRATULATIONS! You survived popup hell for 60 seconds! Achievement unlocked!');
+          
+          // Optional: redirect back to casino
+          if (confirm('Return to the casino?')) {
+            window.location.href = 'index.html';
+          }
+        }
+      }, 1000); // Check every second
     </script>
+    
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
   </body>
 </html>

@@ -646,16 +646,6 @@
         <p>⚠️ You have been assigned to the factory floor until your debt is cleared ⚠️</p>
       </div>
       
-      <!-- Escape Code Interface -->
-      <div class="escape-code-panel">
-        <div class="escape-title">🔑 Emergency Override System</div>
-        <div class="escape-input-group">
-          <input type="text" id="escapeCodeInput" placeholder="Enter override code..." maxlength="20">
-          <button onclick="checkEscapeCode()" class="escape-button">ACTIVATE</button>
-        </div>
-        <div class="escape-hint">💡 Find the right code to escape this place...</div>
-      </div>
-      
       <div class="factory-floor">
         <div class="instructions">
           <div class="instruction-title">📋 PRODUCTION INSTRUCTIONS</div>
@@ -745,16 +735,21 @@
         </div>
       </div>
       
-      <div class="supervisor-panel">
-        <div class="supervisor-title">🔐 Ghost Override System</div>
-        <p style="color: #a5b4fc; margin-bottom: 15px;">Emergency codes can be typed anywhere on this page...</p>
+      <!-- Escape Code Interface -->
+      <div class="escape-code-panel">
+        <div class="escape-title">� Emergency Override System</div>
+        <div class="escape-input-group">
+          <input type="text" id="escapeCodeInput" placeholder="Enter override code..." maxlength="20">
+          <button onclick="checkEscapeCode()" class="escape-button">ACTIVATE</button>
+        </div>
+        <div class="escape-hint">💡 Find the right code to escape this place...</div>
       </div>
     </div>
 
     <script src="scripts/app.js"></script>
     <script src="scripts/achievements.js"></script>
     <script>
-      let chipsAssembled = 0;
+      let chipsAssembled = Number(localStorage.getItem('coal_mine_chips') || 0);
       let currentDebt = 0;
       const ASSEMBLY_TIME = 4000; // 4 seconds per chip
       const BREAKDOWN_TIME = 25000; // 25 seconds repair time
@@ -824,6 +819,10 @@
             clearInterval(interval);
             // Assembly complete!
             chipsAssembled++;
+            
+            // Save progress to localStorage
+            localStorage.setItem('coal_mine_chips', String(chipsAssembled));
+            
             updateChipCount();
             
             // Track chip assembly for achievements (replacing coal mining)
@@ -929,6 +928,10 @@
         if (chipsAssembled >= 30) {
           // Clear debt and return to casino
           localStorage.setItem('vc_debt', '0');
+          
+          // Clear the chip progress since quota is complete
+          localStorage.removeItem('coal_mine_chips');
+          
           window.location.href = 'index.html';
         }
       });
@@ -966,9 +969,11 @@
       updateChipCount();
       
       // Mark sweatshop as visited for achievement when page loads
-      if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
-        window.vc.markCoalMineVisited();
-      }
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
+          window.vc.markCoalMineVisited();
+        }
+      });
 
       // Ghost Code System for Coal Mine
       // Normal input code system
@@ -977,15 +982,38 @@
         const code = codeInput.value.toLowerCase().trim();
         
         if (code === 'freedom') {
-          // Clear debt and return to casino
-          localStorage.setItem('vc_debt', '0');
+          // Complete the quota by setting chips to 30
+          chipsAssembled = 30;
           
+          // Save the updated chip count to localStorage if needed
+          localStorage.setItem('coal_mine_chips', String(chipsAssembled));
+          
+          // Update all displays and progress bars
+          updateChipCount();
+          
+          // Clear input
+          codeInput.value = '';
+          
+          // Show completion message
+          alert('🔑 ESCAPE CODE ACTIVATED: Freedom - Instantly completed 30 chip quota!');
+          
+          // Mark escape achievement
           if (window.vc && typeof window.vc.markCoalMineEscaped === 'function') {
             window.vc.markCoalMineEscaped();
           }
           
-          alert('🔑 ESCAPE CODE ACTIVATED: Freedom - Escaping the coal mine!');
-          window.location.href = 'index.html';
+          // Auto-trigger the completion logic (same as clicking complete button)
+          setTimeout(() => {
+            if (chipsAssembled >= 30) {
+              // Clear debt and return to casino
+              localStorage.setItem('vc_debt', '0');
+              
+              // Clear the chip progress since quota is complete
+              localStorage.removeItem('coal_mine_chips');
+              
+              window.location.href = 'index.html';
+            }
+          }, 2000);
         } else {
           alert('❌ Invalid escape code! Keep working or find the right code...');
           codeInput.value = '';

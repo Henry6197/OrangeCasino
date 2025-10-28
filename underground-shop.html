@@ -397,6 +397,9 @@
         <div class="container">🛒 Black Market Shop — No questions asked, no receipts given.</div>
     </footer>
 
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
         // Game state
         let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
@@ -406,6 +409,11 @@
         
         // Initialize shop
         function initShop() {
+            // Mark shop as visited for achievement
+            if (window.vc && window.vc.markShopVisited) {
+                window.vc.markShopVisited();
+            }
+            
             updateDisplay();
             updateButtonState();
         }

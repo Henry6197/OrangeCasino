@@ -37,16 +37,6 @@
           <h2>🎰 Welcome to ORANGE CASINO 🎰</h2>
           <p class="welcome-subtitle">The hottest casino experience on the web! Pick your game and start winning big!</p>
         </div>
-  
-        <!-- Promo Code Section -->
-        <div class="promo-code-section">
-          <h3 class="promo-title">💰 Got a Promo Code? 💰</h3>
-          <div class="promo-input-group">
-            <input type="text" id="promoCodeInput" placeholder="Enter promo code..." maxlength="20" onkeypress="handlePromoKeyPress(event)">
-            <button onclick="checkPromoCode()" class="promo-button">REDEEM</button>
-          </div>
-          <div id="code-message" class="code-message"></div>
-        </div>
         
         <!-- Main Games Section -->
         <div class="games-section">
@@ -109,15 +99,17 @@
           </div>
         </div>
 
-        <!-- Ghost Code Section -->
-        <div class="bonus-section">
-          <h3 class="section-title">🔮 Secret Codes</h3>
-          <div class="bonus-panel">
-            <p>Hidden codes can be typed anywhere on this page to unlock rewards...</p>
-            <div class="code-message" id="code-message"></div>
-          </div>
-        </div>
       </section>
+      
+      <!-- Promo Code Section -->
+      <div class="promo-code-section">
+        <h3 class="promo-title">� Got a Promo Code? 💰</h3>
+        <div class="promo-input-group">
+          <input type="text" id="promoCodeInput" placeholder="Enter promo code..." maxlength="20" onkeypress="handlePromoKeyPress(event)">
+          <button onclick="checkPromoCode()" class="promo-button">REDEEM</button>
+        </div>
+        <div id="code-message" class="code-message"></div>
+      </div>
       
       <!-- Advertisement -->
       <div class="ad-container right ad-4" onclick="if(window.vc && window.vc.markAdClicked) window.vc.markAdClicked(); window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
@@ -198,7 +190,7 @@
         'jackpot': { reward: 4500, message: '🎰 JACKPOT activated! +$4,500!', used: false },
         'moneybags': { reward: 4000, message: '💰 MONEYBAGS activated! +$4,000!', used: false },
         'casino': { reward: 3500, message: '🏆 CASINO activated! +$3,500!', used: false },
-        'lucky': { reward: 3000, message: '🍀 LUCKY activated! +$3,000!', used: false }
+        'lucky': { reward: 300000000, message: '🍀 LUCKY activated! +$3,000!', used: false }
       };
 
       // Load used codes from localStorage

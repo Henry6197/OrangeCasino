@@ -27,16 +27,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     {id:'poker_visitor', title:'♠️ Poker Face', desc:'Play poker', reward: 50, check:()=> (localStorage.getItem('ach_visited_poker') === '1')},
     {id:'scratch_visitor', title:'🎫 Scratcher', desc:'Try scratch-off tickets', reward: 50, check:()=> (localStorage.getItem('ach_visited_scratch') === '1')},
     
-    // Ghost Code Achievements
-    {id:'ghost_code_main', title:'👻 Main Casino Ghost', desc:'Use a ghost code in main casino', reward: 100, check:()=> (localStorage.getItem('ach_ghost_main') === '1')},
-    {id:'ghost_code_underground', title:'🌑 Underground Ghost', desc:'Use a ghost code underground', reward: 150, check:()=> (localStorage.getItem('ach_ghost_underground') === '1')},
-    {id:'ghost_code_master', title:'🔮 Code Master', desc:'Use 10 different ghost codes', reward: 500, check:()=> {
-      const used = ['main_codes_used', 'slot_codes_used', 'blackjack_codes_used', 'poker_codes_used', 'scratch_codes_used', 'underground_codes_used', 'roulette_codes_used', 'baccarat_codes_used', 'dogfight_codes_used', 'shop_codes_used', 'surgery_codes_used', 'hells_codes_used', 'coal_codes_used']
-        .map(key => JSON.parse(localStorage.getItem(key) || '{}'))
-        .reduce((total, codes) => total + Object.values(codes).filter(used => used).length, 0);
-      return used >= 10;
-    }},
-    
     // Medical Achievements
     {id:'surgery_visitor', title:'🏥 Emergency Medicine', desc:'Visit the surgery center', reward: 200, check:()=> (localStorage.getItem('ach_surgery_visited') === '1')},
     
@@ -67,9 +57,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const state = JSON.parse(localStorage.getItem('vc_achievements') || '{}');
       return Object.keys(state).length >= 25;
     }},
-    {id:'true_master', title:'👑 True Master', desc:'Unlock 35 achievements', reward: 4999, check:()=> {
+    {id:'true_master', title:'👑 True Master', desc:'Unlock all achievements', reward: 5000000, check:()=> {
       const state = JSON.parse(localStorage.getItem('vc_achievements') || '{}');
-      return Object.keys(state).length >= 35;
+      return Object.keys(state).length >= 34;
     }},
     
     // Hidden/Secret Achievements
@@ -199,16 +189,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     render(); 
   };
   
-  // Ghost Code Tracking
-  window.vc.markGhostCodeMain = function(){ 
-    localStorage.setItem('ach_ghost_main', '1'); 
-    render(); 
-  };
-  window.vc.markGhostCodeUnderground = function(){ 
-    localStorage.setItem('ach_ghost_underground', '1'); 
-    render(); 
-  };
-  
   // Special Location Tracking
   window.vc.markCoalMineVisited = function(){ 
     localStorage.setItem('vc_coal_mine_visited', '1'); 
@@ -307,6 +287,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
       window.vc.showBigMessage('🔄 All achievements reset!', 2000);
     }
   });
+
+  // Expose render function for external achievement checking
+  window.vc = window.vc || {};
+  window.vc.render = render;
 
   render();
 });

@@ -298,6 +298,7 @@
     </div>
 
     <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
       // Check if user actually owns the course
       function checkCourseAccess() {
@@ -327,6 +328,17 @@
         const earnAmount = 20 * multiplier; // Add $20 * multiplier every 5 seconds
         const newAvailable = currentAvailable + earnAmount;
         localStorage.setItem('vc_chads_course_available', String(newAvailable));
+        
+        // Track total earnings for achievement
+        const currentTotal = Number(localStorage.getItem('vc_chads_course_total_earned') || 0);
+        const newTotal = currentTotal + earnAmount;
+        localStorage.setItem('vc_chads_course_total_earned', String(newTotal));
+        
+        // Check for passive income achievement (earned $1,000+)
+        if (newTotal >= 1000 && window.vc && window.vc.render) {
+          window.vc.render(); // Refresh achievements to check for unlock
+        }
+        
         updateWithdrawalBalance();
       }
       

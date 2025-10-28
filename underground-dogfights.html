@@ -490,6 +490,9 @@
         <div class="container">🐕‍🦺 Underground Dog Fights — May the strongest survive.</div>
     </footer>
 
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/achievements.js"></script>
     <script>
         // Game state
         let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
@@ -637,6 +640,11 @@
             document.getElementById('startFightBtn').disabled = true;
             undergroundBalance -= betAmount;
             fightsWatched++;
+            
+            // Mark dog fight betting achievement on first bet
+            if (window.vc && window.vc.markDogfightBet) {
+                window.vc.markDogfightBet();
+            }
             
             // Show health bars
             document.getElementById('healthBars').style.display = 'flex';
