@@ -376,7 +376,13 @@
       });
 
       // Load used codes on page load
-      document.addEventListener('DOMContentLoaded', loadSurgeryUsedCodes);
+      document.addEventListener('DOMContentLoaded', function() {
+        loadSurgeryUsedCodes();
+        // Mark surgery as visited for achievement
+        if (window.vc && window.vc.markSurgeryVisited) {
+          window.vc.markSurgeryVisited();
+        }
+      });
     </script>
   </body>
 </html>

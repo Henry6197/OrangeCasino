@@ -38,9 +38,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }},
     
     // Medical Achievements
-    {id:'sell_kidney', title:'🫘 Organ Donor', desc:'Sell a kidney for cash', reward: 300, check:()=> (localStorage.getItem('vc_surgery_used') === '1')},
-    {id:'sell_appendix', title:'🩸 Appendix Sale', desc:'Sell your appendix', reward: 150, check:()=> (localStorage.getItem('vc_appendix_used') === '1')},
-    {id:'medical_tourist', title:'🏥 Medical Tourist', desc:'Visit both medical facilities', reward: 200, check:()=> (localStorage.getItem('vc_surgery_used') === '1' && localStorage.getItem('vc_appendix_used') === '1')},
+    {id:'surgery_visitor', title:'🏥 Emergency Medicine', desc:'Visit the surgery center', reward: 200, check:()=> (localStorage.getItem('ach_surgery_visited') === '1')},
     
     // Underground Achievements
     {id:'underground_access', title:'🕳️ Down The Rabbit Hole', desc:'Discover the underground casino', reward: 200, check:()=> (localStorage.getItem('ach_visited_underground') === '1')},
@@ -230,12 +228,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   };
   
   // Medical Tracking
-  window.vc.markSurgeryUsed = function(){ 
-    localStorage.setItem('vc_surgery_used', '1'); 
-    render(); 
-  };
-  window.vc.markAppendixUsed = function(){ 
-    localStorage.setItem('vc_appendix_used', '1'); 
+  window.vc.markSurgeryVisited = function(){ 
+    localStorage.setItem('ach_surgery_visited', '1'); 
     render(); 
   };
   
@@ -293,8 +287,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     localStorage.removeItem('ach_hells_escaped');
     
     // Remove medical tracking
-    localStorage.removeItem('vc_surgery_used');
-    localStorage.removeItem('vc_appendix_used');
+    localStorage.removeItem('ach_surgery_visited');
     
     // Remove business tracking
     localStorage.removeItem('vc_chads_course_owned');

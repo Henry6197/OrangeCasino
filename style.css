@@ -989,10 +989,25 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
 /* Remove duplicate poker styles - main styles are defined above */
 
 /* Buddy chat bubble */
-.buddy{position:fixed;right:20px;bottom:20px;width:360px;max-width:calc(100% - 40px);background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#071029;padding:18px;border-radius:18px;box-shadow:0 18px 46px rgba(0,0,0,0.18);font-weight:800;display:flex;gap:16px;align-items:center}
-.buddy img{width:120px;height:120px;border-radius:14px;flex:0 0 120px;object-fit:cover}
-.buddy .text{background:#fff;padding:12px 14px;border-radius:12px;color:#071029;font-weight:800;margin-top:0;line-height:1.15}
-.buddy .name{font-size:16px;opacity:0.98;font-weight:900}
+.buddy{position:fixed;right:20px;bottom:20px;width:360px;max-width:calc(100% - 40px);background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#071029;padding:18px;border-radius:18px;box-shadow:0 18px 46px rgba(0,0,0,0.18);font-weight:800;display:flex;gap:16px;align-items:center;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);transform:translateY(0);cursor:pointer}
+.buddy img{width:120px;height:120px;border-radius:14px;flex:0 0 120px;object-fit:cover;transition:all 0.3s ease}
+.buddy .text{background:#fff;padding:12px 14px;border-radius:12px;color:#071029;font-weight:800;margin-top:0;line-height:1.15;transition:all 0.3s ease}
+.buddy .name{font-size:16px;opacity:0.98;font-weight:900;position:relative}
+
+/* Collapsed state */
+.buddy.collapsed{transform:translateY(calc(100% - 60px));width:200px;padding:12px;gap:8px}
+.buddy.collapsed img{width:40px;height:40px;flex:0 0 40px}
+.buddy.collapsed .text{padding:6px 8px;font-size:12px;max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.buddy.collapsed .name{font-size:12px}
+
+/* Toggle button */
+.buddy-toggle{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;color:rgba(255,255,255,0.8);transition:all 0.2s ease;backdrop-filter:blur(5px)}
+.buddy-toggle:hover{background:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.5);transform:scale(1.1)}
+.buddy.collapsed .buddy-toggle{top:4px;right:4px;width:20px;height:20px;font-size:10px}
+
+/* Hover effects */
+.buddy:hover{box-shadow:0 22px 54px rgba(0,0,0,0.25);transform:translateY(-2px) scale(1.02)}
+.buddy.collapsed:hover{transform:translateY(calc(100% - 65px)) scale(1.02)}
 
 /* Make the buddy scale down on narrow screens */
 @media (max-width:520px){
@@ -1000,6 +1015,10 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   .buddy img{width:64px;height:64px;flex:0 0 64px}
   .buddy .name{font-size:13px}
   .buddy .text{padding:8px;font-size:13px}
+  .buddy.collapsed{width:160px;transform:translateY(calc(100% - 50px))}
+  .buddy.collapsed img{width:32px;height:32px;flex:0 0 32px}
+  .buddy.collapsed .text{font-size:11px;max-width:90px}
+  .buddy.collapsed .buddy-toggle{top:3px;right:3px;width:16px;height:16px;font-size:9px}
 }
 
 /* Big message overlay for win/loss */

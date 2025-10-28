@@ -393,6 +393,55 @@
     confetti(20);
   }
 
+  // Buddy Toggle System
+  function initBuddyToggle() {
+    const buddy = document.getElementById('buddy');
+    const buddyToggle = document.getElementById('buddy-toggle');
+    
+    if (!buddy || !buddyToggle) return;
+    
+    // Load saved state
+    const isCollapsed = localStorage.getItem('buddy_collapsed') === 'true';
+    if (isCollapsed) {
+      buddy.classList.add('collapsed');
+      buddyToggle.textContent = '+';
+    }
+    
+    // Toggle functionality
+    function toggleBuddy(e) {
+      e.stopPropagation();
+      const wasCollapsed = buddy.classList.contains('collapsed');
+      
+      if (wasCollapsed) {
+        // Expand
+        buddy.classList.remove('collapsed');
+        buddyToggle.textContent = '−';
+        localStorage.setItem('buddy_collapsed', 'false');
+        if (window.vc && window.vc.setBuddyText) {
+          setTimeout(() => window.vc.setBuddyText("I'm back! Ready to help you win big!"), 300);
+        }
+      } else {
+        // Collapse
+        buddy.classList.add('collapsed');
+        buddyToggle.textContent = '+';
+        localStorage.setItem('buddy_collapsed', 'true');
+        if (window.vc && window.vc.setBuddyText) {
+          window.vc.setBuddyText("Click + to bring me back!");
+        }
+      }
+    }
+    
+    // Add event listeners
+    buddyToggle.addEventListener('click', toggleBuddy);
+    
+    // Double-click anywhere on buddy (except toggle) to expand if collapsed
+    buddy.addEventListener('dblclick', (e) => {
+      if (e.target !== buddyToggle && buddy.classList.contains('collapsed')) {
+        toggleBuddy(e);
+      }
+    });
+  }
+
   window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, launderMoney };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
@@ -407,6 +456,9 @@
     // Initialize Donny Boy scrolling and background fix
     initDonnyBoyScrolling();
     fixBackgroundScroll();
+    
+    // Initialize Donny Boy toggle functionality
+    initBuddyToggle();
     
     // Check for active blood debt timer
     const lastLoanTime = localStorage.getItem('vc_last_blood_loan');

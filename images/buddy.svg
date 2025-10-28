@@ -1,184 +1,404 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-  <!-- Background with casino vibes -->
-  <circle cx="100" cy="100" r="95" fill="url(#casinoGlow)" stroke="url(#goldBorder)" stroke-width="4"/>
+  <!-- Epic Background with pulsing energy -->
+  <circle cx="100" cy="100" r="95" fill="url(#epicCasinoGlow)" stroke="url(#dynamicGoldBorder)" stroke-width="4">
+    <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
   
-  <!-- Body (suit jacket) -->
-  <ellipse cx="100" cy="145" rx="50" ry="50" fill="url(#suitGradient)"/>
+  <!-- Energy rings -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="url(#energyRing1)" stroke-width="2" opacity="0.6">
+    <animateTransform attributeName="transform" type="rotate" values="0 100 100;360 100 100" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="100" r="75" fill="none" stroke="url(#energyRing2)" stroke-width="1" opacity="0.4">
+    <animateTransform attributeName="transform" type="rotate" values="360 100 100;0 100 100" dur="12s" repeatCount="indefinite"/>
+  </circle>
   
-  <!-- Shirt -->
-  <ellipse cx="100" cy="135" rx="35" ry="35" fill="url(#shirtGradient)"/>
+  <!-- Epic suit jacket with shoulder pads -->
+  <ellipse cx="100" cy="145" rx="55" ry="55" fill="url(#epicSuitGradient)"/>
+  <path d="M 50 130 Q 60 120 75 125 Q 85 130 100 130 Q 115 130 125 125 Q 140 120 150 130 L 145 160 Q 100 170 55 160 Z" fill="url(#luxurySuitGradient)"/>
   
-  <!-- Tie (Trump's signature red tie) -->
-  <polygon points="100,120 95,130 100,160 105,130" fill="url(#trumpTieGradient)"/>
-  <circle cx="100" cy="125" r="3" fill="#ffd700"/>
-  <rect x="98" y="135" width="4" height="8" fill="#b71c1c"/>
+  <!-- Designer shirt with texture -->
+  <ellipse cx="100" cy="135" rx="38" ry="38" fill="url(#premiumShirtGradient)"/>
+  <rect x="90" y="115" width="20" height="40" fill="url(#shirtTexture)" opacity="0.3"/>
   
-  <!-- Head -->
-  <circle cx="100" cy="80" r="40" fill="url(#trumpFaceGradient)"/>
+  <!-- Legendary tie with diamond pattern -->
+  <polygon points="100,118 94,132 100,165 106,132" fill="url(#legendaryTieGradient)"/>
+  <circle cx="100" cy="125" r="4" fill="#ffd700" stroke="#fff" stroke-width="1"/>
+  <polygon points="98,140 102,140 100,145" fill="#ffd700"/>
+  <polygon points="98,155 102,155 100,160" fill="#ffd700"/>
   
-  <!-- Trump's distinctive hair -->
-  <path d="M 60 55 Q 75 35 100 38 Q 125 35 140 55 Q 135 45 125 50 Q 110 40 100 42 Q 90 40 75 50 Q 65 45 60 55" fill="url(#trumpHairGradient)"/>
-  <path d="M 95 40 Q 105 35 115 42 Q 110 38 105 40 Q 100 38 95 40" fill="url(#trumpHairGradient)"/>
+  <!-- Majestic head with divine glow -->
+  <circle cx="100" cy="80" r="42" fill="url(#divineHeadGradient)" stroke="url(#headHalo)" stroke-width="2" opacity="0.8"/>
   
-  <!-- Trump's Eyes -->
-  <ellipse cx="90" cy="75" rx="8" ry="6" fill="#fff"/>
-  <ellipse cx="110" cy="75" rx="8" ry="6" fill="#fff"/>
-  <circle cx="90" cy="75" r="4" fill="#4a90e2"/>
-  <circle cx="110" cy="75" r="4" fill="#4a90e2"/>
-  <circle cx="91" cy="74" r="2" fill="#000"/>
-  <circle cx="111" cy="74" r="2" fill="#000"/>
+  <!-- Legendary Hair with Dynamic Flow -->
+  <path d="M 58 50 Q 70 28 100 32 Q 130 28 142 50 Q 140 38 128 42 Q 115 32 100 35 Q 85 32 72 42 Q 60 38 58 50" fill="url(#epicHairGradient)">
+    <animateTransform attributeName="transform" type="translate" values="0,0;-1,1;0,0;1,-1;0,0" dur="4s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 92 35 Q 100 28 108 35 Q 104 32 100 33 Q 96 32 92 35" fill="url(#epicHairGradient)">
+    <animateTransform attributeName="transform" type="translate" values="0,0;0.5,-0.5;0,0;-0.5,0.5;0,0" dur="3s" repeatCount="indefinite"/>
+  </path>
   
-  <!-- Eyebrows -->
-  <path d="M 80 68 Q 90 65 98 68" stroke="#d2691e" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M 102 68 Q 110 65 120 68" stroke="#d2691e" stroke-width="3" fill="none" stroke-linecap="round"/>
-  
-  <!-- Trump's distinctive smile/mouth -->
-  <ellipse cx="100" cy="92" rx="12" ry="4" fill="#d4584a"/>
-  <path d="M 90 90 Q 100 95 110 90" stroke="#b8321f" stroke-width="2" fill="none" stroke-linecap="round"/>
-  
-  <!-- Nose -->
-  <ellipse cx="100" cy="82" rx="4" ry="6" fill="url(#noseGradient)"/>
-  
-  <!-- Arms in confident pose -->
-  <ellipse cx="55" cy="125" rx="15" ry="30" fill="url(#suitGradient)" transform="rotate(-25 55 125)"/>
-  <ellipse cx="145" cy="125" rx="15" ry="30" fill="url(#suitGradient)" transform="rotate(25 145 125)"/>
-  
-  <!-- Hands with casino chips -->
-  <g id="leftHand" transform="translate(40,140) rotate(-30)">
-    <circle cx="0" cy="0" r="10" fill="url(#handGradient)"/>
-    <!-- Casino chip -->
-    <circle cx="-5" cy="-8" r="5" fill="#ff4757" stroke="#fff" stroke-width="1"/>
-    <text x="-5" y="-6" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">$100</text>
+  <!-- Epic Sunglasses (Casino Boss Style) -->
+  <g id="epicSunglasses">
+    <ellipse cx="88" cy="73" rx="12" ry="8" fill="url(#aviatorLensLeft)" stroke="#ffd700" stroke-width="2"/>
+    <ellipse cx="112" cy="73" rx="12" ry="8" fill="url(#aviatorLensRight)" stroke="#ffd700" stroke-width="2"/>
+    <path d="M 100 71 Q 102 69 104 71" stroke="#ffd700" stroke-width="2" fill="none"/>
+    <path d="M 76 73 Q 70 71 65 73" stroke="#ffd700" stroke-width="2" fill="none"/>
+    <path d="M 124 73 Q 130 71 135 73" stroke="#ffd700" stroke-width="2" fill="none"/>
+    
+    <!-- Reflection effects -->
+    <ellipse cx="85" cy="70" rx="4" ry="3" fill="rgba(255,255,255,0.3)"/>
+    <ellipse cx="109" cy="70" rx="4" ry="3" fill="rgba(255,255,255,0.3)"/>
   </g>
   
-  <g id="rightHand" transform="translate(160,140) rotate(30)">
-    <circle cx="0" cy="0" r="10" fill="url(#handGradient)"/>
-    <!-- Casino chip -->
-    <circle cx="5" cy="-8" r="5" fill="#2ed573" stroke="#fff" stroke-width="1"/>
-    <text x="5" y="-6" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle">$500</text>
+  <!-- Power Eyebrows -->
+  <path d="M 78 65 Q 88 60 98 65" stroke="url(#powerBrowGradient)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M 102 65 Q 112 60 122 65" stroke="url(#powerBrowGradient)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  
+  <!-- Confident Smirk -->
+  <path d="M 88 88 Q 100 94 112 88" stroke="url(#smirkGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="90" rx="8" ry="3" fill="url(#mouthGradient)"/>
+  
+  <!-- Distinguished Nose -->
+  <ellipse cx="100" cy="80" rx="5" ry="7" fill="url(#noseGradient)"/>
+  <ellipse cx="100" cy="78" rx="2" ry="1" fill="rgba(255,255,255,0.4)"/>
+  
+  <!-- Power Arms with Dynamic Movement -->
+  <ellipse cx="52" cy="125" rx="18" ry="32" fill="url(#epicSuitGradient)" transform="rotate(-30 52 125)">
+    <animateTransform attributeName="transform" type="rotate" values="-30 52 125;-25 52 125;-30 52 125" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="148" cy="125" rx="18" ry="32" fill="url(#epicSuitGradient)" transform="rotate(30 148 125)">
+    <animateTransform attributeName="transform" type="rotate" values="30 148 125;25 148 125;30 148 125" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- Epic Hands with Floating Casino Elements -->
+  <g id="leftHand" transform="translate(35,145) rotate(-35)">
+    <circle cx="0" cy="0" r="12" fill="url(#handGradient)" stroke="#ffd700" stroke-width="1"/>
+    <!-- Floating casino chips with animation -->
+    <g id="leftChips">
+      <circle cx="-8" cy="-12" r="6" fill="#ff4757" stroke="#fff" stroke-width="2">
+        <animate attributeName="cy" values="-12;-15;-12" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="-8" y="-9" font-family="Arial" font-size="5" fill="#fff" text-anchor="middle" font-weight="bold">$1K</text>
+      
+      <circle cx="0" cy="-18" r="5" fill="#2ed573" stroke="#fff" stroke-width="2">
+        <animate attributeName="cy" values="-18;-21;-18" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="0" y="-16" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle" font-weight="bold">$5K</text>
+    </g>
   </g>
   
-  <!-- Bow tie -->
-  <polygon points="90,115 110,115 105,120 110,125 90,125 95,120" fill="#ff6348"/>
-  <rect x="98" y="117" width="4" height="6" fill="#c23616"/>
-  
-  <!-- Name badge (VIP style) -->
-  <rect x="70" y="170" width="60" height="20" rx="5" fill="url(#badgeGradient)" stroke="#ffd700" stroke-width="2"/>
-  <text x="100" y="177" font-family="Arial" font-size="8" fill="#fff" text-anchor="middle" font-weight="bold">CASINO HOST</text>
-    <text x="100" y="186" font-family="Arial" font-size="10" fill="#ffd700" text-anchor="middle" font-weight="bold">DONNY BOY</text>
-  
-  <!-- Floating casino elements -->
-  <g id="floatingElements">
-    <!-- Dice -->
-    <g transform="translate(35,45)">
-      <rect x="0" y="0" width="12" height="12" rx="2" fill="#fff" stroke="#ddd">
-        <animateTransform attributeName="transform" type="rotate" values="0 6 6;360 6 6" dur="4s" repeatCount="indefinite"/>
+  <g id="rightHand" transform="translate(165,145) rotate(35)">
+    <circle cx="0" cy="0" r="12" fill="url(#handGradient)" stroke="#ffd700" stroke-width="1"/>
+    <!-- Floating dice and cards -->
+    <g id="rightElements">
+      <rect x="5" y="-15" width="10" height="10" rx="2" fill="#fff" stroke="#333" stroke-width="1">
+        <animateTransform attributeName="transform" type="rotate" values="0 10 -10;360 10 -10" dur="4s" repeatCount="indefinite"/>
       </rect>
-      <circle cx="3" cy="3" r="1" fill="#333"/>
-      <circle cx="9" cy="9" r="1" fill="#333"/>
-      <circle cx="3" cy="9" r="1" fill="#333"/>
-      <circle cx="9" cy="3" r="1" fill="#333"/>
+      <circle cx="7" cy="-13" r="1" fill="#333"/>
+      <circle cx="13" cy="-7" r="1" fill="#333"/>
+      <circle cx="7" cy="-7" r="1" fill="#333"/>
+      <circle cx="13" cy="-13" r="1" fill="#333"/>
+      <circle cx="10" cy="-10" r="1" fill="#333"/>
+      <circle cx="10" cy="-6" r="1" fill="#333"/>
+    </g>
+  </g>
+  
+  <!-- Luxury Diamond Bow Tie -->
+  <g id="diamondBowTie">
+    <polygon points="88,113 112,113 108,118 112,123 88,123 92,118" fill="url(#diamondTieGradient)"/>
+    <rect x="98" y="115" width="4" height="8" fill="url(#tieCenter)"/>
+    <circle cx="90" cy="116" r="1.5" fill="#ffd700" opacity="0.8"/>
+    <circle cx="110" cy="116" r="1.5" fill="#ffd700" opacity="0.8"/>
+    <circle cx="90" cy="120" r="1.5" fill="#ffd700" opacity="0.8"/>
+    <circle cx="110" cy="120" r="1.5" fill="#ffd700" opacity="0.8"/>
+  </g>
+  
+  <!-- Elite VIP Badge with Pulsing Effects -->
+  <rect x="65" y="168" width="70" height="25" rx="8" fill="url(#eliteBadgeGradient)" stroke="url(#badgeBorder)" stroke-width="3">
+    <animate attributeName="stroke-opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+  </rect>
+  <text x="100" y="177" font-family="Arial" font-size="7" fill="#ffd700" text-anchor="middle" font-weight="bold">⭐ CASINO LEGEND ⭐</text>
+  <text x="100" y="186" font-family="Arial" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">DONNY BOY</text>
+  
+  <!-- Crown above head -->
+  <g id="crownOfPower" transform="translate(100,45)">
+    <polygon points="-15,0 -10,-8 -5,0 0,-12 5,0 10,-8 15,0 10,5 -10,5" fill="url(#crownGradient)" stroke="#ffd700" stroke-width="1">
+      <animate attributeName="transform" values="translate(100,45) scale(1);translate(100,43) scale(1.05);translate(100,45) scale(1)" dur="3s" repeatCount="indefinite"/>
+    </polygon>
+    <circle cx="-8" cy="-4" r="2" fill="#ff4757"/>
+    <circle cx="0" cy="-8" r="2.5" fill="#2ed573"/>
+    <circle cx="8" cy="-4" r="2" fill="#3742fa"/>
+  </g>
+  
+  <!-- Epic Floating Elements -->
+  <g id="epicFloatingElements">
+    <!-- Magical Dice -->
+    <g transform="translate(25,35)">
+      <rect x="0" y="0" width="15" height="15" rx="3" fill="url(#magicDiceGradient)" stroke="#ffd700" stroke-width="1">
+        <animateTransform attributeName="transform" type="rotate" values="0 7.5 7.5;360 7.5 7.5" dur="5s" repeatCount="indefinite"/>
+      </rect>
+      <circle cx="4" cy="4" r="1.5" fill="#fff"/>
+      <circle cx="11" cy="11" r="1.5" fill="#fff"/>
+      <circle cx="4" cy="11" r="1.5" fill="#fff"/>
+      <circle cx="11" cy="4" r="1.5" fill="#fff"/>
+      <circle cx="7.5" cy="7.5" r="1.5" fill="#fff"/>
     </g>
     
-    <!-- Playing card -->
-    <g transform="translate(155,35)">
-      <rect x="0" y="0" width="15" height="20" rx="2" fill="#fff" stroke="#ddd">
-        <animateTransform attributeName="transform" type="rotate" values="0 7.5 10;-10 7.5 10;0 7.5 10" dur="3s" repeatCount="indefinite"/>
+    <!-- Royal Playing Card -->
+    <g transform="translate(160,25)">
+      <rect x="0" y="0" width="18" height="25" rx="3" fill="url(#royalCardGradient)" stroke="#ffd700" stroke-width="2">
+        <animateTransform attributeName="transform" type="rotate" values="0 9 12.5;-15 9 12.5;0 9 12.5;15 9 12.5;0 9 12.5" dur="4s" repeatCount="indefinite"/>
       </rect>
-      <text x="7.5" y="8" font-family="Arial" font-size="6" fill="#ff4757" text-anchor="middle">A</text>
-      <text x="7.5" y="16" font-family="Arial" font-size="8" fill="#ff4757" text-anchor="middle">♠</text>
+      <text x="9" y="10" font-family="Arial" font-size="8" fill="#ff4757" text-anchor="middle" font-weight="bold">K</text>
+      <text x="9" y="20" font-family="Arial" font-size="10" fill="#ff4757" text-anchor="middle">♥</text>
     </g>
     
-    <!-- Gold coins -->
-    <circle cx="45" cy="160" r="4" fill="#ffd700" stroke="#ffbe00" stroke-width="1">
-      <animate attributeName="cy" values="160;155;160" dur="2s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="155" cy="165" r="3" fill="#ffd700" stroke="#ffbe00" stroke-width="1">
-      <animate attributeName="cy" values="165;170;165" dur="2.5s" repeatCount="indefinite"/>
-    </circle>
-  </g>
-  
-  <!-- Sparkle effects -->
-  <g id="luxurySparkles">
-    <g transform="translate(75,50)">
-      <path d="M0,-8 L2,0 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,0 Z" fill="#ffd700" opacity="0.8">
-        <animateTransform attributeName="transform" type="scale" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
-      </path>
-    </g>
-    <g transform="translate(125,55)">
-      <path d="M0,-6 L1.5,0 L6,0 L1.5,1.5 L0,6 L-1.5,1.5 L-6,0 L-1.5,0 Z" fill="#ffd700" opacity="0.6">
-        <animateTransform attributeName="transform" type="scale" values="0.3;0.8;0.3" dur="2.8s" repeatCount="indefinite"/>
-      </path>
-    </g>
-    <g transform="translate(60,130)">
-      <path d="M0,-4 L1,0 L4,0 L1,1 L0,4 L-1,1 L-4,0 L-1,0 Z" fill="#ffd700" opacity="0.7">
-        <animateTransform attributeName="transform" type="scale" values="0.4;0.9;0.4" dur="1.8s" repeatCount="indefinite"/>
-      </path>
+    <!-- Floating Money -->
+    <g id="floatingMoney">
+      <circle cx="35" cy="160" r="5" fill="url(#coinGradient)" stroke="#ffbe00" stroke-width="2">
+        <animate attributeName="cy" values="160;150;160" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="transform" values="scale(1);scale(1.1);scale(1)" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <text x="35" y="163" font-family="Arial" font-size="5" fill="#fff" text-anchor="middle" font-weight="bold">$</text>
+      
+      <circle cx="165" cy="155" r="4" fill="url(#coinGradient)" stroke="#ffbe00" stroke-width="1">
+        <animate attributeName="cy" values="155;165;155" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="165" y="158" font-family="Arial" font-size="4" fill="#fff" text-anchor="middle" font-weight="bold">$</text>
     </g>
   </g>
   
-  <!-- Gradients and effects -->
+  <!-- Epic Power Sparkles -->
+  <g id="epicPowerSparkles">
+    <g transform="translate(70,40)">
+      <path d="M0,-12 L3,0 L12,0 L3,3 L0,12 L-3,3 L-12,0 L-3,0 Z" fill="url(#sparkle1)" opacity="0.9">
+        <animateTransform attributeName="transform" type="scale" values="0.6;1.2;0.6" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g transform="translate(130,50)">
+      <path d="M0,-10 L2.5,0 L10,0 L2.5,2.5 L0,10 L-2.5,2.5 L-10,0 L-2.5,0 Z" fill="url(#sparkle2)" opacity="0.8">
+        <animateTransform attributeName="transform" type="scale" values="0.4;1;0.4" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g transform="translate(50,120)">
+      <path d="M0,-6 L1.5,0 L6,0 L1.5,1.5 L0,6 L-1.5,1.5 L-6,0 L-1.5,0 Z" fill="url(#sparkle3)" opacity="0.7">
+        <animateTransform attributeName="transform" type="scale" values="0.5;1.1;0.5" dur="1.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <g transform="translate(150,130)">
+      <path d="M0,-8 L2,0 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,0 Z" fill="url(#sparkle4)" opacity="0.8">
+        <animateTransform attributeName="transform" type="scale" values="0.3;0.9;0.3" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+  
+  <!-- Money Rain Effect -->
+  <g id="moneyRain">
+    <text x="45" y="20" font-family="Arial" font-size="12" fill="#2ed573" font-weight="bold">$</text>
+    <text x="155" y="15" font-family="Arial" font-size="10" fill="#ffd700" font-weight="bold">$</text>
+    <text x="30" y="75" font-family="Arial" font-size="8" fill="#ff4757" font-weight="bold">$</text>
+    <text x="170" y="80" font-family="Arial" font-size="9" fill="#3742fa" font-weight="bold">$</text>
+    
+    <animateTransform attributeName="transform" type="translate" values="0,0;0,10;0,0" dur="4s" repeatCount="indefinite"/>
+  </g>
+  
+  <!-- Epic Gradients and Effects -->
   <defs>
-    <radialGradient id="casinoGlow" cx="50%" cy="40%">
-      <stop offset="0%" stop-color="#1a1a2e"/>
+    <radialGradient id="epicCasinoGlow" cx="50%" cy="30%">
+      <stop offset="0%" stop-color="#0a0a23"/>
+      <stop offset="30%" stop-color="#1a1a2e"/>
       <stop offset="70%" stop-color="#16213e"/>
-      <stop offset="100%" stop-color="#0f1419"/>
+      <stop offset="100%" stop-color="#0f0f23"/>
     </radialGradient>
     
-    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="dynamicGoldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ffd700"/>
-      <stop offset="50%" stop-color="#ffed4e"/>
-      <stop offset="100%" stop-color="#f39c12"/>
+      <stop offset="25%" stop-color="#ffed4e"/>
+      <stop offset="50%" stop-color="#f39c12"/>
+      <stop offset="75%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#e67e22"/>
     </linearGradient>
     
-    <linearGradient id="trumpFaceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffb347"/>
-      <stop offset="50%" stop-color="#ff8c42"/>
-      <stop offset="100%" stop-color="#ff7518"/>
+    <linearGradient id="energyRing1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffd700" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffd700" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
     </linearGradient>
     
-    <linearGradient id="suitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2d3436"/>
-      <stop offset="100%" stop-color="#636e72"/>
+    <linearGradient id="energyRing2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e74c3c" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#e74c3c" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#e74c3c" stop-opacity="0"/>
     </linearGradient>
     
-    <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="divineHeadGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffcc80"/>
+      <stop offset="30%" stop-color="#ffb74d"/>
+      <stop offset="70%" stop-color="#ff8a65"/>
+      <stop offset="100%" stop-color="#ff7043"/>
+    </linearGradient>
+    
+    <linearGradient id="headHalo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#ffeb3b"/>
+    </linearGradient>
+    
+    <linearGradient id="epicSuitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="50%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    
+    <linearGradient id="luxurySuitGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="50%" stop-color="#4b5563"/>
+      <stop offset="100%" stop-color="#6b7280"/>
+    </linearGradient>
+    
+    <linearGradient id="premiumShirtGradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#f8f9fa"/>
+      <stop offset="50%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
     </linearGradient>
     
-    <linearGradient id="trumpTieGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#f44336"/>
-      <stop offset="50%" stop-color="#d32f2f"/>
-      <stop offset="100%" stop-color="#b71c1c"/>
+    <linearGradient id="shirtTexture" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="50%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
     </linearGradient>
     
-    <linearGradient id="trumpHairGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffd700"/>
-      <stop offset="50%" stop-color="#ffb347"/>
-      <stop offset="100%" stop-color="#d2691e"/>
+    <linearGradient id="legendaryTieGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="25%" stop-color="#ef4444"/>
+      <stop offset="50%" stop-color="#b91c1c"/>
+      <stop offset="75%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    
+    <linearGradient id="epicHairGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="30%" stop-color="#f59e0b"/>
+      <stop offset="70%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#92400e"/>
+    </linearGradient>
+    
+    <linearGradient id="aviatorLensLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    
+    <linearGradient id="aviatorLensRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    
+    <linearGradient id="powerBrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    
+    <linearGradient id="smirkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c2d12"/>
+      <stop offset="50%" stop-color="#a3381a"/>
+      <stop offset="100%" stop-color="#7c2d12"/>
+    </linearGradient>
+    
+    <linearGradient id="mouthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626"/>
     </linearGradient>
     
     <linearGradient id="noseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffb347"/>
-      <stop offset="100%" stop-color="#ff8c42"/>
+      <stop offset="0%" stop-color="#ffb380"/>
+      <stop offset="100%" stop-color="#ff8a50"/>
     </linearGradient>
     
     <linearGradient id="handGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffeaa7"/>
-      <stop offset="100%" stop-color="#fdcb6e"/>
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="50%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#fb923c"/>
     </linearGradient>
     
-    <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2d3436"/>
-      <stop offset="100%" stop-color="#636e72"/>
+    <linearGradient id="diamondTieGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="25%" stop-color="#8b5cf6"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="75%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
     </linearGradient>
     
-    <linearGradient id="aviatorLens" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#74b9ff"/>
-      <stop offset="50%" stop-color="#0984e3"/>
-      <stop offset="100%" stop-color="#2d3436"/>
+    <linearGradient id="tieCenter" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
     </linearGradient>
+    
+    <linearGradient id="eliteBadgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="50%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#4b5563"/>
+    </linearGradient>
+    
+    <linearGradient id="badgeBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#fcd34d"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    
+    <linearGradient id="crownGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    
+    <linearGradient id="magicDiceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3f4f6"/>
+      <stop offset="50%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#d1d5db"/>
+    </linearGradient>
+    
+    <linearGradient id="royalCardGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="50%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    
+    <!-- Sparkle Gradients -->
+    <radialGradient id="sparkle1" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="70%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </radialGradient>
+    
+    <radialGradient id="sparkle2" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="70%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </radialGradient>
+    
+    <radialGradient id="sparkle3" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="70%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </radialGradient>
+    
+    <radialGradient id="sparkle4" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="70%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
   </defs>
 </svg>
