@@ -393,7 +393,7 @@
     confetti(20);
   }
 
-  // Ads Toggle System
+  // Ads Toggle System - Enhanced
   function initAdsToggle() {
     const adsToggle = document.getElementById('ads-toggle');
     if (!adsToggle) return;
@@ -402,19 +402,42 @@
     const adsHidden = localStorage.getItem('ads_hidden') === 'true';
     updateAdsVisibility(adsHidden);
     
-    // Toggle functionality
+    // Toggle functionality with smooth animation
     adsToggle.addEventListener('click', () => {
       const currentlyHidden = document.body.classList.contains('ads-hidden');
       const newState = !currentlyHidden;
       
-      updateAdsVisibility(newState);
-      localStorage.setItem('ads_hidden', newState.toString());
+      // Add loading state briefly
+      adsToggle.style.transform = 'scale(0.95)';
+      adsToggle.style.opacity = '0.7';
       
-      // Show feedback message
-      if (window.vc && window.vc.setBuddyText) {
-        const message = newState ? "Ads hidden! Much cleaner!" : "Ads are back! Sorry about that...";
-        window.vc.setBuddyText(message);
-      }
+      setTimeout(() => {
+        updateAdsVisibility(newState);
+        localStorage.setItem('ads_hidden', newState.toString());
+        
+        // Reset button animation
+        adsToggle.style.transform = '';
+        adsToggle.style.opacity = '';
+        
+        // Show feedback message
+        if (window.vc && window.vc.setBuddyText) {
+          const message = newState ? 
+            "🎯 Ads hidden! Clean gaming experience activated!" : 
+            "📺 Ads restored! Supporting the casino experience!";
+          window.vc.setBuddyText(message);
+        }
+        
+        // Show feedback popup
+        if (window.vc && window.vc.showBigMessage) {
+          const popupMessage = newState ? "ADS HIDDEN 🚫" : "ADS RESTORED 📺";
+          window.vc.showBigMessage(popupMessage, 1200);
+        }
+        
+        // Small confetti burst for satisfaction
+        if (window.vc && window.vc.confetti) {
+          window.vc.confetti(8);
+        }
+      }, 100);
     });
   }
   
@@ -422,14 +445,19 @@
     const adsToggle = document.getElementById('ads-toggle');
     if (!adsToggle) return;
     
+    // Clear all state classes first
+    adsToggle.classList.remove('hide-state', 'show-state');
+    
     if (hidden) {
       document.body.classList.add('ads-hidden');
-      adsToggle.textContent = '👁️ Show Ads';
-      adsToggle.title = 'Click to show advertisements';
+      adsToggle.innerHTML = '<span class="icon">👁️</span>Show Ads';
+      adsToggle.title = 'Click to show advertisements and support the casino';
+      adsToggle.classList.add('show-state');
     } else {
       document.body.classList.remove('ads-hidden');
-      adsToggle.textContent = '🚫 Hide Ads';
-      adsToggle.title = 'Click to hide advertisements';
+      adsToggle.innerHTML = '<span class="icon">🚫</span>Hide Ads';
+      adsToggle.title = 'Click to hide advertisements for cleaner experience';
+      adsToggle.classList.add('hide-state');
     }
   }
 

@@ -38,6 +38,16 @@
           <p class="welcome-subtitle">The hottest casino experience on the web! Pick your game and start winning big!</p>
         </div>
   
+        <!-- Promo Code Section -->
+        <div class="promo-code-section">
+          <h3 class="promo-title">💰 Got a Promo Code? 💰</h3>
+          <div class="promo-input-group">
+            <input type="text" id="promoCodeInput" placeholder="Enter promo code..." maxlength="20" onkeypress="handlePromoKeyPress(event)">
+            <button onclick="checkPromoCode()" class="promo-button">REDEEM</button>
+          </div>
+          <div id="code-message" class="code-message"></div>
+        </div>
+        
         <!-- Main Games Section -->
         <div class="games-section">
           <h3 class="section-title">🎲 Choose Your Game</h3>
@@ -182,8 +192,7 @@
         }, 5000);
       });
 
-      // Ghost Code System for Main Casino
-      let mainCheatSequence = [];
+      // Normal Input Code System for Main Casino
       const mainCodes = {
         'richkid': { reward: 4999, message: '🎉 RICHKID activated! +$4,999!', used: false },
         'jackpot': { reward: 4500, message: '🎰 JACKPOT activated! +$4,500!', used: false },
@@ -214,51 +223,70 @@
         localStorage.setItem('main_codes_used', JSON.stringify(usedCodes));
       }
 
-      document.addEventListener('keydown', function(e) {
-        mainCheatSequence.push(e.key.toLowerCase());
+      // Check promo code function
+      function checkPromoCode() {
+        const codeInput = document.getElementById('promoCodeInput');
+        const code = codeInput.value.toLowerCase().trim();
         
-        // Check against all codes
-        Object.keys(mainCodes).forEach(code => {
-          if (mainCheatSequence.length >= code.length) {
-            const recentKeys = mainCheatSequence.slice(-code.length).join('');
-            
-            if (recentKeys === code && !mainCodes[code].used) {
-              // Code matched and not used yet
-              const currentBalance = window.vc.readBalance();
-              window.vc.writeBalance(currentBalance + mainCodes[code].reward);
-              
-              // Show message
-              const messageDiv = document.getElementById('code-message');
-              if (messageDiv) {
-                messageDiv.textContent = mainCodes[code].message;
-                messageDiv.style.color = '#4CAF50';
-                setTimeout(() => {
-                  messageDiv.textContent = '';
-                }, 5000);
-              }
-              
-              // Show confetti and big message
-              if (window.vc.confetti) window.vc.confetti();
-              if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
-              
-              // Mark ghost code achievement
-              if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
-              
-              // Mark as used
-              mainCodes[code].used = true;
-              saveUsedCodes();
-              
-              // Reset sequence
-              mainCheatSequence = [];
-            }
+        if (mainCodes[code] && !mainCodes[code].used) {
+          // Valid code that hasn't been used
+          const currentBalance = window.vc.readBalance();
+          window.vc.writeBalance(currentBalance + mainCodes[code].reward);
+          
+          // Show success message
+          const messageDiv = document.getElementById('code-message');
+          if (messageDiv) {
+            messageDiv.textContent = mainCodes[code].message;
+            messageDiv.style.color = '#4CAF50';
+            setTimeout(() => {
+              messageDiv.textContent = '';
+            }, 5000);
           }
-        });
-        
-        // Keep sequence reasonable length
-        if (mainCheatSequence.length > 20) {
-          mainCheatSequence = mainCheatSequence.slice(-20);
+          
+          // Show confetti and big message
+          if (window.vc.confetti) window.vc.confetti();
+          if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
+          
+          // Mark achievement
+          if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+          
+          // Mark as used
+          mainCodes[code].used = true;
+          saveUsedCodes();
+          
+          // Clear input
+          codeInput.value = '';
+        } else if (mainCodes[code] && mainCodes[code].used) {
+          // Code exists but already used
+          const messageDiv = document.getElementById('code-message');
+          if (messageDiv) {
+            messageDiv.textContent = '❌ Code already used!';
+            messageDiv.style.color = '#f44336';
+            setTimeout(() => {
+              messageDiv.textContent = '';
+            }, 3000);
+          }
+          codeInput.value = '';
+        } else {
+          // Invalid code
+          const messageDiv = document.getElementById('code-message');
+          if (messageDiv) {
+            messageDiv.textContent = '❌ Invalid promo code!';
+            messageDiv.style.color = '#f44336';
+            setTimeout(() => {
+              messageDiv.textContent = '';
+            }, 3000);
+          }
+          codeInput.value = '';
         }
-      });
+      }
+
+      // Allow Enter key to submit
+      function handlePromoKeyPress(event) {
+        if (event.key === 'Enter') {
+          checkPromoCode();
+        }
+      }
 
       // Load used codes on page load
       document.addEventListener('DOMContentLoaded', loadUsedCodes);

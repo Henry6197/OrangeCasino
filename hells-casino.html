@@ -285,6 +285,95 @@
             transition: width 1s ease;
             box-shadow: 0 0 20px var(--hell-fire);
         }
+        
+        /* Hell's Escape Code Interface */
+        .hell-escape-panel {
+            background: linear-gradient(135deg, #2a0a0a, #1a0505);
+            border: 2px solid var(--hell-fire);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+            animation: hellPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes hellPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 69, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 69, 0, 0.8); }
+        }
+        
+        .hell-escape-title {
+            color: var(--hell-fire);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+        }
+        
+        .hell-escape-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        #hellsEscapeCodeInput {
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--hell-fire);
+            border: 2px solid #666;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            flex: 1;
+            max-width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        #hellsEscapeCodeInput:focus {
+            outline: none;
+            border-color: var(--hell-fire);
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+            color: #fff;
+        }
+        
+        .hell-escape-button {
+            background: linear-gradient(135deg, var(--hell-fire), var(--hell-ember));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hell-escape-button:hover {
+            background: linear-gradient(135deg, #ff6b35, var(--hell-fire));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 69, 0, 0.6);
+        }
+        
+        .hell-escape-button:active {
+            transform: translateY(0);
+        }
+        
+        .hell-escape-hint {
+            color: #999;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -304,6 +393,16 @@
             <div class="wins-needed">
                 <span id="wins-count">0</span> / 10 Wins
             </div>
+        </div>
+        
+        <!-- Escape Code Interface -->
+        <div class="hell-escape-panel">
+            <div class="hell-escape-title">👹 Demonic Override System</div>
+            <div class="hell-escape-input-group">
+                <input type="text" id="hellsEscapeCodeInput" placeholder="Enter infernal code..." maxlength="20">
+                <button onclick="checkHellsEscapeCode()" class="hell-escape-button">INVOKE</button>
+            </div>
+            <div class="hell-escape-hint">🔥 Some say there's a word that can break even Hell's chains...</div>
         </div>
         
         <div class="escape-progress">
@@ -523,96 +622,33 @@
             }
         });
         
-        // Ghost Code System for Hell's Casino
-        let cheatSequence = [];
-        const hellsCodes = {
-            'hellout': { effect: 'escape', message: '🔑 HELLOUT - Escaping Hell\'s Casino!', used: false },
-            'demon': { effect: 'boost', reward: 10, message: '👹 DEMON - +10 wins added!', used: false },
-            'fire': { effect: 'boost', reward: 8, message: '🔥 FIRE - +8 wins added!', used: false },
-            'satan': { effect: 'boost', reward: 6, message: '😈 SATAN - +6 wins added!', used: false },
-            'hell': { effect: 'boost', reward: 4, message: '🔥 HELL - +4 wins added!', used: false }
-        };
-
-        // Load used codes from localStorage
-        function loadHellsUsedCodes() {
-            const saved = localStorage.getItem('hells_codes_used');
-            if (saved) {
-                const usedCodes = JSON.parse(saved);
-                Object.keys(usedCodes).forEach(code => {
-                    if (hellsCodes[code]) {
-                        hellsCodes[code].used = usedCodes[code];
-                    }
-                });
+        // Normal input code system for Hell's Casino escape
+        function checkHellsEscapeCode() {
+            const codeInput = document.getElementById('hellsEscapeCodeInput');
+            const code = codeInput.value.toLowerCase().trim();
+            
+            if (code === 'hellout') {
+                logMessage('🔑 ESCAPE CODE ACTIVATED: HELLOUT', 'win');
+                logMessage('👹 The demons are not pleased, but a deal is a deal...', 'system');
+                
+                // Clear soul debt and escape immediately
+                localStorage.setItem('baccarat_soul_debt', '0');
+                localStorage.removeItem('hells_casino_spins');
+                localStorage.removeItem('hells_casino_wins');
+                
+                setTimeout(() => {
+                    alert('🔑 ESCAPE CODE SUCCESS! You used "HELLOUT" to escape Hell\'s Casino!');
+                    window.location.href = 'underground.html';
+                }, 2000);
+            } else {
+                logMessage('❌ Invalid escape code! The demons laugh at your feeble attempt...', 'loss');
+                codeInput.value = '';
             }
         }
-
-        // Save used codes to localStorage
-        function saveHellsUsedCodes() {
-            const usedCodes = {};
-            Object.keys(hellsCodes).forEach(code => {
-                usedCodes[code] = hellsCodes[code].used;
-            });
-            localStorage.setItem('hells_codes_used', JSON.stringify(usedCodes));
-        }
-        
-        document.addEventListener('keydown', function(e) {
-            cheatSequence.push(e.key.toLowerCase());
-            
-            // Debug: Show last few keys in console
-            if (cheatSequence.length > 5) {
-                console.log('Last keys:', cheatSequence.slice(-10).join(''));
-            }
-            
-            // Check against all codes
-            Object.keys(hellsCodes).forEach(code => {
-                if (cheatSequence.length >= code.length) {
-                    const recentKeys = cheatSequence.slice(-code.length).join('');
-                    
-                    if (recentKeys === code && !hellsCodes[code].used) {
-                        if (hellsCodes[code].effect === 'escape') {
-                            // Escape code
-                            logMessage('🔑 GHOST CODE ACTIVATED: ' + code.toUpperCase(), 'win');
-                            logMessage('👹 The demons are not pleased, but a deal is a deal...', 'system');
-                            
-                            // Clear soul debt and escape immediately
-                            localStorage.setItem('baccarat_soul_debt', '0');
-                            localStorage.removeItem('hells_casino_spins');
-                            localStorage.removeItem('hells_casino_wins');
-                            
-                            setTimeout(() => {
-                                alert('🔑 GHOST ESCAPE! You used the secret code "' + code.toUpperCase() + '" to escape Hell\'s Casino!');
-                                window.location.href = 'underground.html';
-                            }, 2000);
-                            return; // Don't mark escape codes as used - they can be reused
-                        } else if (hellsCodes[code].effect === 'boost') {
-                            // Boost code
-                            totalWins += hellsCodes[code].reward;
-                            localStorage.setItem('hells_casino_wins', String(totalWins));
-                            updateProgress();
-                            
-                            logMessage('🔮 GHOST CODE ACTIVATED: ' + hellsCodes[code].message, 'win');
-                            
-                            // Mark boost codes as used
-                            hellsCodes[code].used = true;
-                            saveHellsUsedCodes();
-                        }
-                        
-                        // Reset sequence
-                        cheatSequence = [];
-                    }
-                }
-            });
-            
-            // Keep sequence reasonable length
-            if (cheatSequence.length > 20) {
-                cheatSequence = cheatSequence.slice(-20);
-            }
-        });
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             initGame();
-            loadHellsUsedCodes();
             
             // Mark Hell's Casino as visited for achievement
             if (window.vc && window.vc.markHellsVisited) {

@@ -550,6 +550,87 @@
           height: 160px;
         }
       }
+      
+      /* Escape Code Interface */
+      .escape-code-panel {
+        background: linear-gradient(135deg, #2c1810, #1a0f08);
+        border: 2px solid #ff6b35;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+      }
+      
+      .escape-title {
+        color: #ff6b35;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+      }
+      
+      .escape-input-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        margin: 15px 0;
+      }
+      
+      #escapeCodeInput {
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        border: 2px solid #666;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        flex: 1;
+        max-width: 200px;
+        transition: all 0.3s ease;
+      }
+      
+      #escapeCodeInput:focus {
+        outline: none;
+        border-color: #ff6b35;
+        box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+      }
+      
+      .escape-button {
+        background: linear-gradient(135deg, #ff6b35, #b7410e);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        min-width: 100px;
+      }
+      
+      .escape-button:hover {
+        background: linear-gradient(135deg, #ff8c66, #ff6b35);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+      }
+      
+      .escape-button:active {
+        transform: translateY(0);
+      }
+      
+      .escape-hint {
+        color: #999;
+        font-size: 12px;
+        font-style: italic;
+        margin-top: 10px;
+      }
     </style>
   </head>
   <body>
@@ -563,6 +644,16 @@
       <div class="debt-alert">
         <div class="debt-amount">Outstanding Debt: $<span id="debt-amount">0</span></div>
         <p>⚠️ You have been assigned to the factory floor until your debt is cleared ⚠️</p>
+      </div>
+      
+      <!-- Escape Code Interface -->
+      <div class="escape-code-panel">
+        <div class="escape-title">🔑 Emergency Override System</div>
+        <div class="escape-input-group">
+          <input type="text" id="escapeCodeInput" placeholder="Enter override code..." maxlength="20">
+          <button onclick="checkEscapeCode()" class="escape-button">ACTIVATE</button>
+        </div>
+        <div class="escape-hint">💡 Find the right code to escape this place...</div>
       </div>
       
       <div class="factory-floor">
@@ -880,87 +971,28 @@
       }
 
       // Ghost Code System for Coal Mine
-      let coalCheatSequence = [];
-      const coalCodes = {
-        'freedom': { effect: 'escape', message: '🔑 FREEDOM - Escaping the coal mine!', used: false },
-        'supervisor': { effect: 'escape', message: '👔 SUPERVISOR - Override activated!', used: false },
-        'coal': { effect: 'boost', reward: 50, message: '⛏️ COAL - +50 chips added!', used: false },
-        'mine': { effect: 'boost', reward: 30, message: '🕳️ MINE - +30 chips added!', used: false },
-        'work': { effect: 'boost', reward: 20, message: '⚒️ WORK - +20 chips added!', used: false }
-      };
-
-      // Load used codes from localStorage
-      function loadCoalUsedCodes() {
-        const saved = localStorage.getItem('coal_codes_used');
-        if (saved) {
-          const usedCodes = JSON.parse(saved);
-          Object.keys(usedCodes).forEach(code => {
-            if (coalCodes[code]) {
-              coalCodes[code].used = usedCodes[code];
-            }
-          });
-        }
-      }
-
-      // Save used codes to localStorage
-      function saveCoalUsedCodes() {
-        const usedCodes = {};
-        Object.keys(coalCodes).forEach(code => {
-          usedCodes[code] = coalCodes[code].used;
-        });
-        localStorage.setItem('coal_codes_used', JSON.stringify(usedCodes));
-      }
-
-      document.addEventListener('keydown', function(e) {
-        coalCheatSequence.push(e.key.toLowerCase());
+      // Normal input code system
+      function checkEscapeCode() {
+        const codeInput = document.getElementById('escapeCodeInput');
+        const code = codeInput.value.toLowerCase().trim();
         
-        // Debug: Show last few keys in console
-        if (coalCheatSequence.length > 10) {
-          console.log('Last keys:', coalCheatSequence.slice(-10).join(''));
-        }
-        
-        // Check against all codes
-        Object.keys(coalCodes).forEach(code => {
-          if (coalCheatSequence.length >= code.length) {
-            const recentKeys = coalCheatSequence.slice(-code.length).join('');
-            
-            if (recentKeys === code && !coalCodes[code].used) {
-              if (coalCodes[code].effect === 'escape') {
-                // Escape code - clear debt and return to casino
-                localStorage.setItem('vc_debt', '0');
-                
-                if (window.vc && typeof window.vc.markCoalMineEscaped === 'function') {
-                  window.vc.markCoalMineEscaped();
-                }
-                
-                alert('🔑 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
-                window.location.href = 'index.html';
-                return; // Don't mark escape codes as used - they can be reused
-              } else if (coalCodes[code].effect === 'boost') {
-                // Boost code - add chips
-                chipsAssembled += coalCodes[code].reward;
-                updateChipCount();
-                alert('🔮 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
-                
-                // Mark boost codes as used
-                coalCodes[code].used = true;
-                saveCoalUsedCodes();
-              }
-              
-              // Reset sequence
-              coalCheatSequence = [];
-            }
+        if (code === 'freedom') {
+          // Clear debt and return to casino
+          localStorage.setItem('vc_debt', '0');
+          
+          if (window.vc && typeof window.vc.markCoalMineEscaped === 'function') {
+            window.vc.markCoalMineEscaped();
           }
-        });
-        
-        // Keep sequence reasonable length
-        if (coalCheatSequence.length > 20) {
-          coalCheatSequence = coalCheatSequence.slice(-20);
+          
+          alert('🔑 ESCAPE CODE ACTIVATED: Freedom - Escaping the coal mine!');
+          window.location.href = 'index.html';
+        } else {
+          alert('❌ Invalid escape code! Keep working or find the right code...');
+          codeInput.value = '';
         }
-      });
+      }
 
-      // Load used codes on page load
-      loadCoalUsedCodes();
+      // Initialize escape code input
     </script>
   </body>
 </html>

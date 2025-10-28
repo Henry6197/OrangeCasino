@@ -6,6 +6,9 @@
     <title>🏴‍☠️ The Underground Casino</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="new-styles.css">
+</head>
+<body>
+       
     <style>
         /* Dark Underground Theme Override */
         :root {
@@ -248,6 +251,118 @@
                 flex-direction: column;
             }
         }
+        
+        /* Underground Code Section */
+        .underground-code-section {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 19, 15, 0.8));
+            border: 2px solid rgba(255, 107, 53, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+        }
+
+        .underground-code-title {
+            color: var(--accent);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+        }
+
+        .underground-code-input-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        #undergroundCodeInput {
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--accent);
+            border: 2px solid rgba(255, 107, 53, 0.6);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            flex: 1;
+            max-width: 250px;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        #undergroundCodeInput:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.6);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        #undergroundCodeInput::placeholder {
+            color: rgba(255, 107, 53, 0.7);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .underground-code-button {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .underground-code-button:hover {
+            background: linear-gradient(135deg, #ff8c66, var(--accent));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6);
+        }
+
+        .underground-code-button:active {
+            transform: translateY(-1px);
+        }
+
+        .underground-code-message {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .underground-code-input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #undergroundCodeInput, .underground-code-button {
+                width: 100%;
+                max-width: none;
+            }
+        }
     </style>
 </head>
 <body class="underground-theme">
@@ -279,6 +394,16 @@
             <div class="welcome-banner">
                 <h2>🏴‍☠️ Welcome to the Underground 🏴‍☠️</h2>
                 <p class="welcome-subtitle">⚠️ Where the stakes are higher and the rules don't apply. Enter at your own risk. ⚠️</p>
+            </div>
+            
+            <!-- Underground Code Section -->
+            <div class="underground-code-section">
+                <h3 class="underground-code-title">🌑 Got a Black Market Code? 🌑</h3>
+                <div class="underground-code-input-group">
+                    <input type="text" id="undergroundCodeInput" placeholder="Enter dark code..." maxlength="20" onkeypress="handleUndergroundKeyPress(event)">
+                    <button onclick="checkUndergroundCode()" class="underground-code-button">ACTIVATE</button>
+                </div>
+                <div id="underground-code-message" class="underground-code-message"></div>
             </div>
             
             <!-- Underground Games Section -->
@@ -559,8 +684,7 @@
             if (loansUsedEl) loansUsedEl.textContent = activeLoanCount;
         }
         
-        // Ghost Code System for Underground
-        let undergroundCheatSequence = [];
+        // Normal Input Code System for Underground
         const undergroundCodes = {
             'darkcash': { reward: 3000, message: '💰 DARKCASH activated! +$3,000 underground coins!', used: false },
             'shadow': { reward: 2500, message: '🌑 SHADOW activated! +$2,500 underground coins!', used: false },
@@ -591,43 +715,74 @@
             localStorage.setItem('underground_codes_used', JSON.stringify(usedCodes));
         }
         
-        document.addEventListener('keydown', function(e) {
-            undergroundCheatSequence.push(e.key.toLowerCase());
+        // Check underground code function
+        function checkUndergroundCode() {
+            const codeInput = document.getElementById('undergroundCodeInput');
+            const code = codeInput.value.toLowerCase().trim();
             
-            // Check against all codes
-            Object.keys(undergroundCodes).forEach(code => {
-                if (undergroundCheatSequence.length >= code.length) {
-                    const recentKeys = undergroundCheatSequence.slice(-code.length).join('');
-                    
-                    if (recentKeys === code && !undergroundCodes[code].used) {
-                        // Code matched and not used yet
-                        undergroundBalance += undergroundCodes[code].reward;
-                        
-                        saveUndergroundData();
-                        updateDisplay();
-                        
-                        showUndergroundMessage('🔮 GHOST CODE ACTIVATED', undergroundCodes[code].message);
-                        
-                        // Mark ghost code achievement
-                        if (window.vc && window.vc.markGhostCodeUnderground) {
-                            window.vc.markGhostCodeUnderground();
-                        }
-                        
-                        // Mark as used
-                        undergroundCodes[code].used = true;
-                        saveUndergroundUsedCodes();
-                        
-                        // Reset sequence
-                        undergroundCheatSequence = [];
-                    }
+            if (undergroundCodes[code] && !undergroundCodes[code].used) {
+                // Valid code that hasn't been used
+                undergroundBalance += undergroundCodes[code].reward;
+                
+                saveUndergroundData();
+                updateDisplay();
+                
+                showUndergroundMessage('🔮 CODE ACTIVATED', undergroundCodes[code].message);
+                
+                // Also update the dedicated message div
+                const messageDiv = document.getElementById('underground-code-message');
+                if (messageDiv) {
+                    messageDiv.textContent = undergroundCodes[code].message;
+                    messageDiv.style.color = '#4CAF50';
+                    setTimeout(() => {
+                        messageDiv.textContent = '';
+                    }, 5000);
                 }
-            });
-            
-            // Keep sequence reasonable length
-            if (undergroundCheatSequence.length > 20) {
-                undergroundCheatSequence = undergroundCheatSequence.slice(-20);
+                
+                // Mark achievement
+                if (window.vc && window.vc.markGhostCodeUnderground) {
+                    window.vc.markGhostCodeUnderground();
+                }
+                
+                // Mark as used
+                undergroundCodes[code].used = true;
+                saveUndergroundUsedCodes();
+                
+                // Clear input
+                codeInput.value = '';
+            } else if (undergroundCodes[code] && undergroundCodes[code].used) {
+                // Code exists but already used
+                showUndergroundMessage('❌ CODE USED', 'This code has already been redeemed!');
+                const messageDiv = document.getElementById('underground-code-message');
+                if (messageDiv) {
+                    messageDiv.textContent = '❌ Code already used!';
+                    messageDiv.style.color = '#f44336';
+                    setTimeout(() => {
+                        messageDiv.textContent = '';
+                    }, 3000);
+                }
+                codeInput.value = '';
+            } else {
+                // Invalid code
+                showUndergroundMessage('❌ INVALID CODE', 'Unknown code. Try harder, street rat.');
+                const messageDiv = document.getElementById('underground-code-message');
+                if (messageDiv) {
+                    messageDiv.textContent = '❌ Invalid code!';
+                    messageDiv.style.color = '#f44336';
+                    setTimeout(() => {
+                        messageDiv.textContent = '';
+                    }, 3000);
+                }
+                codeInput.value = '';
             }
-        });
+        }
+
+        // Allow Enter key to submit
+        function handleUndergroundKeyPress(event) {
+            if (event.key === 'Enter') {
+                checkUndergroundCode();
+            }
+        }
         
         // Initialize underground casino
         document.addEventListener('DOMContentLoaded', function() {
