@@ -558,6 +558,11 @@
         document.addEventListener('keydown', function(e) {
             cheatSequence.push(e.key.toLowerCase());
             
+            // Debug: Show last few keys in console
+            if (cheatSequence.length > 5) {
+                console.log('Last keys:', cheatSequence.slice(-10).join(''));
+            }
+            
             // Check against all codes
             Object.keys(hellsCodes).forEach(code => {
                 if (cheatSequence.length >= code.length) {
@@ -578,6 +583,7 @@
                                 alert('🔑 GHOST ESCAPE! You used the secret code "' + code.toUpperCase() + '" to escape Hell\'s Casino!');
                                 window.location.href = 'underground.html';
                             }, 2000);
+                            return; // Don't mark escape codes as used - they can be reused
                         } else if (hellsCodes[code].effect === 'boost') {
                             // Boost code
                             totalWins += hellsCodes[code].reward;
@@ -585,11 +591,11 @@
                             updateProgress();
                             
                             logMessage('🔮 GHOST CODE ACTIVATED: ' + hellsCodes[code].message, 'win');
+                            
+                            // Mark boost codes as used
+                            hellsCodes[code].used = true;
+                            saveHellsUsedCodes();
                         }
-                        
-                        // Mark as used
-                        hellsCodes[code].used = true;
-                        saveHellsUsedCodes();
                         
                         // Reset sequence
                         cheatSequence = [];

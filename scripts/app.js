@@ -393,6 +393,46 @@
     confetti(20);
   }
 
+  // Ads Toggle System
+  function initAdsToggle() {
+    const adsToggle = document.getElementById('ads-toggle');
+    if (!adsToggle) return;
+    
+    // Load saved state
+    const adsHidden = localStorage.getItem('ads_hidden') === 'true';
+    updateAdsVisibility(adsHidden);
+    
+    // Toggle functionality
+    adsToggle.addEventListener('click', () => {
+      const currentlyHidden = document.body.classList.contains('ads-hidden');
+      const newState = !currentlyHidden;
+      
+      updateAdsVisibility(newState);
+      localStorage.setItem('ads_hidden', newState.toString());
+      
+      // Show feedback message
+      if (window.vc && window.vc.setBuddyText) {
+        const message = newState ? "Ads hidden! Much cleaner!" : "Ads are back! Sorry about that...";
+        window.vc.setBuddyText(message);
+      }
+    });
+  }
+  
+  function updateAdsVisibility(hidden) {
+    const adsToggle = document.getElementById('ads-toggle');
+    if (!adsToggle) return;
+    
+    if (hidden) {
+      document.body.classList.add('ads-hidden');
+      adsToggle.textContent = '👁️ Show Ads';
+      adsToggle.title = 'Click to show advertisements';
+    } else {
+      document.body.classList.remove('ads-hidden');
+      adsToggle.textContent = '🚫 Hide Ads';
+      adsToggle.title = 'Click to hide advertisements';
+    }
+  }
+
   // Buddy Toggle System
   function initBuddyToggle() {
     const buddy = document.getElementById('buddy');
@@ -459,6 +499,9 @@
     
     // Initialize Donny Boy toggle functionality
     initBuddyToggle();
+    
+    // Initialize ads toggle functionality
+    initAdsToggle();
     
     // Check for active blood debt timer
     const lastLoanTime = localStorage.getItem('vc_last_blood_loan');

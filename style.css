@@ -1094,6 +1094,54 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   }
 }
 
+/* Ads Toggle Button */
+.ads-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.9), rgba(255, 140, 66, 0.9));
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
+  min-width: 70px;
+  text-align: center;
+}
+
+.ads-toggle:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 1), rgba(255, 140, 66, 1));
+}
+
+.ads-toggle:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Hidden ads state */
+body.ads-hidden .ad-container {
+  display: none !important;
+}
+
+/* Adjust buddy position when ads are visible on mobile */
+@media (max-width: 800px) {
+  .ads-toggle {
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+    font-size: 10px;
+    min-width: 60px;
+  }
+}
+
 /* Achievements list */
 .achievements-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px}
 .achievement{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}

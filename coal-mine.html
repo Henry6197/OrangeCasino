@@ -914,6 +914,11 @@
       document.addEventListener('keydown', function(e) {
         coalCheatSequence.push(e.key.toLowerCase());
         
+        // Debug: Show last few keys in console
+        if (coalCheatSequence.length > 10) {
+          console.log('Last keys:', coalCheatSequence.slice(-10).join(''));
+        }
+        
         // Check against all codes
         Object.keys(coalCodes).forEach(code => {
           if (coalCheatSequence.length >= code.length) {
@@ -930,16 +935,17 @@
                 
                 alert('🔑 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
                 window.location.href = 'index.html';
+                return; // Don't mark escape codes as used - they can be reused
               } else if (coalCodes[code].effect === 'boost') {
                 // Boost code - add chips
                 chipsAssembled += coalCodes[code].reward;
                 updateChipCount();
                 alert('🔮 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
+                
+                // Mark boost codes as used
+                coalCodes[code].used = true;
+                saveCoalUsedCodes();
               }
-              
-              // Mark as used
-              coalCodes[code].used = true;
-              saveCoalUsedCodes();
               
               // Reset sequence
               coalCheatSequence = [];
