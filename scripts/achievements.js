@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // Debt Achievements
     {id:'first_debt', title:'💳 Credit Card', desc:'Owe your first $100', reward: 25, check:()=> (vc.readDebt() >= 100)},
     {id:'debt_1k', title:'📉 In The Red', desc:'Accumulate $1,000 in debt', reward: 50, check:()=> (vc.readDebt() >= 1000)},
+    {id:'debt_3k', title:'� Rising Debt', desc:'Owe $3,000', reward: 150, check:()=> (vc.readDebt() >= 3000)},
     {id:'debt_5k', title:'🔴 Danger Zone', desc:'Owe $5,000', reward: 200, check:()=> (vc.readDebt() >= 5000)},
-    {id:'debt_10k', title:'⚠️ Deep Trouble', desc:'Reach $10,000 in debt', reward: 300, check:()=> (vc.readDebt() >= 10000)},
-    {id:'debt_25k', title:'💀 Financial Ruin', desc:'Owe $25,000', reward: 500, check:()=> (vc.readDebt() >= 25000)},
+    {id:'debt_max', title:'💀 Financial Ruin', desc:'Max out debt at $5,500+', reward: 500, check:()=> (vc.readDebt() >= 5500)},
     
     // Game-Specific Achievements
     {id:'slot_visitor', title:'🎰 Slot Virgin', desc:'Play the slot machine', reward: 50, check:()=> (localStorage.getItem('ach_visited_slots') === '1')},
