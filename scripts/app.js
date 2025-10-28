@@ -369,51 +369,7 @@
     document.body.style.backgroundAttachment = 'fixed';
   }
 
-  // Bonus code functionality
-  function applyBonusCode() {
-    const codeInput = document.getElementById('bonus-code');
-    const messageDiv = document.getElementById('code-message');
-    
-    if (!codeInput || !messageDiv) return;
-    
-    const enteredCode = codeInput.value.trim();
-    const correctCode = 'adesxuhabb';
-    
-    if (enteredCode === correctCode) {
-      // Add 10 million dollars to balance
-      const currentBalance = readBalance();
-      writeBalance(currentBalance + 10000000);
-      
-      // Show success message
-      messageDiv.textContent = '🎉 Bonus applied! +$10,000,000 added to your balance!';
-      messageDiv.style.color = '#4CAF50';
-      
-      // Clear the input
-      codeInput.value = '';
-      
-      // Show confetti effect if available
-      if (typeof confetti === 'function') {
-        confetti();
-      }
-      
-      // Clear message after 5 seconds
-      setTimeout(() => {
-        messageDiv.textContent = '';
-      }, 5000);
-      
-    } else if (enteredCode === '') {
-      messageDiv.textContent = 'Please enter a bonus code.';
-      messageDiv.style.color = '#ff6b35';
-    } else {
-      messageDiv.textContent = 'Invalid bonus code. Try again!';
-      messageDiv.style.color = '#ff6b35';
-      
-      // Clear message after 3 seconds
-      setTimeout(() => {
-        messageDiv.textContent = '';
-      }, 3000);
-    }
-  }
+    // Ghost Code functionality - now handled per page
 
   // Money laundering function for underground to main money conversion
   function launderMoney() {
@@ -437,7 +393,7 @@
     confetti(20);
   }
 
-  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, applyBonusCode, launderMoney };
+  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, launderMoney };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
     vc.updateDebt(); 

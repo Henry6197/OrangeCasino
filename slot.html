@@ -120,6 +120,77 @@
   <script src="scripts/todd-dialogue.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/slot.clean.js"></script>
+  
+  <script>
+    // Ghost Code System for Slot Machine
+    let slotCheatSequence = [];
+    const slotCodes = {
+      'spinwin': { reward: 2000000, message: '🎰 SPINWIN activated! +$2,000,000!', used: false },
+      'sevens': { reward: 1500000, message: '🎰 SEVENS activated! +$1,500,000!', used: false },
+      'cherries': { reward: 1000000, message: '🍒 CHERRIES activated! +$1,000,000!', used: false },
+      'slots': { reward: 750000, message: '🎲 SLOTS activated! +$750,000!', used: false },
+      'reels': { reward: 500000, message: '🎡 REELS activated! +$500,000!', used: false }
+    };
+
+    // Load used codes from localStorage
+    function loadSlotUsedCodes() {
+      const saved = localStorage.getItem('slot_codes_used');
+      if (saved) {
+        const usedCodes = JSON.parse(saved);
+        Object.keys(usedCodes).forEach(code => {
+          if (slotCodes[code]) {
+            slotCodes[code].used = usedCodes[code];
+          }
+        });
+      }
+    }
+
+    // Save used codes to localStorage
+    function saveSlotUsedCodes() {
+      const usedCodes = {};
+      Object.keys(slotCodes).forEach(code => {
+        usedCodes[code] = slotCodes[code].used;
+      });
+      localStorage.setItem('slot_codes_used', JSON.stringify(usedCodes));
+    }
+
+    document.addEventListener('keydown', function(e) {
+      slotCheatSequence.push(e.key.toLowerCase());
+      
+      // Check against all codes
+      Object.keys(slotCodes).forEach(code => {
+        if (slotCheatSequence.length >= code.length) {
+          const recentKeys = slotCheatSequence.slice(-code.length).join('');
+          
+          if (recentKeys === code && !slotCodes[code].used) {
+            // Code matched and not used yet
+            const currentBalance = window.vc.readBalance();
+            window.vc.writeBalance(currentBalance + slotCodes[code].reward);
+            
+            // Show confetti and big message
+            if (window.vc.confetti) window.vc.confetti();
+            if (window.vc.showBigMessage) window.vc.showBigMessage(slotCodes[code].message, 3000);
+            if (window.vc.setBuddyText) window.vc.setBuddyText(slotCodes[code].message);
+            
+            // Mark as used
+            slotCodes[code].used = true;
+            saveSlotUsedCodes();
+            
+            // Reset sequence
+            slotCheatSequence = [];
+          }
+        }
+      });
+      
+      // Keep sequence reasonable length
+      if (slotCheatSequence.length > 20) {
+        slotCheatSequence = slotCheatSequence.slice(-20);
+      }
+    });
+
+    // Load used codes on page load
+    document.addEventListener('DOMContentLoaded', loadSlotUsedCodes);
+  </script>
     <!-- buddy + overlays -->
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />

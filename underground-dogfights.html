@@ -845,6 +845,74 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initGame);
+
+        // Ghost Code System for Underground Dog Fights
+        let dogfightCheatSequence = [];
+        const dogfightCodes = {
+            'pitbull': { reward: 3800000, message: '🐕‍🦺 PITBULL activated! +$3,800,000 underground coins!', used: false },
+            'fight': { reward: 3200000, message: '🥊 FIGHT activated! +$3,200,000 underground coins!', used: false },
+            'champion': { reward: 2800000, message: '🏆 CHAMPION activated! +$2,800,000 underground coins!', used: false },
+            'ring': { reward: 2200000, message: '⭕ RING activated! +$2,200,000 underground coins!', used: false },
+            'beast': { reward: 1900000, message: '👹 BEAST activated! +$1,900,000 underground coins!', used: false }
+        };
+
+        // Load used codes from localStorage
+        function loadDogfightUsedCodes() {
+            const saved = localStorage.getItem('dogfight_codes_used');
+            if (saved) {
+                const usedCodes = JSON.parse(saved);
+                Object.keys(usedCodes).forEach(code => {
+                    if (dogfightCodes[code]) {
+                        dogfightCodes[code].used = usedCodes[code];
+                    }
+                });
+            }
+        }
+
+        // Save used codes to localStorage
+        function saveDogfightUsedCodes() {
+            const usedCodes = {};
+            Object.keys(dogfightCodes).forEach(code => {
+                usedCodes[code] = dogfightCodes[code].used;
+            });
+            localStorage.setItem('dogfight_codes_used', JSON.stringify(usedCodes));
+        }
+
+        document.addEventListener('keydown', function(e) {
+            dogfightCheatSequence.push(e.key.toLowerCase());
+            
+            // Check against all codes
+            Object.keys(dogfightCodes).forEach(code => {
+                if (dogfightCheatSequence.length >= code.length) {
+                    const recentKeys = dogfightCheatSequence.slice(-code.length).join('');
+                    
+                    if (recentKeys === code && !dogfightCodes[code].used) {
+                        // Code matched and not used yet
+                        undergroundBalance += dogfightCodes[code].reward;
+                        
+                        localStorage.setItem('underground_balance', String(undergroundBalance));
+                        updateDisplay();
+                        
+                        showMessage('🔮 GHOST CODE ACTIVATED', dogfightCodes[code].message);
+                        
+                        // Mark as used
+                        dogfightCodes[code].used = true;
+                        saveDogfightUsedCodes();
+                        
+                        // Reset sequence
+                        dogfightCheatSequence = [];
+                    }
+                }
+            });
+            
+            // Keep sequence reasonable length
+            if (dogfightCheatSequence.length > 20) {
+                dogfightCheatSequence = dogfightCheatSequence.slice(-20);
+            }
+        });
+
+        // Load used codes when page loads
+        document.addEventListener('DOMContentLoaded', loadDogfightUsedCodes);
     </script>
 </body>
 </html>

@@ -655,16 +655,8 @@
       </div>
       
       <div class="supervisor-panel">
-        <div class="supervisor-title">🔐 Supervisor Override System</div>
-        <p style="color: #a5b4fc; margin-bottom: 15px;">Emergency production halt code for authorized personnel only</p>
-        <input 
-          type="text" 
-          id="prison-code" 
-          class="code-input" 
-          placeholder="Enter Code" 
-          maxlength="20"
-        />
-        <button class="btn-override" id="prison-code-btn">Execute Override</button>
+        <div class="supervisor-title">🔐 Ghost Override System</div>
+        <p style="color: #a5b4fc; margin-bottom: 15px;">Emergency codes can be typed anywhere on this page...</p>
       </div>
     </div>
 
@@ -886,6 +878,83 @@
       if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
         window.vc.markCoalMineVisited();
       }
+
+      // Ghost Code System for Coal Mine
+      let coalCheatSequence = [];
+      const coalCodes = {
+        'freedom': { effect: 'escape', message: '🔑 FREEDOM - Escaping the coal mine!', used: false },
+        'supervisor': { effect: 'escape', message: '👔 SUPERVISOR - Override activated!', used: false },
+        'coal': { effect: 'boost', reward: 50, message: '⛏️ COAL - +50 chips added!', used: false },
+        'mine': { effect: 'boost', reward: 30, message: '🕳️ MINE - +30 chips added!', used: false },
+        'work': { effect: 'boost', reward: 20, message: '⚒️ WORK - +20 chips added!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadCoalUsedCodes() {
+        const saved = localStorage.getItem('coal_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (coalCodes[code]) {
+              coalCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function saveCoalUsedCodes() {
+        const usedCodes = {};
+        Object.keys(coalCodes).forEach(code => {
+          usedCodes[code] = coalCodes[code].used;
+        });
+        localStorage.setItem('coal_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        coalCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(coalCodes).forEach(code => {
+          if (coalCheatSequence.length >= code.length) {
+            const recentKeys = coalCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !coalCodes[code].used) {
+              if (coalCodes[code].effect === 'escape') {
+                // Escape code - clear debt and return to casino
+                localStorage.setItem('vc_debt', '0');
+                
+                if (window.vc && typeof window.vc.markCoalMineEscaped === 'function') {
+                  window.vc.markCoalMineEscaped();
+                }
+                
+                alert('🔑 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
+                window.location.href = 'index.html';
+              } else if (coalCodes[code].effect === 'boost') {
+                // Boost code - add chips
+                chipsAssembled += coalCodes[code].reward;
+                updateChipCount();
+                alert('🔮 GHOST CODE ACTIVATED: ' + coalCodes[code].message);
+              }
+              
+              // Mark as used
+              coalCodes[code].used = true;
+              saveCoalUsedCodes();
+              
+              // Reset sequence
+              coalCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (coalCheatSequence.length > 20) {
+          coalCheatSequence = coalCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      loadCoalUsedCodes();
     </script>
   </body>
 </html>

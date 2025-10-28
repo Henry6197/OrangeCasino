@@ -711,6 +711,74 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initGame);
+
+        // Ghost Code System for Blood Pact Baccarat
+        let baccaratCheatSequence = [];
+        const baccaratCodes = {
+            'bloodpact': { reward: 4000000, message: '🩸 BLOODPACT activated! +$4,000,000 underground coins!', used: false },
+            'souldebt': { reward: 3500000, message: '👹 SOULDEBT activated! +$3,500,000 underground coins!', used: false },
+            'pact': { reward: 3000000, message: '📜 PACT activated! +$3,000,000 underground coins!', used: false },
+            'banker': { reward: 2500000, message: '🏦 BANKER activated! +$2,500,000 underground coins!', used: false },
+            'soul': { reward: 2000000, message: '👻 SOUL activated! +$2,000,000 underground coins!', used: false }
+        };
+
+        // Load used codes from localStorage
+        function loadBaccaratUsedCodes() {
+            const saved = localStorage.getItem('baccarat_codes_used');
+            if (saved) {
+                const usedCodes = JSON.parse(saved);
+                Object.keys(usedCodes).forEach(code => {
+                    if (baccaratCodes[code]) {
+                        baccaratCodes[code].used = usedCodes[code];
+                    }
+                });
+            }
+        }
+
+        // Save used codes to localStorage
+        function saveBaccaratUsedCodes() {
+            const usedCodes = {};
+            Object.keys(baccaratCodes).forEach(code => {
+                usedCodes[code] = baccaratCodes[code].used;
+            });
+            localStorage.setItem('baccarat_codes_used', JSON.stringify(usedCodes));
+        }
+
+        document.addEventListener('keydown', function(e) {
+            baccaratCheatSequence.push(e.key.toLowerCase());
+            
+            // Check against all codes
+            Object.keys(baccaratCodes).forEach(code => {
+                if (baccaratCheatSequence.length >= code.length) {
+                    const recentKeys = baccaratCheatSequence.slice(-code.length).join('');
+                    
+                    if (recentKeys === code && !baccaratCodes[code].used) {
+                        // Code matched and not used yet
+                        undergroundBalance += baccaratCodes[code].reward;
+                        
+                        localStorage.setItem('underground_balance', String(undergroundBalance));
+                        updateDisplay();
+                        
+                        showMessage('🔮 GHOST CODE ACTIVATED', baccaratCodes[code].message);
+                        
+                        // Mark as used
+                        baccaratCodes[code].used = true;
+                        saveBaccaratUsedCodes();
+                        
+                        // Reset sequence
+                        baccaratCheatSequence = [];
+                    }
+                }
+            });
+            
+            // Keep sequence reasonable length
+            if (baccaratCheatSequence.length > 20) {
+                baccaratCheatSequence = baccaratCheatSequence.slice(-20);
+            }
+        });
+
+        // Load used codes when page loads
+        document.addEventListener('DOMContentLoaded', loadBaccaratUsedCodes);
     </script>
 </body>
 </html>

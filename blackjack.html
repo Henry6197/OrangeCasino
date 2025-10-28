@@ -107,6 +107,77 @@
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/blackjack.clean.js"></script>
+    
+    <script>
+      // Ghost Code System for Blackjack
+      let blackjackCheatSequence = [];
+      const blackjackCodes = {
+        'twentyone': { reward: 2100000, message: '♠️ TWENTYONE activated! +$2,100,000!', used: false },
+        'natural': { reward: 1800000, message: '🃏 NATURAL activated! +$1,800,000!', used: false },
+        'dealer': { reward: 1500000, message: '🎩 DEALER activated! +$1,500,000!', used: false },
+        'cards': { reward: 1000000, message: '🂡 CARDS activated! +$1,000,000!', used: false },
+        'hit': { reward: 750000, message: '👊 HIT activated! +$750,000!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadBlackjackUsedCodes() {
+        const saved = localStorage.getItem('blackjack_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (blackjackCodes[code]) {
+              blackjackCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function saveBlackjackUsedCodes() {
+        const usedCodes = {};
+        Object.keys(blackjackCodes).forEach(code => {
+          usedCodes[code] = blackjackCodes[code].used;
+        });
+        localStorage.setItem('blackjack_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        blackjackCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(blackjackCodes).forEach(code => {
+          if (blackjackCheatSequence.length >= code.length) {
+            const recentKeys = blackjackCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !blackjackCodes[code].used) {
+              // Code matched and not used yet
+              const currentBalance = window.vc.readBalance();
+              window.vc.writeBalance(currentBalance + blackjackCodes[code].reward);
+              
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(blackjackCodes[code].message, 3000);
+              if (window.vc.setBuddyText) window.vc.setBuddyText(blackjackCodes[code].message);
+              
+              // Mark as used
+              blackjackCodes[code].used = true;
+              saveBlackjackUsedCodes();
+              
+              // Reset sequence
+              blackjackCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (blackjackCheatSequence.length > 20) {
+          blackjackCheatSequence = blackjackCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', loadBlackjackUsedCodes);
+    </script>
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />
       <div>

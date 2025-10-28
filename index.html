@@ -10,7 +10,7 @@
   <body>
     <!-- Dark Mode Toggle for Underground Access -->
     <button class="dark-mode-toggle" id="underground-toggle" onclick="enterUnderground()">
-      � Dark Mode
+      🌑 Dark Mode 🌑
     </button>
     
     <header class="site-header">
@@ -96,15 +96,11 @@
           </div>
         </div>
 
-        <!-- Bonus Code Section -->
+        <!-- Ghost Code Section -->
         <div class="bonus-section">
-          <h3 class="section-title">� Bonus Codes</h3>
+          <h3 class="section-title">🔮 Secret Codes</h3>
           <div class="bonus-panel">
-            <p>Have a special bonus code? Enter it below to unlock rewards!</p>
-            <div class="code-input-group">
-              <input type="text" id="bonus-code" placeholder="Enter bonus code..." maxlength="20">
-              <button class="btn code-btn" onclick="vc.applyBonusCode()">Apply Code</button>
-            </div>
+            <p>Hidden codes can be typed anywhere on this page to unlock rewards...</p>
             <div class="code-message" id="code-message"></div>
           </div>
         </div>
@@ -182,6 +178,84 @@
           updateDebtDisplay();
         }, 5000);
       });
+
+      // Ghost Code System for Main Casino
+      let mainCheatSequence = [];
+      const mainCodes = {
+        'richkid': { reward: 10000000, message: '🎉 RICHKID activated! +$10,000,000!', used: false },
+        'jackpot': { reward: 5000000, message: '🎰 JACKPOT activated! +$5,000,000!', used: false },
+        'moneybags': { reward: 2500000, message: '💰 MONEYBAGS activated! +$2,500,000!', used: false },
+        'casino': { reward: 1000000, message: '🏆 CASINO activated! +$1,000,000!', used: false },
+        'lucky': { reward: 500000, message: '🍀 LUCKY activated! +$500,000!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadUsedCodes() {
+        const saved = localStorage.getItem('main_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (mainCodes[code]) {
+              mainCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function saveUsedCodes() {
+        const usedCodes = {};
+        Object.keys(mainCodes).forEach(code => {
+          usedCodes[code] = mainCodes[code].used;
+        });
+        localStorage.setItem('main_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        mainCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(mainCodes).forEach(code => {
+          if (mainCheatSequence.length >= code.length) {
+            const recentKeys = mainCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !mainCodes[code].used) {
+              // Code matched and not used yet
+              const currentBalance = window.vc.readBalance();
+              window.vc.writeBalance(currentBalance + mainCodes[code].reward);
+              
+              // Show message
+              const messageDiv = document.getElementById('code-message');
+              if (messageDiv) {
+                messageDiv.textContent = mainCodes[code].message;
+                messageDiv.style.color = '#4CAF50';
+                setTimeout(() => {
+                  messageDiv.textContent = '';
+                }, 5000);
+              }
+              
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
+              
+              // Mark as used
+              mainCodes[code].used = true;
+              saveUsedCodes();
+              
+              // Reset sequence
+              mainCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (mainCheatSequence.length > 20) {
+          mainCheatSequence = mainCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', loadUsedCodes);
     </script>
     
     <div class="buddy" id="buddy">

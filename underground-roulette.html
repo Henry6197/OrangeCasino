@@ -523,6 +523,74 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initGame);
+
+        // Ghost Code System for Russian Roulette
+        let rouletteCheatSequence = [];
+        const rouletteCodes = {
+            'bullet': { reward: 3500000, message: '🔫 BULLET activated! +$3,500,000 underground coins!', used: false },
+            'chamber': { reward: 3000000, message: '🔄 CHAMBER activated! +$3,000,000 underground coins!', used: false },
+            'trigger': { reward: 2500000, message: '🎯 TRIGGER activated! +$2,500,000 underground coins!', used: false },
+            'russian': { reward: 2000000, message: '🇷🇺 RUSSIAN activated! +$2,000,000 underground coins!', used: false },
+            'death': { reward: 1800000, message: '💀 DEATH activated! +$1,800,000 underground coins!', used: false }
+        };
+
+        // Load used codes from localStorage
+        function loadRouletteUsedCodes() {
+            const saved = localStorage.getItem('roulette_codes_used');
+            if (saved) {
+                const usedCodes = JSON.parse(saved);
+                Object.keys(usedCodes).forEach(code => {
+                    if (rouletteCodes[code]) {
+                        rouletteCodes[code].used = usedCodes[code];
+                    }
+                });
+            }
+        }
+
+        // Save used codes to localStorage
+        function saveRouletteUsedCodes() {
+            const usedCodes = {};
+            Object.keys(rouletteCodes).forEach(code => {
+                usedCodes[code] = rouletteCodes[code].used;
+            });
+            localStorage.setItem('roulette_codes_used', JSON.stringify(usedCodes));
+        }
+
+        document.addEventListener('keydown', function(e) {
+            rouletteCheatSequence.push(e.key.toLowerCase());
+            
+            // Check against all codes
+            Object.keys(rouletteCodes).forEach(code => {
+                if (rouletteCheatSequence.length >= code.length) {
+                    const recentKeys = rouletteCheatSequence.slice(-code.length).join('');
+                    
+                    if (recentKeys === code && !rouletteCodes[code].used) {
+                        // Code matched and not used yet
+                        undergroundBalance += rouletteCodes[code].reward;
+                        
+                        localStorage.setItem('underground_balance', String(undergroundBalance));
+                        updateDisplay();
+                        
+                        showMessage('🔮 GHOST CODE ACTIVATED', rouletteCodes[code].message);
+                        
+                        // Mark as used
+                        rouletteCodes[code].used = true;
+                        saveRouletteUsedCodes();
+                        
+                        // Reset sequence
+                        rouletteCheatSequence = [];
+                    }
+                }
+            });
+            
+            // Keep sequence reasonable length
+            if (rouletteCheatSequence.length > 20) {
+                rouletteCheatSequence = rouletteCheatSequence.slice(-20);
+            }
+        });
+
+        // Load used codes when page loads
+        document.addEventListener('DOMContentLoaded', loadRouletteUsedCodes);
     </script>
 </body>
 </html>

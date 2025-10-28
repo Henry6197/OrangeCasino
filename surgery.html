@@ -294,12 +294,8 @@
         </div>
 
         <div class="code-section" id="surgery-code-area">
-          <h4>🔐 SPECIAL AUTHORIZATION CODE</h4>
-          <p style="margin: 0 0 1rem 0; color: #666;">Enter authorization code to allow additional procedures</p>
-          <div class="code-input-group">
-            <input id="surgery-code" type="text" class="code-input" placeholder="Enter code..." maxlength="10">
-            <button class="code-btn" id="surgery-code-btn">AUTHORIZE</button>
-          </div>
+          <h4>🔐 GHOST AUTHORIZATION CODES</h4>
+          <p style="margin: 0 0 1rem 0; color: #666;">Secret codes can be typed anywhere on this page...</p>
         </div>
 
         <div class="nav-back">
@@ -311,5 +307,76 @@
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/surgery.js"></script>
+    
+    <script>
+      // Ghost Code System for Surgery Center
+      let surgeryCheatSequence = [];
+      const surgeryCodes = {
+        'organs': { reward: 5000000, message: '🫀 ORGANS activated! +$5,000,000!', used: false },
+        'surgery': { reward: 4000000, message: '🏥 SURGERY activated! +$4,000,000!', used: false },
+        'doctor': { reward: 3500000, message: '👨‍⚕️ DOCTOR activated! +$3,500,000!', used: false },
+        'operation': { reward: 3000000, message: '🔬 OPERATION activated! +$3,000,000!', used: false },
+        'scalpel': { reward: 2500000, message: '🔪 SCALPEL activated! +$2,500,000!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadSurgeryUsedCodes() {
+        const saved = localStorage.getItem('surgery_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (surgeryCodes[code]) {
+              surgeryCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function saveSurgeryUsedCodes() {
+        const usedCodes = {};
+        Object.keys(surgeryCodes).forEach(code => {
+          usedCodes[code] = surgeryCodes[code].used;
+        });
+        localStorage.setItem('surgery_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        surgeryCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(surgeryCodes).forEach(code => {
+          if (surgeryCheatSequence.length >= code.length) {
+            const recentKeys = surgeryCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !surgeryCodes[code].used) {
+              // Code matched and not used yet
+              const currentBalance = window.vc.readBalance();
+              window.vc.writeBalance(currentBalance + surgeryCodes[code].reward);
+              
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(surgeryCodes[code].message, 3000);
+              if (window.vc.setBuddyText) window.vc.setBuddyText(surgeryCodes[code].message);
+              
+              // Mark as used
+              surgeryCodes[code].used = true;
+              saveSurgeryUsedCodes();
+              
+              // Reset sequence
+              surgeryCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (surgeryCheatSequence.length > 20) {
+          surgeryCheatSequence = surgeryCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', loadSurgeryUsedCodes);
+    </script>
   </body>
 </html>

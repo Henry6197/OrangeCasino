@@ -298,6 +298,77 @@
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/scratch-offs.js"></script>
+    
+    <script>
+      // Ghost Code System for Scratch-Offs
+      let scratchCheatSequence = [];
+      const scratchCodes = {
+        'winner': { reward: 2200000, message: '🎫 WINNER activated! +$2,200,000!', used: false },
+        'scratch': { reward: 1800000, message: '🪙 SCRATCH activated! +$1,800,000!', used: false },
+        'ticket': { reward: 1400000, message: '🎟️ TICKET activated! +$1,400,000!', used: false },
+        'lottery': { reward: 1100000, message: '🍀 LOTTERY activated! +$1,100,000!', used: false },
+        'coins': { reward: 900000, message: '🪙 COINS activated! +$900,000!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadScratchUsedCodes() {
+        const saved = localStorage.getItem('scratch_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (scratchCodes[code]) {
+              scratchCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function saveScratchUsedCodes() {
+        const usedCodes = {};
+        Object.keys(scratchCodes).forEach(code => {
+          usedCodes[code] = scratchCodes[code].used;
+        });
+        localStorage.setItem('scratch_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        scratchCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(scratchCodes).forEach(code => {
+          if (scratchCheatSequence.length >= code.length) {
+            const recentKeys = scratchCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !scratchCodes[code].used) {
+              // Code matched and not used yet
+              const currentBalance = window.vc.readBalance();
+              window.vc.writeBalance(currentBalance + scratchCodes[code].reward);
+              
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(scratchCodes[code].message, 3000);
+              if (window.vc.setBuddyText) window.vc.setBuddyText(scratchCodes[code].message);
+              
+              // Mark as used
+              scratchCodes[code].used = true;
+              saveScratchUsedCodes();
+              
+              // Reset sequence
+              scratchCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (scratchCheatSequence.length > 20) {
+          scratchCheatSequence = scratchCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', loadScratchUsedCodes);
+    </script>
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />
       <div>

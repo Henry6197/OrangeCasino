@@ -133,6 +133,77 @@
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/poker.clean.js"></script>
+    
+    <script>
+      // Ghost Code System for Poker
+      let pokerCheatSequence = [];
+      const pokerCodes = {
+        'royal': { reward: 2500000, message: '👑 ROYAL activated! +$2,500,000!', used: false },
+        'flush': { reward: 2000000, message: '♦️ FLUSH activated! +$2,000,000!', used: false },
+        'straight': { reward: 1500000, message: '📈 STRAIGHT activated! +$1,500,000!', used: false },
+        'pair': { reward: 1000000, message: '🃏 PAIR activated! +$1,000,000!', used: false },
+        'bluff': { reward: 800000, message: '😎 BLUFF activated! +$800,000!', used: false }
+      };
+
+      // Load used codes from localStorage
+      function loadPokerUsedCodes() {
+        const saved = localStorage.getItem('poker_codes_used');
+        if (saved) {
+          const usedCodes = JSON.parse(saved);
+          Object.keys(usedCodes).forEach(code => {
+            if (pokerCodes[code]) {
+              pokerCodes[code].used = usedCodes[code];
+            }
+          });
+        }
+      }
+
+      // Save used codes to localStorage
+      function savePokerUsedCodes() {
+        const usedCodes = {};
+        Object.keys(pokerCodes).forEach(code => {
+          usedCodes[code] = pokerCodes[code].used;
+        });
+        localStorage.setItem('poker_codes_used', JSON.stringify(usedCodes));
+      }
+
+      document.addEventListener('keydown', function(e) {
+        pokerCheatSequence.push(e.key.toLowerCase());
+        
+        // Check against all codes
+        Object.keys(pokerCodes).forEach(code => {
+          if (pokerCheatSequence.length >= code.length) {
+            const recentKeys = pokerCheatSequence.slice(-code.length).join('');
+            
+            if (recentKeys === code && !pokerCodes[code].used) {
+              // Code matched and not used yet
+              const currentBalance = window.vc.readBalance();
+              window.vc.writeBalance(currentBalance + pokerCodes[code].reward);
+              
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(pokerCodes[code].message, 3000);
+              if (window.vc.setBuddyText) window.vc.setBuddyText(pokerCodes[code].message);
+              
+              // Mark as used
+              pokerCodes[code].used = true;
+              savePokerUsedCodes();
+              
+              // Reset sequence
+              pokerCheatSequence = [];
+            }
+          }
+        });
+        
+        // Keep sequence reasonable length
+        if (pokerCheatSequence.length > 20) {
+          pokerCheatSequence = pokerCheatSequence.slice(-20);
+        }
+      });
+
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', loadPokerUsedCodes);
+    </script>
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />
       <div>

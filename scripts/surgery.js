@@ -11,43 +11,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const used = localStorage.getItem(usedKey);
   if(used && uses >= 1){ append('You have already sold a kidney. This is a one-time action unless you have a code.'); timerEl.textContent = 'DONE'; }
 
-  // handle code submission to allow a second surgery
-  const codeInput = document.getElementById('surgery-code');
-  const codeBtn = document.getElementById('surgery-code-btn');
-  if(codeBtn && codeInput){
-    codeBtn.addEventListener('click', ()=>{
-      const val = (codeInput.value||'').trim();
-      if(val === 'test'){
-        // allow second use (max 2 uses total)
-        if(uses >= 2){ append('Code accepted but you already used the extra allowance.'); return; }
-        uses += 1; localStorage.setItem('vc_surgery_uses', String(uses));
-        localStorage.removeItem(usedKey); // allow another surgery
-        append('Code accepted — you may now undergo surgery again.');
-        timerEl.textContent = '00:30';
-        // start new timer
-        const newTarget = Date.now() + 30*1000;
-        localStorage.setItem(TIMER_KEY, String(newTarget));
-        location.reload();
-      } else if(val === 'money'){
-        // instant completion for testing
-        append('Testing code activated — surgery instantly completed!');
-        timerEl.textContent = '00:00';
-        // pay user 5,000 instantly
-        const balance = vc.readBalance(); vc.writeBalance(balance + 5000);
-        localStorage.setItem(usedKey, '1');
-        localStorage.removeItem(TIMER_KEY);
-        
-        // Mark achievement for selling kidney
-        try{ if(window.vc && typeof window.vc.markSurgeryUsed === 'function') window.vc.markSurgeryUsed(); }catch(e){}
-        
-        append('Surgery complete. You received $5,000.');
-        vc.setBuddyText(window.generateRandomRamble ? window.generateRandomRamble() : 'Uhh, tremendous surgery, really tremendous.');
-        vc.showBigMessage('Surgery complete! $5,000', 2000);
-        // clear any active intervals and unlock navigation
-        setTimeout(() => { unlockNavigation(); }, 100);
-      } else { append('Invalid code.'); }
-    });
-  }
+  // Ghost codes now handled in surgery.html script section
 
   // navigation lock utilities
   let navHandlers = [];

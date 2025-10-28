@@ -554,50 +554,75 @@
             if (loansUsedEl) loansUsedEl.textContent = activeLoanCount;
         }
         
-        // Cheat code system for underground coins
+        // Ghost Code System for Underground
         let undergroundCheatSequence = [];
-        const coinsCode = ['d', 'a', 'r', 'k', 'c', 'a', 's', 'h']; // "darkcash"
-        let coinsCheatUsed = localStorage.getItem('underground_coins_cheat_used') === 'true';
+        const undergroundCodes = {
+            'darkcash': { reward: 3000, message: '💰 DARKCASH activated! +$3,000 underground coins!', used: false },
+            'shadow': { reward: 2500, message: '🌑 SHADOW activated! +$2,500 underground coins!', used: false },
+            'blood': { reward: 2000, message: '🩸 BLOOD activated! +$2,000 underground coins!', used: false },
+            'night': { reward: 1500, message: '🌙 NIGHT activated! +$1,500 underground coins!', used: false },
+            'demon': { reward: 1000, message: '👹 DEMON activated! +$1,000 underground coins!', used: false }
+        };
+
+        // Load used codes from localStorage  
+        function loadUndergroundUsedCodes() {
+            const saved = localStorage.getItem('underground_codes_used');
+            if (saved) {
+                const usedCodes = JSON.parse(saved);
+                Object.keys(usedCodes).forEach(code => {
+                    if (undergroundCodes[code]) {
+                        undergroundCodes[code].used = usedCodes[code];
+                    }
+                });
+            }
+        }
+
+        // Save used codes to localStorage
+        function saveUndergroundUsedCodes() {
+            const usedCodes = {};
+            Object.keys(undergroundCodes).forEach(code => {
+                usedCodes[code] = undergroundCodes[code].used;
+            });
+            localStorage.setItem('underground_codes_used', JSON.stringify(usedCodes));
+        }
         
         document.addEventListener('keydown', function(e) {
-            if (coinsCheatUsed) return; // Can only use once
-            
             undergroundCheatSequence.push(e.key.toLowerCase());
             
-            // Keep only the last 8 characters
-            if (undergroundCheatSequence.length > coinsCode.length) {
-                undergroundCheatSequence = undergroundCheatSequence.slice(-coinsCode.length);
-            }
-            
-            // Check if coins code matches
-            if (undergroundCheatSequence.length === coinsCode.length) {
-                let matches = true;
-                for (let i = 0; i < coinsCode.length; i++) {
-                    if (undergroundCheatSequence[i] !== coinsCode[i]) {
-                        matches = false;
-                        break;
+            // Check against all codes
+            Object.keys(undergroundCodes).forEach(code => {
+                if (undergroundCheatSequence.length >= code.length) {
+                    const recentKeys = undergroundCheatSequence.slice(-code.length).join('');
+                    
+                    if (recentKeys === code && !undergroundCodes[code].used) {
+                        // Code matched and not used yet
+                        undergroundBalance += undergroundCodes[code].reward;
+                        
+                        saveUndergroundData();
+                        updateDisplay();
+                        
+                        showUndergroundMessage('� GHOST CODE ACTIVATED', undergroundCodes[code].message);
+                        
+                        // Mark as used
+                        undergroundCodes[code].used = true;
+                        saveUndergroundUsedCodes();
+                        
+                        // Reset sequence
+                        undergroundCheatSequence = [];
                     }
                 }
-                
-                if (matches) {
-                    // Add 1000 underground coins
-                    undergroundBalance += 1000;
-                    coinsCheatUsed = true;
-                    localStorage.setItem('underground_coins_cheat_used', 'true');
-                    
-                    saveUndergroundData();
-                    updateDisplay();
-                    
-                    showUndergroundMessage('💰 CHEAT CODE ACTIVATED', 'Secret code "DARKCASH" used! +$1,000 underground coins added. This code can only be used once.');
-                    
-                    undergroundCheatSequence = []; // Reset sequence
-                }
+            });
+            
+            // Keep sequence reasonable length
+            if (undergroundCheatSequence.length > 20) {
+                undergroundCheatSequence = undergroundCheatSequence.slice(-20);
             }
         });
         
         // Initialize underground casino
         document.addEventListener('DOMContentLoaded', function() {
             updateDisplay();
+            loadUndergroundUsedCodes();
             
             // Welcome message
             setTimeout(() => {

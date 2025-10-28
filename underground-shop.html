@@ -518,6 +518,74 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', initShop);
+
+        // Ghost Code System for Black Market Shop
+        let shopCheatSequence = [];
+        const shopCodes = {
+            'blackmarket': { reward: 1000, message: '🛒 BLACKMARKET activated! +$1,000 underground coins!', used: false },
+            'contraband': { reward: 1000, message: '📦 CONTRABAND activated! +$1,000 underground coins!', used: false },
+            'merchant': { reward: 1000, message: '🧙 MERCHANT activated! +$1,000 underground coins!', used: false },
+            'trade': { reward: 1000, message: '💱 TRADE activated! +$1,000 underground coins!', used: false },
+            'goods': { reward: 1000, message: '📦 GOODS activated! +$1,000 underground coins!', used: false }
+        };
+
+        // Load used codes from localStorage
+        function loadShopUsedCodes() {
+            const saved = localStorage.getItem('shop_codes_used');
+            if (saved) {
+                const usedCodes = JSON.parse(saved);
+                Object.keys(usedCodes).forEach(code => {
+                    if (shopCodes[code]) {
+                        shopCodes[code].used = usedCodes[code];
+                    }
+                });
+            }
+        }
+
+        // Save used codes to localStorage
+        function saveShopUsedCodes() {
+            const usedCodes = {};
+            Object.keys(shopCodes).forEach(code => {
+                usedCodes[code] = shopCodes[code].used;
+            });
+            localStorage.setItem('shop_codes_used', JSON.stringify(usedCodes));
+        }
+
+        document.addEventListener('keydown', function(e) {
+            shopCheatSequence.push(e.key.toLowerCase());
+            
+            // Check against all codes
+            Object.keys(shopCodes).forEach(code => {
+                if (shopCheatSequence.length >= code.length) {
+                    const recentKeys = shopCheatSequence.slice(-code.length).join('');
+                    
+                    if (recentKeys === code && !shopCodes[code].used) {
+                        // Code matched and not used yet
+                        undergroundBalance += shopCodes[code].reward;
+                        
+                        localStorage.setItem('underground_balance', String(undergroundBalance));
+                        updateDisplay();
+                        
+                        showMessage('🔮 GHOST CODE ACTIVATED', shopCodes[code].message);
+                        
+                        // Mark as used
+                        shopCodes[code].used = true;
+                        saveShopUsedCodes();
+                        
+                        // Reset sequence
+                        shopCheatSequence = [];
+                    }
+                }
+            });
+            
+            // Keep sequence reasonable length
+            if (shopCheatSequence.length > 20) {
+                shopCheatSequence = shopCheatSequence.slice(-20);
+            }
+        });
+
+        // Load used codes when page loads
+        document.addEventListener('DOMContentLoaded', loadShopUsedCodes);
     </script>
 </body>
 </html>
