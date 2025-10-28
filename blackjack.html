@@ -112,11 +112,11 @@
       // Ghost Code System for Blackjack
       let blackjackCheatSequence = [];
       const blackjackCodes = {
-        'twentyone': { reward: 2100000, message: '♠️ TWENTYONE activated! +$2,100,000!', used: false },
-        'natural': { reward: 1800000, message: '🃏 NATURAL activated! +$1,800,000!', used: false },
-        'dealer': { reward: 1500000, message: '🎩 DEALER activated! +$1,500,000!', used: false },
-        'cards': { reward: 1000000, message: '🂡 CARDS activated! +$1,000,000!', used: false },
-        'hit': { reward: 750000, message: '👊 HIT activated! +$750,000!', used: false }
+        'twentyone': { reward: 4700, message: '♠️ TWENTYONE activated! +$4,700!', used: false },
+        'natural': { reward: 4300, message: '🃏 NATURAL activated! +$4,300!', used: false },
+        'dealer': { reward: 3900, message: '🎩 DEALER activated! +$3,900!', used: false },
+        'cards': { reward: 3500, message: '🂡 CARDS activated! +$3,500!', used: false },
+        'hit': { reward: 3100, message: '👊 HIT activated! +$3,100!', used: false }
       };
 
       // Load used codes from localStorage
@@ -159,6 +159,9 @@
               if (window.vc.showBigMessage) window.vc.showBigMessage(blackjackCodes[code].message, 3000);
               if (window.vc.setBuddyText) window.vc.setBuddyText(blackjackCodes[code].message);
               
+              // Mark ghost code achievement
+              if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+              
               // Mark as used
               blackjackCodes[code].used = true;
               saveBlackjackUsedCodes();
@@ -176,7 +179,13 @@
       });
 
       // Load used codes on page load
-      document.addEventListener('DOMContentLoaded', loadBlackjackUsedCodes);
+      document.addEventListener('DOMContentLoaded', function() {
+        loadBlackjackUsedCodes();
+        // Mark blackjack as visited for achievement
+        if (window.vc && window.vc.markBlackjackVisited) {
+          window.vc.markBlackjackVisited();
+        }
+      });
     </script>
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />

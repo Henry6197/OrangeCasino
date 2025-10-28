@@ -122,17 +122,15 @@
   <script src="scripts/slot.clean.js"></script>
   
   <script>
-    // Ghost Code System for Slot Machine
-    let slotCheatSequence = [];
-    const slotCodes = {
-      'spinwin': { reward: 2000000, message: '🎰 SPINWIN activated! +$2,000,000!', used: false },
-      'sevens': { reward: 1500000, message: '🎰 SEVENS activated! +$1,500,000!', used: false },
-      'cherries': { reward: 1000000, message: '🍒 CHERRIES activated! +$1,000,000!', used: false },
-      'slots': { reward: 750000, message: '🎲 SLOTS activated! +$750,000!', used: false },
-      'reels': { reward: 500000, message: '🎡 REELS activated! +$500,000!', used: false }
-    };
-
-    // Load used codes from localStorage
+      // Ghost Code System for Slot Machine
+      let slotCheatSequence = [];
+      const slotCodes = {
+        'spinwin': { reward: 4800, message: '🎰 SPINWIN activated! +$4,800!', used: false },
+        'sevens': { reward: 4200, message: '🎰 SEVENS activated! +$4,200!', used: false },
+        'cherries': { reward: 3800, message: '🍒 CHERRIES activated! +$3,800!', used: false },
+        'slots': { reward: 3400, message: '🎲 SLOTS activated! +$3,400!', used: false },
+        'reels': { reward: 3000, message: '🎡 REELS activated! +$3,000!', used: false }
+      };    // Load used codes from localStorage
     function loadSlotUsedCodes() {
       const saved = localStorage.getItem('slot_codes_used');
       if (saved) {
@@ -167,16 +165,17 @@
             const currentBalance = window.vc.readBalance();
             window.vc.writeBalance(currentBalance + slotCodes[code].reward);
             
-            // Show confetti and big message
-            if (window.vc.confetti) window.vc.confetti();
-            if (window.vc.showBigMessage) window.vc.showBigMessage(slotCodes[code].message, 3000);
-            if (window.vc.setBuddyText) window.vc.setBuddyText(slotCodes[code].message);
-            
-            // Mark as used
-            slotCodes[code].used = true;
-            saveSlotUsedCodes();
-            
-            // Reset sequence
+              // Show confetti and big message
+              if (window.vc.confetti) window.vc.confetti();
+              if (window.vc.showBigMessage) window.vc.showBigMessage(slotCodes[code].message, 3000);
+              if (window.vc.setBuddyText) window.vc.setBuddyText(slotCodes[code].message);
+              
+              // Mark ghost code achievement
+              if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+              
+              // Mark as used
+              slotCodes[code].used = true;
+              saveSlotUsedCodes();            // Reset sequence
             slotCheatSequence = [];
           }
         }
@@ -188,8 +187,14 @@
       }
     });
 
-    // Load used codes on page load
-    document.addEventListener('DOMContentLoaded', loadSlotUsedCodes);
+      // Load used codes on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        loadSlotUsedCodes();
+        // Mark slots as visited for achievement
+        if (window.vc && window.vc.markSlotsVisited) {
+          window.vc.markSlotsVisited();
+        }
+      });
   </script>
     <!-- buddy + overlays -->
     <div class="buddy" id="buddy">

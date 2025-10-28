@@ -495,6 +495,11 @@
         function dealCards() {
             const betAmount = parseInt(document.getElementById('betAmount').value);
             
+            // Mark baccarat play achievement
+            if (window.vc && window.vc.markBaccaratPlay) {
+                window.vc.markBaccaratPlay();
+            }
+            
             if (!selectedBet) {
                 showMessage('⚠️ NO BET SELECTED', 'Choose Player, Tie, or Banker before dealing.');
                 return;
@@ -715,11 +720,11 @@
         // Ghost Code System for Blood Pact Baccarat
         let baccaratCheatSequence = [];
         const baccaratCodes = {
-            'bloodpact': { reward: 4000000, message: '🩸 BLOODPACT activated! +$4,000,000 underground coins!', used: false },
-            'souldebt': { reward: 3500000, message: '👹 SOULDEBT activated! +$3,500,000 underground coins!', used: false },
-            'pact': { reward: 3000000, message: '📜 PACT activated! +$3,000,000 underground coins!', used: false },
-            'banker': { reward: 2500000, message: '🏦 BANKER activated! +$2,500,000 underground coins!', used: false },
-            'soul': { reward: 2000000, message: '👻 SOUL activated! +$2,000,000 underground coins!', used: false }
+            'bloodpact': { reward: 4900, message: '🩸 BLOODPACT activated! +$4,900 underground coins!', used: false },
+            'souldebt': { reward: 4300, message: '👹 SOULDEBT activated! +$4,300 underground coins!', used: false },
+            'pact': { reward: 3700, message: '📜 PACT activated! +$3,700 underground coins!', used: false },
+            'banker': { reward: 3100, message: '🏦 BANKER activated! +$3,100 underground coins!', used: false },
+            'soul': { reward: 2500, message: '👻 SOUL activated! +$2,500 underground coins!', used: false }
         };
 
         // Load used codes from localStorage

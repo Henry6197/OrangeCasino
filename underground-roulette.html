@@ -413,6 +413,11 @@
             undergroundBalance -= 100;
             gamesPlayed++;
             
+            // Mark roulette play achievement (they survived at least one round)
+            if (window.vc && window.vc.markRoulettePlay) {
+                window.vc.markRoulettePlay();
+            }
+            
             const chambers = document.querySelectorAll('.chamber');
             chambers[currentChamber].classList.add('fired');
             
@@ -527,11 +532,11 @@
         // Ghost Code System for Russian Roulette
         let rouletteCheatSequence = [];
         const rouletteCodes = {
-            'bullet': { reward: 3500000, message: '🔫 BULLET activated! +$3,500,000 underground coins!', used: false },
-            'chamber': { reward: 3000000, message: '🔄 CHAMBER activated! +$3,000,000 underground coins!', used: false },
-            'trigger': { reward: 2500000, message: '🎯 TRIGGER activated! +$2,500,000 underground coins!', used: false },
-            'russian': { reward: 2000000, message: '🇷🇺 RUSSIAN activated! +$2,000,000 underground coins!', used: false },
-            'death': { reward: 1800000, message: '💀 DEATH activated! +$1,800,000 underground coins!', used: false }
+            'bullet': { reward: 4800, message: '🔫 BULLET activated! +$4,800 underground coins!', used: false },
+            'chamber': { reward: 4200, message: '🔄 CHAMBER activated! +$4,200 underground coins!', used: false },
+            'trigger': { reward: 3600, message: '🎯 TRIGGER activated! +$3,600 underground coins!', used: false },
+            'russian': { reward: 3000, message: '🇷🇺 RUSSIAN activated! +$3,000 underground coins!', used: false },
+            'death': { reward: 2400, message: '💀 DEATH activated! +$2,400 underground coins!', used: false }
         };
 
         // Load used codes from localStorage
@@ -590,7 +595,18 @@
         });
 
         // Load used codes when page loads
-        document.addEventListener('DOMContentLoaded', loadRouletteUsedCodes);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRouletteUsedCodes();
+            
+            // Mark underground ghost code achievement when using codes
+            const originalSaveRouletteUsedCodes = saveRouletteUsedCodes;
+            saveRouletteUsedCodes = function() {
+                if (window.vc && window.vc.markGhostCodeUnderground) {
+                    window.vc.markGhostCodeUnderground();
+                }
+                originalSaveRouletteUsedCodes();
+            };
+        });
     </script>
 </body>
 </html>

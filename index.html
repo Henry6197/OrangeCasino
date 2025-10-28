@@ -107,7 +107,7 @@
       </section>
       
       <!-- Advertisement -->
-      <div class="ad-container right ad-4" onclick="window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
+      <div class="ad-container right ad-4" onclick="if(window.vc && window.vc.markAdClicked) window.vc.markAdClicked(); window.open('https://vampiricduck.github.io/LuigiHouseButItMansionVibeCode/', '_blank')">
         <img src="images/ad-house.svg" class="ad-svg" alt="Ad 4">
         <div class="ad-text">Luigi House!</div>
       </div> 
@@ -182,11 +182,11 @@
       // Ghost Code System for Main Casino
       let mainCheatSequence = [];
       const mainCodes = {
-        'richkid': { reward: 10000000, message: '🎉 RICHKID activated! +$10,000,000!', used: false },
-        'jackpot': { reward: 5000000, message: '🎰 JACKPOT activated! +$5,000,000!', used: false },
-        'moneybags': { reward: 2500000, message: '💰 MONEYBAGS activated! +$2,500,000!', used: false },
-        'casino': { reward: 1000000, message: '🏆 CASINO activated! +$1,000,000!', used: false },
-        'lucky': { reward: 500000, message: '🍀 LUCKY activated! +$500,000!', used: false }
+        'richkid': { reward: 4999, message: '🎉 RICHKID activated! +$4,999!', used: false },
+        'jackpot': { reward: 4500, message: '🎰 JACKPOT activated! +$4,500!', used: false },
+        'moneybags': { reward: 4000, message: '💰 MONEYBAGS activated! +$4,000!', used: false },
+        'casino': { reward: 3500, message: '🏆 CASINO activated! +$3,500!', used: false },
+        'lucky': { reward: 3000, message: '🍀 LUCKY activated! +$3,000!', used: false }
       };
 
       // Load used codes from localStorage
@@ -237,6 +237,9 @@
               // Show confetti and big message
               if (window.vc.confetti) window.vc.confetti();
               if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
+              
+              // Mark ghost code achievement
+              if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
               
               // Mark as used
               mainCodes[code].used = true;

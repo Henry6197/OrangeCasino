@@ -138,11 +138,11 @@
       // Ghost Code System for Poker
       let pokerCheatSequence = [];
       const pokerCodes = {
-        'royal': { reward: 2500000, message: '👑 ROYAL activated! +$2,500,000!', used: false },
-        'flush': { reward: 2000000, message: '♦️ FLUSH activated! +$2,000,000!', used: false },
-        'straight': { reward: 1500000, message: '📈 STRAIGHT activated! +$1,500,000!', used: false },
-        'pair': { reward: 1000000, message: '🃏 PAIR activated! +$1,000,000!', used: false },
-        'bluff': { reward: 800000, message: '😎 BLUFF activated! +$800,000!', used: false }
+        'royal': { reward: 4900, message: '👑 ROYAL activated! +$4,900!', used: false },
+        'flush': { reward: 4400, message: '♦️ FLUSH activated! +$4,400!', used: false },
+        'straight': { reward: 3900, message: '📈 STRAIGHT activated! +$3,900!', used: false },
+        'pair': { reward: 3400, message: '🃏 PAIR activated! +$3,400!', used: false },
+        'bluff': { reward: 2900, message: '😎 BLUFF activated! +$2,900!', used: false }
       };
 
       // Load used codes from localStorage
@@ -185,6 +185,9 @@
               if (window.vc.showBigMessage) window.vc.showBigMessage(pokerCodes[code].message, 3000);
               if (window.vc.setBuddyText) window.vc.setBuddyText(pokerCodes[code].message);
               
+              // Mark ghost code achievement
+              if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+              
               // Mark as used
               pokerCodes[code].used = true;
               savePokerUsedCodes();
@@ -202,7 +205,13 @@
       });
 
       // Load used codes on page load
-      document.addEventListener('DOMContentLoaded', loadPokerUsedCodes);
+      document.addEventListener('DOMContentLoaded', function() {
+        loadPokerUsedCodes();
+        // Mark poker as visited for achievement
+        if (window.vc && window.vc.markPokerVisited) {
+          window.vc.markPokerVisited();
+        }
+      });
     </script>
     <div class="buddy" id="buddy">
       <img src="images/buddy.svg" alt="Buddy" />

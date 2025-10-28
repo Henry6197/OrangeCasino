@@ -461,6 +461,11 @@
             localStorage.removeItem('hells_casino_wins');
             
             // Show escape message and redirect
+            // Mark Hell's escape achievement
+            if (window.vc && window.vc.markHellsEscaped) {
+                window.vc.markHellsEscaped();
+            }
+            
             setTimeout(() => {
                 alert('🎉 ESCAPED! Your soul debt has been forgiven. You are free to return to the underground...');
                 window.location.href = 'underground.html';
@@ -602,6 +607,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             initGame();
             loadHellsUsedCodes();
+            
+            // Mark Hell's Casino as visited for achievement
+            if (window.vc && window.vc.markHellsVisited) {
+                window.vc.markHellsVisited();
+            }
         });
     </script>
 </body>

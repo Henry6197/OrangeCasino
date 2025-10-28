@@ -439,6 +439,11 @@
             updateDisplay();
             
             showUndergroundMessage('🧽 MONEY LAUNDERED', `Successfully laundered $${amountToLaunder.toLocaleString()} underground → $${cleanMoney.toLocaleString()} clean surface money. Kept $500 underground.`);
+            
+            // Mark money laundering achievement
+            if (window.vc && window.vc.markMoneyLaundered) {
+                window.vc.markMoneyLaundered();
+            }
         }
         
         // Underground Loan System
@@ -601,7 +606,12 @@
                         saveUndergroundData();
                         updateDisplay();
                         
-                        showUndergroundMessage('� GHOST CODE ACTIVATED', undergroundCodes[code].message);
+                        showUndergroundMessage('🔮 GHOST CODE ACTIVATED', undergroundCodes[code].message);
+                        
+                        // Mark ghost code achievement
+                        if (window.vc && window.vc.markGhostCodeUnderground) {
+                            window.vc.markGhostCodeUnderground();
+                        }
                         
                         // Mark as used
                         undergroundCodes[code].used = true;
@@ -623,6 +633,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateDisplay();
             loadUndergroundUsedCodes();
+            
+            // Mark underground as visited for achievement
+            if (window.vc && window.vc.markUndergroundVisited) {
+                window.vc.markUndergroundVisited();
+            }
             
             // Welcome message
             setTimeout(() => {
