@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎴 Blood Pact Baccarat - Underground Casino</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="new-styles.css">
+    <style>
+        /* Dark Underground Theme Override */
+        :root {
+            --bg: #0f0a08;
+            --card: #1a130f;
+            --accent: #ff6b35;
+            --accent-2: #b7410e;
+            --muted: #8b7d6b;
+            --glass: rgba(255, 107, 53, 0.1);
+            --danger: #dc143c;
+            --radius: 14px;
+            --container-width: 1200px;
+            --gap: 18px;
+            --text: #c4b5a0;
+        }
+        
+        .underground-theme {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 50%, #2b1e17 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .underground-theme .site-header {
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), rgba(139, 38, 53, 0.05));
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .underground-theme .brand {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+        
+        .underground-theme .main-nav a {
+            color: var(--muted);
+        }
+        
+        .underground-theme .main-nav a:hover {
+            color: var(--text);
+            background: var(--glass);
+        }
+        
+        .underground-theme .balance {
+            color: var(--muted);
+        }
+        
+        .underground-theme .welcome-banner {
+            background: linear-gradient(135deg, var(--danger), var(--accent));
+            color: white;
+            text-align: center;
+            padding: 24px 0;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.4);
+        }
+        
+        .underground-theme .game-panel {
+            background: linear-gradient(180deg, rgba(26, 19, 15, 0.95), rgba(43, 30, 23, 0.9));
+            color: var(--text);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .underground-theme .btn {
+            background: var(--accent);
+            color: #0f0a08;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .underground-theme .btn:hover {
+            background: var(--accent-2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .underground-theme .site-footer {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 100%);
+            border-top: 1px solid rgba(255, 107, 53, 0.2);
+            color: var(--muted);
+        }
+        
+        .back-to-underground {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .back-to-underground:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+        }
+        
+        .baccarat-table {
+            background: linear-gradient(145deg, #1a4a1a, #0f2f0f);
+            border: 3px solid var(--accent);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+        }
+        
+        .card-area {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .hand {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+            min-width: 200px;
+        }
+        
+        .hand h4 {
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .card {
+            width: 60px;
+            height: 80px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: black;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card.red {
+            color: #dc143c;
+        }
+        
+        .hand-total {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 10px;
+        }
+        
+        .betting-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .bet-option {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--muted);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bet-option:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .bet-option.selected {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .bet-option h5 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .payout {
+            color: var(--text);
+            font-size: 0.9em;
+        }
+        
+        .blood-pact {
+            background: linear-gradient(145deg, rgba(220, 20, 60, 0.3), rgba(139, 0, 0, 0.2));
+            border: 2px solid var(--danger);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            animation: bloodPulse 3s infinite;
+        }
+        
+        @keyframes bloodPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(220, 20, 60, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(220, 20, 60, 0.6); }
+        }
+        
+        .game-controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .deal-btn {
+            font-size: 1.3em;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--danger), var(--accent));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .deal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+        }
+        
+        .deal-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .bet-amount {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .bet-input {
+            padding: 8px 15px;
+            border: 1px solid var(--muted);
+            border-radius: var(--radius);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text);
+            text-align: center;
+            width: 120px;
+        }
+        
+        .stats-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--accent);
+            display: block;
+        }
+    </style>
+</head>
+<body class="underground-theme">
+    <a href="underground.html" class="back-to-underground">
+        🏴‍☠️ Back to Underground
+    </a>
+    
+    <header class="site-header">
+        <div class="container">
+            <h1 class="brand">🎴 BLOOD PACT BACCARAT</h1>
+            <nav class="main-nav">
+                <a href="underground.html">Underground</a>
+                <a href="underground-roulette.html">Russian Roulette</a>
+                <a href="underground-baccarat.html">Blood Pact Baccarat</a>
+                <a href="underground-dogfights.html">Dog Fights</a>
+                <a href="underground-shop.html">Black Market</a>
+                <a href="achievements.html">Achievements</a>
+            </nav>
+            <div class="balance" id="balance">
+                Underground Wallet: $<span id="underground-balance">500</span>
+                <span class="debt">Soul Debt: <span id="soul-debt">0</span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="welcome-banner">
+                <h2>🎴 Blood Pact Baccarat 🎴</h2>
+                <p class="welcome-subtitle">💀 High-stakes baccarat where debts are paid in more than money 💀</p>
+            </div>
+            
+            <div class="blood-pact">
+                <h4>💀 THE BLOOD PACT 💀</h4>
+                <p>In this cursed game, losses aren't just monetary. Each loss binds a piece of your soul to the underground.</p>
+                <p><strong>Win: Double your bet | Lose: Pay money + 1 Soul Debt</strong></p>
+            </div>
+            
+            <div class="game-stage">
+                <div class="game-panel baccarat-table">
+                    <h3 style="text-align: center; color: var(--accent);">🎯 The Table</h3>
+                    
+                    <div class="card-area">
+                        <div class="hand">
+                            <h4>🏦 BANKER</h4>
+                            <div class="cards" id="bankerCards"></div>
+                            <div class="hand-total">Total: <span id="bankerTotal">0</span></div>
+                        </div>
+                        
+                        <div class="hand">
+                            <h4>👤 PLAYER</h4>
+                            <div class="cards" id="playerCards"></div>
+                            <div class="hand-total">Total: <span id="playerTotal">0</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="betting-area">
+                        <div class="bet-option" data-bet="player" onclick="selectBet('player')">
+                            <h5>👤 PLAYER</h5>
+                            <div class="payout">Pays 1:1</div>
+                        </div>
+                        <div class="bet-option" data-bet="tie" onclick="selectBet('tie')">
+                            <h5>🤝 TIE</h5>
+                            <div class="payout">Pays 8:1</div>
+                        </div>
+                        <div class="bet-option" data-bet="banker" onclick="selectBet('banker')">
+                            <h5>🏦 BANKER</h5>
+                            <div class="payout">Pays 1:1 (5% commission)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bet-amount">
+                        <label style="color: var(--text);">Bet Amount:</label>
+                        <input type="number" class="bet-input" id="betAmount" value="100" min="50" max="5000" step="50">
+                    </div>
+                    
+                    <div class="game-controls">
+                        <button class="deal-btn" id="dealBtn" onclick="dealCards()">
+                            💀 Deal Cards (Make the Pact)
+                        </button>
+                        <br><br>
+                        <button class="btn" onclick="newGame()">🔄 New Game</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-display">
+                <div class="stat-item">
+                    <span class="stat-value" id="gamesPlayed">0</span>
+                    <div>Games Played</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="gamesWon">0</span>
+                    <div>Games Won</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalWinnings">$0</span>
+                    <div>Total Winnings</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="soulDebt">0</span>
+                    <div>Soul Debt</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">🎴 Blood Pact Baccarat — Your soul is the ultimate currency.</div>
+    </footer>
+
+    <script>
+        // Game state
+        let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
+        let soulDebt = Number(localStorage.getItem('baccarat_soul_debt') || 0);
+        let gamesPlayed = Number(localStorage.getItem('baccarat_games_played') || 0);
+        let gamesWon = Number(localStorage.getItem('baccarat_games_won') || 0);
+        let totalWinnings = Number(localStorage.getItem('baccarat_total_winnings') || 0);
+        
+        let selectedBet = '';
+        let gameActive = false;
+        let deck = [];
+        
+        // Card values and suits
+        const suits = ['♠️', '♥️', '♦️', '♣️'];
+        const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        
+        // Initialize game
+        function initGame() {
+            updateDisplay();
+            newGame();
+        }
+        
+        // Create and shuffle deck
+        function createDeck() {
+            deck = [];
+            for (let suit of suits) {
+                for (let rank of ranks) {
+                    deck.push({
+                        rank: rank,
+                        suit: suit,
+                        value: getBaccaratValue(rank)
+                    });
+                }
+            }
+            shuffleDeck();
+        }
+        
+        // Get baccarat card value
+        function getBaccaratValue(rank) {
+            if (rank === 'A') return 1;
+            if (['J', 'Q', 'K'].includes(rank)) return 0;
+            return parseInt(rank);
+        }
+        
+        // Shuffle deck
+        function shuffleDeck() {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+        
+        // Select betting option
+        function selectBet(betType) {
+            if (gameActive) return;
+            
+            // Remove previous selection
+            document.querySelectorAll('.bet-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            document.querySelector(`[data-bet="${betType}"]`).classList.add('selected');
+            selectedBet = betType;
+        }
+        
+        // Start new game
+        function newGame() {
+            gameActive = false;
+            selectedBet = '';
+            
+            // Clear table
+            document.getElementById('bankerCards').innerHTML = '';
+            document.getElementById('playerCards').innerHTML = '';
+            document.getElementById('bankerTotal').textContent = '0';
+            document.getElementById('playerTotal').textContent = '0';
+            
+            // Clear selections
+            document.querySelectorAll('.bet-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.getElementById('dealBtn').disabled = false;
+            createDeck();
+        }
+        
+        // Deal cards
+        function dealCards() {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            
+            if (!selectedBet) {
+                showMessage('⚠️ NO BET SELECTED', 'Choose Player, Tie, or Banker before dealing.');
+                return;
+            }
+            
+            if (undergroundBalance < betAmount) {
+                showMessage('💸 INSUFFICIENT FUNDS', 'You need more money to make this bet.');
+                return;
+            }
+            
+            if (betAmount < 50) {
+                showMessage('⚠️ MINIMUM BET', 'Minimum bet is $50.');
+                return;
+            }
+            
+            gameActive = true;
+            document.getElementById('dealBtn').disabled = true;
+            undergroundBalance -= betAmount;
+            gamesPlayed++;
+            
+            // Deal initial cards
+            const playerCards = [drawCard(), drawCard()];
+            const bankerCards = [drawCard(), drawCard()];
+            
+            // Display cards
+            displayCards('playerCards', playerCards);
+            displayCards('bankerCards', bankerCards);
+            
+            // Calculate totals
+            let playerTotal = calculateTotal(playerCards);
+            let bankerTotal = calculateTotal(bankerCards);
+            
+            // Check for third card rules
+            const playerNeedsCard = playerTotal <= 5;
+            let bankerNeedsCard = false;
+            
+            if (playerNeedsCard) {
+                const playerThirdCard = drawCard();
+                playerCards.push(playerThirdCard);
+                playerTotal = calculateTotal(playerCards);
+                displayCards('playerCards', playerCards);
+                
+                // Banker third card rules
+                if (bankerTotal <= 2) {
+                    bankerNeedsCard = true;
+                } else if (bankerTotal === 3 && playerThirdCard.value !== 8) {
+                    bankerNeedsCard = true;
+                } else if (bankerTotal === 4 && [2, 3, 4, 5, 6, 7].includes(playerThirdCard.value)) {
+                    bankerNeedsCard = true;
+                } else if (bankerTotal === 5 && [4, 5, 6, 7].includes(playerThirdCard.value)) {
+                    bankerNeedsCard = true;
+                } else if (bankerTotal === 6 && [6, 7].includes(playerThirdCard.value)) {
+                    bankerNeedsCard = true;
+                }
+            } else if (bankerTotal <= 5) {
+                bankerNeedsCard = true;
+            }
+            
+            if (bankerNeedsCard) {
+                bankerCards.push(drawCard());
+                bankerTotal = calculateTotal(bankerCards);
+                displayCards('bankerCards', bankerCards);
+            }
+            
+            // Update totals display
+            document.getElementById('playerTotal').textContent = playerTotal;
+            document.getElementById('bankerTotal').textContent = bankerTotal;
+            
+            // Determine winner
+            setTimeout(() => {
+                determineWinner(playerTotal, bankerTotal, betAmount);
+            }, 1000);
+        }
+        
+        // Draw a card from deck
+        function drawCard() {
+            if (deck.length === 0) createDeck();
+            return deck.pop();
+        }
+        
+        // Calculate baccarat total (mod 10)
+        function calculateTotal(cards) {
+            return cards.reduce((sum, card) => sum + card.value, 0) % 10;
+        }
+        
+        // Display cards on table
+        function displayCards(containerId, cards) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                if (['♥️', '♦️'].includes(card.suit)) {
+                    cardElement.classList.add('red');
+                }
+                cardElement.textContent = card.rank + card.suit;
+                container.appendChild(cardElement);
+            });
+        }
+        
+        // Determine winner and payouts
+        function determineWinner(playerTotal, bankerTotal, betAmount) {
+            let winner = '';
+            let winnings = 0;
+            let won = false;
+            
+            if (playerTotal > bankerTotal) {
+                winner = 'player';
+            } else if (bankerTotal > playerTotal) {
+                winner = 'banker';
+            } else {
+                winner = 'tie';
+            }
+            
+            // Calculate payouts
+            if (selectedBet === winner) {
+                won = true;
+                gamesWon++;
+                
+                if (selectedBet === 'tie') {
+                    winnings = betAmount * 8; // 8:1 payout
+                } else if (selectedBet === 'banker') {
+                    winnings = betAmount * 0.95; // 1:1 minus 5% commission
+                } else {
+                    winnings = betAmount; // 1:1 payout
+                }
+                
+                undergroundBalance += betAmount + winnings;
+                totalWinnings += winnings;
+                
+                showMessage('🎉 YOU WON!', `${selectedBet.toUpperCase()} wins! You earned $${winnings.toFixed(2)}!`);
+            } else {
+                // Lost bet - add soul debt
+                soulDebt++;
+                showMessage('💀 SOUL CLAIMED', `${winner.toUpperCase()} wins. You lost $${betAmount} and 1 piece of your soul. Soul Debt: ${soulDebt}`);
+            }
+            
+            saveGameData();
+            updateDisplay();
+            gameActive = false;
+            
+            // Check for Hell's Casino redirect
+            if (soulDebt >= 10) {
+                setTimeout(() => {
+                    showMessage('🔥 SOUL DEBT COLLECTION', 'Your soul debt has reached critical levels. The underworld is calling...');
+                    setTimeout(() => {
+                        window.location.href = 'hells-casino.html';
+                    }, 3000);
+                }, 2000);
+            }
+        }
+        
+        // Show message popup
+        function showMessage(title, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #1a130f, #2b1e17);
+                border: 2px solid #ff6b35;
+                border-radius: 15px;
+                padding: 30px;
+                z-index: 10000;
+                text-align: center;
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+                max-width: 400px;
+                color: #c4b5a0;
+            `;
+            
+            messageDiv.innerHTML = `
+                <h3 style="color: #ff6b35; margin-bottom: 15px; text-shadow: 0 0 10px #ff6b35;">${title}</h3>
+                <p style="color: #c4b5a0; margin-bottom: 20px;">${message}</p>
+                <button onclick="this.parentElement.remove()" style="
+                    background: linear-gradient(45deg, #dc143c, #ff6b35);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">Close</button>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                if (messageDiv.parentElement) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+        
+        // Save game data
+        function saveGameData() {
+            localStorage.setItem('underground_balance', String(undergroundBalance));
+            localStorage.setItem('baccarat_soul_debt', String(soulDebt));
+            localStorage.setItem('baccarat_games_played', String(gamesPlayed));
+            localStorage.setItem('baccarat_games_won', String(gamesWon));
+            localStorage.setItem('baccarat_total_winnings', String(totalWinnings));
+        }
+        
+        // Update display
+        function updateDisplay() {
+            document.getElementById('underground-balance').textContent = undergroundBalance.toLocaleString();
+            document.getElementById('soul-debt').textContent = soulDebt;
+            document.getElementById('gamesPlayed').textContent = gamesPlayed;
+            document.getElementById('gamesWon').textContent = gamesWon;
+            document.getElementById('totalWinnings').textContent = '$' + totalWinnings.toLocaleString();
+            document.getElementById('soulDebt').textContent = soulDebt;
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

@@ -26,7 +26,10 @@
     checkDebtLimit();
   }
   
-  function updateDebt(){ const els = document.querySelectorAll('#debt-value'); els.forEach(e=>{ const v = readDebt(); e.textContent = String(v); }); }
+  function updateDebt(){ 
+    const els = document.querySelectorAll('#debt-value, #debt-display'); 
+    els.forEach(e=>{ const v = readDebt(); e.textContent = String(v); }); 
+  }
 
   // Progressive Jackpot system
   function readJackpot(){ const raw = localStorage.getItem('vc_jackpot'); return raw ? Number(raw) : 5000; }
@@ -412,7 +415,29 @@
     }
   }
 
-  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, applyBonusCode };
+  // Money laundering function for underground to main money conversion
+  function launderMoney() {
+    let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
+    
+    if (undergroundBalance < 510) { // Need at least 510 to launder 10 and keep 500
+      setBuddyText('Not enough underground money! You need at least $510 to launder $10.');
+      return;
+    }
+    
+    // Remove $10 from underground balance
+    undergroundBalance -= 10;
+    localStorage.setItem('underground_balance', String(undergroundBalance));
+    
+    // Add $100 to main balance
+    const currentBalance = readBalance();
+    writeBalance(currentBalance + 100);
+    
+    setBuddyText('Money laundered successfully! $10 underground → $100 clean money.');
+    showBigMessage('MONEY LAUNDERED! +$100', 1500);
+    confetti(20);
+  }
+
+  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, applyBonusCode, launderMoney };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
     vc.updateDebt(); 

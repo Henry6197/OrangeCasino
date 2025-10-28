@@ -163,6 +163,40 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-s
   font-weight: 700;
 }
 
+.laundering-panel {
+  background: linear-gradient(135deg, var(--card), var(--glass));
+  border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.underground-balance {
+  font-weight: bold;
+  color: var(--accent);
+  margin: 8px 0;
+}
+
+.laundering-warning {
+  font-size: 0.85em;
+  color: #ff6b35;
+  margin: 8px 0;
+}
+
+.laundering-btn {
+  background: linear-gradient(135deg, #2a9d8f, #264653);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.laundering-btn:hover {
+  background: linear-gradient(135deg, #21867a, #1e3f47);
+  transform: translateY(-1px);
+}
+
 .debt-display {
   background: rgba(176, 0, 32, 0.1);
   padding: 8px 12px;

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐕‍🦺 Underground Dog Fights - Underground Casino</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="new-styles.css">
+    <style>
+        /* Dark Underground Theme Override */
+        :root {
+            --bg: #0f0a08;
+            --card: #1a130f;
+            --accent: #ff6b35;
+            --accent-2: #b7410e;
+            --muted: #8b7d6b;
+            --glass: rgba(255, 107, 53, 0.1);
+            --danger: #dc143c;
+            --radius: 14px;
+            --container-width: 1200px;
+            --gap: 18px;
+            --text: #c4b5a0;
+        }
+        
+        .underground-theme {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 50%, #2b1e17 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .underground-theme .site-header {
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), rgba(139, 38, 53, 0.05));
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .underground-theme .brand {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+        
+        .underground-theme .main-nav a {
+            color: var(--muted);
+        }
+        
+        .underground-theme .main-nav a:hover {
+            color: var(--text);
+            background: var(--glass);
+        }
+        
+        .underground-theme .balance {
+            color: var(--muted);
+        }
+        
+        .underground-theme .welcome-banner {
+            background: linear-gradient(135deg, var(--danger), var(--accent));
+            color: white;
+            text-align: center;
+            padding: 24px 0;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.4);
+        }
+        
+        .underground-theme .game-panel {
+            background: linear-gradient(180deg, rgba(26, 19, 15, 0.95), rgba(43, 30, 23, 0.9));
+            color: var(--text);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .underground-theme .btn {
+            background: var(--accent);
+            color: #0f0a08;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .underground-theme .btn:hover {
+            background: var(--accent-2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .underground-theme .site-footer {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 100%);
+            border-top: 1px solid rgba(255, 107, 53, 0.2);
+            color: var(--muted);
+        }
+        
+        .back-to-underground {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .back-to-underground:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+        }
+        
+        .fighting-ring {
+            background: linear-gradient(145deg, #2d1b0f, #1a0f08);
+            border: 3px solid var(--danger);
+            border-radius: 50%;
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(220, 20, 60, 0.4);
+        }
+        
+        .fighters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+        }
+        
+        .fighter {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: var(--radius);
+            border: 2px solid var(--muted);
+            min-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .fighter:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .fighter.selected {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .fighter-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .fighter-stats {
+            margin: 10px 0;
+        }
+        
+        .stat-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            color: var(--text);
+        }
+        
+        .fighter-odds {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        
+        .vs-text {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--danger);
+            text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+        }
+        
+        .betting-controls {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+        }
+        
+        .bet-amount {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .bet-input {
+            padding: 8px 15px;
+            border: 1px solid var(--muted);
+            border-radius: var(--radius);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--text);
+            text-align: center;
+            width: 120px;
+        }
+        
+        .start-fight-btn {
+            font-size: 1.3em;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--danger), var(--accent));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-fight-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+        }
+        
+        .start-fight-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .fight-log {
+            height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--muted);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        .log-entry.damage {
+            color: #ff6b6b;
+        }
+        
+        .log-entry.critical {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .log-entry.winner {
+            color: var(--accent);
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .health-bars {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .health-bar-container {
+            text-align: center;
+            width: 200px;
+        }
+        
+        .health-bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--accent));
+            transition: width 0.5s ease;
+        }
+        
+        .health-text {
+            color: var(--text);
+            font-weight: bold;
+        }
+        
+        .stats-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--accent);
+            display: block;
+        }
+        
+        .fight-result {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: var(--radius);
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .win-result {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .loss-result {
+            background: rgba(220, 20, 60, 0.2);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body class="underground-theme">
+    <a href="underground.html" class="back-to-underground">
+        🏴‍☠️ Back to Underground
+    </a>
+    
+    <header class="site-header">
+        <div class="container">
+            <h1 class="brand">🐕‍🦺 UNDERGROUND DOG FIGHTS</h1>
+            <nav class="main-nav">
+                <a href="underground.html">Underground</a>
+                <a href="underground-roulette.html">Russian Roulette</a>
+                <a href="underground-baccarat.html">Blood Pact Baccarat</a>
+                <a href="underground-dogfights.html">Dog Fights</a>
+                <a href="underground-shop.html">Black Market</a>
+                <a href="achievements.html">Achievements</a>
+            </nav>
+            <div class="balance" id="balance">
+                Underground Wallet: $<span id="underground-balance">500</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="welcome-banner">
+                <h2>🐕‍🦺 Underground Dog Fights 🐕‍🦺</h2>
+                <p class="welcome-subtitle">⚔️ Bet on the fiercest fighters in the underground circuit ⚔️</p>
+            </div>
+            
+            <div class="game-stage">
+                <div class="game-panel">
+                    <h3 style="text-align: center; color: var(--accent);">🥊 The Fighting Ring</h3>
+                    
+                    <div class="fighting-ring">
+                        <div class="fighters">
+                            <div class="fighter" id="fighter1" onclick="selectFighter(1)">
+                                <div class="fighter-name" id="fighter1Name">Loading...</div>
+                                <div class="fighter-stats">
+                                    <div class="stat-line">
+                                        <span>Strength:</span>
+                                        <span id="fighter1Strength">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Speed:</span>
+                                        <span id="fighter1Speed">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Endurance:</span>
+                                        <span id="fighter1Endurance">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Wins:</span>
+                                        <span id="fighter1Wins">0</span>
+                                    </div>
+                                </div>
+                                <div class="fighter-odds" id="fighter1Odds">2.5x</div>
+                            </div>
+                            
+                            <div class="vs-text">VS</div>
+                            
+                            <div class="fighter" id="fighter2" onclick="selectFighter(2)">
+                                <div class="fighter-name" id="fighter2Name">Loading...</div>
+                                <div class="fighter-stats">
+                                    <div class="stat-line">
+                                        <span>Strength:</span>
+                                        <span id="fighter2Strength">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Speed:</span>
+                                        <span id="fighter2Speed">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Endurance:</span>
+                                        <span id="fighter2Endurance">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span>Wins:</span>
+                                        <span id="fighter2Wins">0</span>
+                                    </div>
+                                </div>
+                                <div class="fighter-odds" id="fighter2Odds">1.8x</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="health-bars" id="healthBars" style="display: none;">
+                        <div class="health-bar-container">
+                            <div class="health-text" id="fighter1HealthText">Fighter 1: 100/100</div>
+                            <div class="health-bar">
+                                <div class="health-fill" id="fighter1Health" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="health-bar-container">
+                            <div class="health-text" id="fighter2HealthText">Fighter 2: 100/100</div>
+                            <div class="health-bar">
+                                <div class="health-fill" id="fighter2Health" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="betting-controls">
+                        <div class="bet-amount">
+                            <label style="color: var(--text);">Bet Amount:</label>
+                            <input type="number" class="bet-input" id="betAmount" value="100" min="50" max="2000" step="50">
+                        </div>
+                        
+                        <p style="color: var(--text); margin: 15px 0;">
+                            Select a fighter and place your bet!
+                        </p>
+                        
+                        <button class="start-fight-btn" id="startFightBtn" onclick="startFight()">
+                            ⚔️ Start Fight!
+                        </button>
+                        <br><br>
+                        <button class="btn" onclick="newFight()">🔄 New Fighters</button>
+                    </div>
+                    
+                    <div class="fight-log" id="fightLog">
+                        <div class="log-entry">🥊 Welcome to the Underground Dog Fights!</div>
+                        <div class="log-entry">🎯 Select a fighter and place your bet to begin.</div>
+                    </div>
+                    
+                    <div id="fightResult"></div>
+                </div>
+            </div>
+            
+            <div class="stats-display">
+                <div class="stat-item">
+                    <span class="stat-value" id="fightsWatched">0</span>
+                    <div>Fights Watched</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="betsWon">0</span>
+                    <div>Bets Won</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalWinnings">$0</span>
+                    <div>Total Winnings</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="biggestWin">$0</span>
+                    <div>Biggest Win</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">🐕‍🦺 Underground Dog Fights — May the strongest survive.</div>
+    </footer>
+
+    <script>
+        // Game state
+        let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
+        let fightsWatched = Number(localStorage.getItem('dogfights_fights_watched') || 0);
+        let betsWon = Number(localStorage.getItem('dogfights_bets_won') || 0);
+        let totalWinnings = Number(localStorage.getItem('dogfights_total_winnings') || 0);
+        let biggestWin = Number(localStorage.getItem('dogfights_biggest_win') || 0);
+        
+        let selectedFighter = 0;
+        let fightActive = false;
+        let currentFighters = {};
+        
+        // Fighter names and personalities
+        const fighterNames = [
+            "Razor", "Bruiser", "Lightning", "Tank", "Viper", "Ghost", 
+            "Crusher", "Bullet", "Savage", "Beast", "Phantom", "Titan",
+            "Storm", "Demon", "Wolf", "Dragon", "Shadow", "Thunder"
+        ];
+        
+        // Initialize game
+        function initGame() {
+            updateDisplay();
+            newFight();
+        }
+        
+        // Generate random fighters
+        function generateFighters() {
+            const fighter1 = {
+                name: fighterNames[Math.floor(Math.random() * fighterNames.length)],
+                strength: Math.floor(Math.random() * 40) + 60,
+                speed: Math.floor(Math.random() * 40) + 60,
+                endurance: Math.floor(Math.random() * 40) + 60,
+                wins: Math.floor(Math.random() * 20) + 5,
+                maxHealth: 100,
+                health: 100
+            };
+            
+            let fighter2Name;
+            do {
+                fighter2Name = fighterNames[Math.floor(Math.random() * fighterNames.length)];
+            } while (fighter2Name === fighter1.name);
+            
+            const fighter2 = {
+                name: fighter2Name,
+                strength: Math.floor(Math.random() * 40) + 60,
+                speed: Math.floor(Math.random() * 40) + 60,
+                endurance: Math.floor(Math.random() * 40) + 60,
+                wins: Math.floor(Math.random() * 20) + 5,
+                maxHealth: 100,
+                health: 100
+            };
+            
+            // Calculate odds based on stats
+            const fighter1Power = (fighter1.strength + fighter1.speed + fighter1.endurance) / 3;
+            const fighter2Power = (fighter2.strength + fighter2.speed + fighter2.endurance) / 3;
+            
+            const totalPower = fighter1Power + fighter2Power;
+            fighter1.odds = (totalPower / fighter1Power).toFixed(1);
+            fighter2.odds = (totalPower / fighter2Power).toFixed(1);
+            
+            return { fighter1, fighter2 };
+        }
+        
+        // Display fighters
+        function displayFighters(fighters) {
+            currentFighters = fighters;
+            
+            // Fighter 1
+            document.getElementById('fighter1Name').textContent = `🐕 ${fighters.fighter1.name}`;
+            document.getElementById('fighter1Strength').textContent = fighters.fighter1.strength;
+            document.getElementById('fighter1Speed').textContent = fighters.fighter1.speed;
+            document.getElementById('fighter1Endurance').textContent = fighters.fighter1.endurance;
+            document.getElementById('fighter1Wins').textContent = fighters.fighter1.wins;
+            document.getElementById('fighter1Odds').textContent = `${fighters.fighter1.odds}x`;
+            
+            // Fighter 2
+            document.getElementById('fighter2Name').textContent = `🐕 ${fighters.fighter2.name}`;
+            document.getElementById('fighter2Strength').textContent = fighters.fighter2.strength;
+            document.getElementById('fighter2Speed').textContent = fighters.fighter2.speed;
+            document.getElementById('fighter2Endurance').textContent = fighters.fighter2.endurance;
+            document.getElementById('fighter2Wins').textContent = fighters.fighter2.wins;
+            document.getElementById('fighter2Odds').textContent = `${fighters.fighter2.odds}x`;
+        }
+        
+        // Select fighter for betting
+        function selectFighter(fighterNumber) {
+            if (fightActive) return;
+            
+            // Remove previous selection
+            document.querySelectorAll('.fighter').forEach(fighter => {
+                fighter.classList.remove('selected');
+            });
+            
+            // Add selection to clicked fighter
+            document.getElementById(`fighter${fighterNumber}`).classList.add('selected');
+            selectedFighter = fighterNumber;
+        }
+        
+        // Start new fight setup
+        function newFight() {
+            fightActive = false;
+            selectedFighter = 0;
+            
+            // Clear selections and results
+            document.querySelectorAll('.fighter').forEach(fighter => {
+                fighter.classList.remove('selected');
+            });
+            
+            document.getElementById('fightResult').innerHTML = '';
+            document.getElementById('healthBars').style.display = 'none';
+            document.getElementById('startFightBtn').disabled = false;
+            
+            // Clear fight log
+            const fightLog = document.getElementById('fightLog');
+            fightLog.innerHTML = `
+                <div class="log-entry">🥊 New fighters have entered the ring!</div>
+                <div class="log-entry">🎯 Select a fighter and place your bet to begin.</div>
+            `;
+            
+            // Generate and display new fighters
+            const fighters = generateFighters();
+            displayFighters(fighters);
+        }
+        
+        // Start fight
+        function startFight() {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            
+            if (!selectedFighter) {
+                showMessage('⚠️ NO FIGHTER SELECTED', 'Choose a fighter to bet on before starting the fight.');
+                return;
+            }
+            
+            if (undergroundBalance < betAmount) {
+                showMessage('💸 INSUFFICIENT FUNDS', 'You need more money to place this bet.');
+                return;
+            }
+            
+            if (betAmount < 50) {
+                showMessage('⚠️ MINIMUM BET', 'Minimum bet is $50.');
+                return;
+            }
+            
+            fightActive = true;
+            document.getElementById('startFightBtn').disabled = true;
+            undergroundBalance -= betAmount;
+            fightsWatched++;
+            
+            // Show health bars
+            document.getElementById('healthBars').style.display = 'flex';
+            updateHealthBars();
+            
+            // Clear fight log and start fight simulation
+            document.getElementById('fightLog').innerHTML = '';
+            addLogEntry('🔔 FIGHT BEGINS!');
+            addLogEntry(`💰 You bet $${betAmount} on ${currentFighters[`fighter${selectedFighter}`].name}`);
+            
+            // Start fight simulation
+            setTimeout(() => {
+                simulateFight();
+            }, 1000);
+        }
+        
+        // Simulate the fight
+        function simulateFight() {
+            const fighter1 = currentFighters.fighter1;
+            const fighter2 = currentFighters.fighter2;
+            
+            let round = 1;
+            const fightInterval = setInterval(() => {
+                if (fighter1.health <= 0 || fighter2.health <= 0) {
+                    clearInterval(fightInterval);
+                    endFight(fighter1.health > 0 ? 1 : 2);
+                    return;
+                }
+                
+                addLogEntry(`--- Round ${round} ---`);
+                
+                // Fighter 1 attacks Fighter 2
+                const damage1to2 = calculateDamage(fighter1, fighter2);
+                fighter2.health = Math.max(0, fighter2.health - damage1to2);
+                
+                if (damage1to2 > 25) {
+                    addLogEntry(`💥 ${fighter1.name} lands a CRITICAL HIT on ${fighter2.name} for ${damage1to2} damage!`, 'critical');
+                } else {
+                    addLogEntry(`🥊 ${fighter1.name} hits ${fighter2.name} for ${damage1to2} damage`, 'damage');
+                }
+                
+                if (fighter2.health <= 0) {
+                    clearInterval(fightInterval);
+                    endFight(1);
+                    return;
+                }
+                
+                // Fighter 2 attacks Fighter 1
+                const damage2to1 = calculateDamage(fighter2, fighter1);
+                fighter1.health = Math.max(0, fighter1.health - damage2to1);
+                
+                if (damage2to1 > 25) {
+                    addLogEntry(`💥 ${fighter2.name} lands a CRITICAL HIT on ${fighter1.name} for ${damage2to1} damage!`, 'critical');
+                } else {
+                    addLogEntry(`🥊 ${fighter2.name} hits ${fighter1.name} for ${damage2to1} damage`, 'damage');
+                }
+                
+                updateHealthBars();
+                round++;
+            }, 2000);
+        }
+        
+        // Calculate damage between fighters
+        function calculateDamage(attacker, defender) {
+            const baseDamage = Math.floor(Math.random() * 20) + 10;
+            const strengthBonus = (attacker.strength / 100) * baseDamage;
+            const speedBonus = Math.random() < (attacker.speed / 200) ? baseDamage * 0.5 : 0;
+            const defenseReduction = (defender.endurance / 200) * baseDamage;
+            
+            const totalDamage = Math.floor(baseDamage + strengthBonus + speedBonus - defenseReduction);
+            return Math.max(5, totalDamage); // Minimum 5 damage
+        }
+        
+        // Update health bars
+        function updateHealthBars() {
+            const fighter1 = currentFighters.fighter1;
+            const fighter2 = currentFighters.fighter2;
+            
+            const fighter1Percentage = (fighter1.health / fighter1.maxHealth) * 100;
+            const fighter2Percentage = (fighter2.health / fighter2.maxHealth) * 100;
+            
+            document.getElementById('fighter1Health').style.width = `${fighter1Percentage}%`;
+            document.getElementById('fighter2Health').style.width = `${fighter2Percentage}%`;
+            
+            document.getElementById('fighter1HealthText').textContent = `${fighter1.name}: ${fighter1.health}/${fighter1.maxHealth}`;
+            document.getElementById('fighter2HealthText').textContent = `${fighter2.name}: ${fighter2.health}/${fighter2.maxHealth}`;
+        }
+        
+        // End fight and determine winner
+        function endFight(winner) {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            const winnerFighter = currentFighters[`fighter${winner}`];
+            const odds = parseFloat(winnerFighter.odds);
+            
+            addLogEntry(`🏆 ${winnerFighter.name} WINS THE FIGHT!`, 'winner');
+            
+            let resultHTML = '';
+            
+            if (selectedFighter === winner) {
+                // Player won
+                const winnings = Math.floor(betAmount * odds);
+                undergroundBalance += betAmount + winnings;
+                betsWon++;
+                totalWinnings += winnings;
+                
+                if (winnings > biggestWin) {
+                    biggestWin = winnings;
+                }
+                
+                resultHTML = `
+                    <div class="fight-result win-result">
+                        🎉 YOU WON! 🎉<br>
+                        ${winnerFighter.name} victorious! You earned $${winnings.toLocaleString()}!
+                    </div>
+                `;
+                
+                showMessage('🎉 FIGHT WON!', `${winnerFighter.name} won! You earned $${winnings.toLocaleString()}!`);
+            } else {
+                // Player lost
+                resultHTML = `
+                    <div class="fight-result loss-result">
+                        💀 YOU LOST 💀<br>
+                        ${winnerFighter.name} won, but you bet on the wrong fighter. You lost $${betAmount.toLocaleString()}.
+                    </div>
+                `;
+                
+                showMessage('💀 FIGHT LOST', `${winnerFighter.name} won, but you bet on the wrong fighter. You lost $${betAmount.toLocaleString()}.`);
+            }
+            
+            document.getElementById('fightResult').innerHTML = resultHTML;
+            
+            saveGameData();
+            updateDisplay();
+            fightActive = false;
+        }
+        
+        // Add entry to fight log
+        function addLogEntry(message, type = '') {
+            const fightLog = document.getElementById('fightLog');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = message;
+            fightLog.appendChild(logEntry);
+            fightLog.scrollTop = fightLog.scrollHeight;
+        }
+        
+        // Show message popup
+        function showMessage(title, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #1a130f, #2b1e17);
+                border: 2px solid #ff6b35;
+                border-radius: 15px;
+                padding: 30px;
+                z-index: 10000;
+                text-align: center;
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+                max-width: 400px;
+                color: #c4b5a0;
+            `;
+            
+            messageDiv.innerHTML = `
+                <h3 style="color: #ff6b35; margin-bottom: 15px; text-shadow: 0 0 10px #ff6b35;">${title}</h3>
+                <p style="color: #c4b5a0; margin-bottom: 20px;">${message}</p>
+                <button onclick="this.parentElement.remove()" style="
+                    background: linear-gradient(45deg, #dc143c, #ff6b35);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">Close</button>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                if (messageDiv.parentElement) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+        
+        // Save game data
+        function saveGameData() {
+            localStorage.setItem('underground_balance', String(undergroundBalance));
+            localStorage.setItem('dogfights_fights_watched', String(fightsWatched));
+            localStorage.setItem('dogfights_bets_won', String(betsWon));
+            localStorage.setItem('dogfights_total_winnings', String(totalWinnings));
+            localStorage.setItem('dogfights_biggest_win', String(biggestWin));
+        }
+        
+        // Update display
+        function updateDisplay() {
+            document.getElementById('underground-balance').textContent = undergroundBalance.toLocaleString();
+            document.getElementById('fightsWatched').textContent = fightsWatched;
+            document.getElementById('betsWon').textContent = betsWon;
+            document.getElementById('totalWinnings').textContent = '$' + totalWinnings.toLocaleString();
+            document.getElementById('biggestWin').textContent = '$' + biggestWin.toLocaleString();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

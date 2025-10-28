@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Hell's Casino - Eternal Damnation</title>
+    <style>
+        /* Hell's Casino Theme */
+        :root {
+            --hell-bg: #1a0000;
+            --hell-card: #330000;
+            --hell-fire: #ff4500;
+            --hell-flame: #ff6b00;
+            --hell-ember: #ffaa00;
+            --hell-text: #ffccaa;
+            --hell-shadow: #660000;
+            --hell-border: #ff0000;
+            --radius: 15px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(45deg, #1a0000 0%, #330000 25%, #1a0000 50%, #220000 75%, #1a0000 100%);
+            background-size: 400% 400%;
+            animation: hellfire 8s ease-in-out infinite;
+            color: var(--hell-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes hellfire {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hell-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: radial-gradient(circle, var(--hell-card), var(--hell-bg));
+            border-radius: var(--radius);
+            border: 2px solid var(--hell-border);
+            box-shadow: 0 0 30px var(--hell-fire), inset 0 0 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .hell-title {
+            font-size: 3em;
+            color: var(--hell-fire);
+            text-shadow: 0 0 20px var(--hell-fire), 0 0 40px var(--hell-flame);
+            margin-bottom: 15px;
+            animation: flicker 3s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .hell-subtitle {
+            font-size: 1.3em;
+            color: var(--hell-ember);
+            text-shadow: 0 0 10px var(--hell-ember);
+            margin-bottom: 20px;
+        }
+        
+        .soul-counter {
+            background: var(--hell-shadow);
+            padding: 15px;
+            border-radius: var(--radius);
+            border: 2px solid var(--hell-fire);
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .soul-counter h3 {
+            color: var(--hell-fire);
+            margin-bottom: 10px;
+        }
+        
+        .wins-needed {
+            font-size: 2em;
+            color: var(--hell-ember);
+            font-weight: bold;
+            text-shadow: 0 0 15px var(--hell-ember);
+        }
+        
+        .hell-slots {
+            background: var(--hell-card);
+            border: 3px solid var(--hell-border);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 0 25px var(--hell-fire);
+            text-align: center;
+        }
+        
+        .slot-machine {
+            background: var(--hell-shadow);
+            border: 2px solid var(--hell-fire);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .reels {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .reel {
+            width: 100px;
+            height: 100px;
+            background: var(--hell-bg);
+            border: 2px solid var(--hell-ember);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            transition: all 0.5s ease;
+            box-shadow: inset 0 0 20px rgba(255, 69, 0, 0.3);
+        }
+        
+        .reel.spinning {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        .spin-button {
+            font-size: 1.5em;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--hell-fire), var(--hell-flame));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            margin: 20px;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.5);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .spin-button:hover {
+            background: linear-gradient(45deg, var(--hell-flame), var(--hell-ember));
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.7);
+        }
+        
+        .spin-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .game-log {
+            background: var(--hell-bg);
+            border: 2px solid var(--hell-shadow);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        .log-entry.win {
+            color: var(--hell-ember);
+            font-weight: bold;
+        }
+        
+        .log-entry.lose {
+            color: var(--hell-text);
+        }
+        
+        .log-entry.system {
+            color: var(--hell-fire);
+            font-style: italic;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: var(--hell-card);
+            border: 2px solid var(--hell-fire);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            color: var(--hell-flame);
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--hell-flame);
+        }
+        
+        .stat-label {
+            color: var(--hell-text);
+            margin-top: 10px;
+        }
+        
+        .warning-banner {
+            background: linear-gradient(45deg, var(--hell-border), var(--hell-fire));
+            color: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .flames {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(0deg, var(--hell-fire) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+            animation: flameFlicker 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes flameFlicker {
+            from { opacity: 0.3; }
+            to { opacity: 0.7; }
+        }
+        
+        .escape-progress {
+            background: var(--hell-shadow);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: var(--hell-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 2px solid var(--hell-fire);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hell-fire), var(--hell-ember));
+            transition: width 1s ease;
+            box-shadow: 0 0 20px var(--hell-fire);
+        }
+    </style>
+</head>
+<body>
+    <div class="flames"></div>
+    
+    <div class="container">
+        <div class="hell-header">
+            <h1 class="hell-title">🔥 HELL'S CASINO 🔥</h1>
+            <p class="hell-subtitle">Welcome to eternal damnation. Your soul debt has brought you here.</p>
+            <div class="warning-banner">
+                ⚠️ YOU CANNOT LEAVE UNTIL YOU WIN 10 TIMES ⚠️
+            </div>
+        </div>
+        
+        <div class="soul-counter">
+            <h3>💀 Escape Progress</h3>
+            <div class="wins-needed">
+                <span id="wins-count">0</span> / 10 Wins
+            </div>
+        </div>
+        
+        <div class="escape-progress">
+            <h4 style="color: var(--hell-fire);">Path to Redemption</h4>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+            <p>Win 10 slot spins to escape Hell's Casino</p>
+        </div>
+        
+        <div class="hell-slots">
+            <h3 style="color: var(--hell-fire); margin-bottom: 20px;">🎰 SLOTS OF ETERNAL TORMENT 🎰</h3>
+            <p style="margin-bottom: 20px;">The reels are rigged against you. Only 10% chance to win.</p>
+            
+            <div class="slot-machine">
+                <div class="reels">
+                    <div class="reel" id="reel1">🔥</div>
+                    <div class="reel" id="reel2">💀</div>
+                    <div class="reel" id="reel3">👹</div>
+                </div>
+                
+                <button class="spin-button" id="spin-btn" onclick="spin()">
+                    🎰 SPIN THE REELS OF FATE
+                </button>
+            </div>
+            
+            <div class="game-log" id="game-log">
+                <div class="log-entry system">🔥 Welcome to Hell's Casino. You must win 10 times to escape.</div>
+                <div class="log-entry system">💀 The odds are against you - only 10% chance to win each spin.</div>
+                <div class="log-entry system">👹 Your torment begins now...</div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-spins">0</div>
+                <div class="stat-label">Total Spins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-wins">0</div>
+                <div class="stat-label">Total Wins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="win-rate">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="soul-debt">10</div>
+                <div class="stat-label">Soul Debt</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hell's Casino Game State
+        let totalSpins = Number(localStorage.getItem('hells_casino_spins') || 0);
+        let totalWins = Number(localStorage.getItem('hells_casino_wins') || 0);
+        let winsNeeded = 10;
+        let spinning = false;
+        
+        // Hell symbols for the reels
+        const symbols = ['🔥', '💀', '👹', '⚡', '🖤', '🩸', '👺', '😈'];
+        
+        // Initialize game
+        function initGame() {
+            updateDisplay();
+            logMessage('Your eternal punishment awaits...', 'system');
+        }
+        
+        // Spin the slot machine
+        function spin() {
+            if (spinning) return;
+            
+            if (totalWins >= winsNeeded) {
+                escape();
+                return;
+            }
+            
+            spinning = true;
+            document.getElementById('spin-btn').disabled = true;
+            
+            // Start spinning animation
+            const reels = document.querySelectorAll('.reel');
+            reels.forEach(reel => reel.classList.add('spinning'));
+            
+            // Spin for 2 seconds then show result
+            setTimeout(() => {
+                stopSpin();
+            }, 2000);
+        }
+        
+        // Stop spinning and determine result
+        function stopSpin() {
+            const reels = document.querySelectorAll('.reel');
+            reels.forEach(reel => reel.classList.remove('spinning'));
+            
+            totalSpins++;
+            
+            // 10% chance to win (get three matching symbols)
+            const isWin = Math.random() < 0.1;
+            
+            let reel1, reel2, reel3;
+            
+            if (isWin) {
+                // Win - all three symbols match
+                const winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                reel1 = reel2 = reel3 = winSymbol;
+                totalWins++;
+                logMessage(`🎉 WIN! Three ${winSymbol}! Progress: ${totalWins}/${winsNeeded}`, 'win');
+            } else {
+                // Lose - random symbols (ensure they don't all match)
+                reel1 = symbols[Math.floor(Math.random() * symbols.length)];
+                reel2 = symbols[Math.floor(Math.random() * symbols.length)];
+                reel3 = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // Make sure they don't accidentally match
+                while (reel1 === reel2 && reel2 === reel3) {
+                    reel3 = symbols[Math.floor(Math.random() * symbols.length)];
+                }
+                
+                logMessage(`💀 Loss: ${reel1} ${reel2} ${reel3} - Keep trying...`, 'lose');
+            }
+            
+            // Update reel display
+            document.getElementById('reel1').textContent = reel1;
+            document.getElementById('reel2').textContent = reel2;
+            document.getElementById('reel3').textContent = reel3;
+            
+            // Save progress
+            saveProgress();
+            updateDisplay();
+            
+            // Check for escape
+            if (totalWins >= winsNeeded) {
+                setTimeout(() => {
+                    escape();
+                }, 1000);
+            }
+            
+            spinning = false;
+            document.getElementById('spin-btn').disabled = false;
+        }
+        
+        // Escape Hell's Casino
+        function escape() {
+            logMessage('🎉 CONGRATULATIONS! You have won 10 times!', 'win');
+            logMessage('💀 Your soul debt is forgiven...', 'system');
+            logMessage('🔥 The flames part ways for your escape...', 'system');
+            
+            // Clear soul debt
+            localStorage.setItem('baccarat_soul_debt', '0');
+            
+            // Reset Hell's Casino progress
+            localStorage.removeItem('hells_casino_spins');
+            localStorage.removeItem('hells_casino_wins');
+            
+            // Show escape message and redirect
+            setTimeout(() => {
+                alert('🎉 ESCAPED! Your soul debt has been forgiven. You are free to return to the underground...');
+                window.location.href = 'underground.html';
+            }, 3000);
+        }
+        
+        // Add message to log
+        function logMessage(message, type = '') {
+            const log = document.getElementById('game-log');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = message;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        // Update all displays
+        function updateDisplay() {
+            document.getElementById('total-spins').textContent = totalSpins;
+            document.getElementById('total-wins').textContent = totalWins;
+            document.getElementById('wins-count').textContent = totalWins;
+            
+            const winRate = totalSpins > 0 ? Math.round((totalWins / totalSpins) * 100) : 0;
+            document.getElementById('win-rate').textContent = winRate + '%';
+            
+            const soulDebt = Number(localStorage.getItem('baccarat_soul_debt') || 0);
+            document.getElementById('soul-debt').textContent = soulDebt;
+            
+            // Update progress bar
+            const progress = (totalWins / winsNeeded) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+        
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('hells_casino_spins', String(totalSpins));
+            localStorage.setItem('hells_casino_wins', String(totalWins));
+        }
+        
+        // Prevent leaving the page
+        window.addEventListener('beforeunload', function(e) {
+            if (totalWins < winsNeeded) {
+                const message = 'You cannot escape Hell\'s Casino until you win 10 times!';
+                e.returnValue = message;
+                return message;
+            }
+        });
+        
+        // Prevent back button (doesn't work in all browsers but adds to the theme)
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function() {
+            if (totalWins < winsNeeded) {
+                history.pushState(null, null, location.href);
+                logMessage('👹 You cannot escape that easily...', 'system');
+            }
+        });
+        
+        // Cheat code system for escape
+        let cheatSequence = [];
+        const escapeCode = ['h', 'e', 'l', 'l', 'o', 'u', 't']; // "hellout"
+        
+        document.addEventListener('keydown', function(e) {
+            cheatSequence.push(e.key.toLowerCase());
+            
+            // Keep only the last 7 characters
+            if (cheatSequence.length > escapeCode.length) {
+                cheatSequence = cheatSequence.slice(-escapeCode.length);
+            }
+            
+            // Check if escape code matches
+            if (cheatSequence.length === escapeCode.length) {
+                let matches = true;
+                for (let i = 0; i < escapeCode.length; i++) {
+                    if (cheatSequence[i] !== escapeCode[i]) {
+                        matches = false;
+                        break;
+                    }
+                }
+                
+                if (matches) {
+                    logMessage('🔑 CHEAT CODE ACTIVATED: HELLOUT', 'win');
+                    logMessage('👹 The demons are not pleased, but a deal is a deal...', 'system');
+                    
+                    // Clear soul debt and escape immediately
+                    localStorage.setItem('baccarat_soul_debt', '0');
+                    localStorage.removeItem('hells_casino_spins');
+                    localStorage.removeItem('hells_casino_wins');
+                    
+                    setTimeout(() => {
+                        alert('🔑 CHEAT ESCAPE! You used the secret code "HELLOUT" to escape Hell\'s Casino!');
+                        window.location.href = 'underground.html';
+                    }, 2000);
+                    
+                    cheatSequence = []; // Reset sequence
+                }
+            }
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

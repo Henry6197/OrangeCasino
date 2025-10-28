@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>🛒 Black Market Shop - Underground Casino</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="new-styles.css">
+    <style>
+        /* Dark Underground Theme Override */
+        :root {
+            --bg: #0f0a08;
+            --card: #1a130f;
+            --accent: #ff6b35;
+            --accent-2: #b7410e;
+            --muted: #8b7d6b;
+            --glass: rgba(255, 107, 53, 0.1);
+            --danger: #dc143c;
+            --success: #4CAF50;
+            --radius: 14px;
+            --container-width: 1200px;
+            --gap: 18px;
+            --text: #c4b5a0;
+        }
+        
+        .underground-theme {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 50%, #2b1e17 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .underground-theme .site-header {
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), rgba(139, 38, 53, 0.05));
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .underground-theme .brand {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+        
+        .underground-theme .main-nav a {
+            color: var(--muted);
+        }
+        
+        .underground-theme .main-nav a:hover {
+            color: var(--text);
+            background: var(--glass);
+        }
+        
+        .underground-theme .balance {
+            color: var(--muted);
+        }
+        
+        .underground-theme .welcome-banner {
+            background: linear-gradient(135deg, var(--danger), var(--accent));
+            color: white;
+            text-align: center;
+            padding: 24px 0;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.4);
+        }
+        
+        .underground-theme .game-panel {
+            background: linear-gradient(180deg, rgba(26, 19, 15, 0.95), rgba(43, 30, 23, 0.9));
+            color: var(--text);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .underground-theme .btn {
+            background: var(--accent);
+            color: #0f0a08;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .underground-theme .btn:hover {
+            background: var(--accent-2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .underground-theme .site-footer {
+            background: linear-gradient(180deg, #0f0a08 0%, #1a130f 100%);
+            border-top: 1px solid rgba(255, 107, 53, 0.2);
+            color: var(--muted);
+        }
+        
+        .back-to-underground {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-2));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .back-to-underground:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+        }
+        
+        .shop-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .category-tab {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--muted);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .category-tab.active {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        .category-tab h4 {
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .shop-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--muted);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .shop-item:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .item-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .item-price {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .item-description {
+            color: var(--text);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .item-effects {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .effect {
+            color: var(--accent);
+            font-size: 0.9em;
+            margin: 2px 0;
+        }
+        
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, var(--success), #45a049);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-btn:hover {
+            background: linear-gradient(45deg, #45a049, var(--success));
+            transform: translateY(-1px);
+        }
+        
+        .buy-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .owned-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .inventory-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .inventory-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--muted);
+            border-radius: var(--radius);
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .inventory-item.equipped {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .equip-btn {
+            padding: 5px 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        
+        .stats-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius);
+            border: 1px solid var(--muted);
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--accent);
+            display: block;
+        }
+        
+        .warning-notice {
+            background: rgba(220, 20, 60, 0.2);
+            border: 2px solid var(--danger);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            color: var(--danger);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="underground-theme">
+    <a href="underground.html" class="back-to-underground">
+        🏴‍☠️ Back to Underground
+    </a>
+    
+    <header class="site-header">
+        <div class="container">
+            <h1 class="brand">🛒 BLACK MARKET SHOP</h1>
+            <nav class="main-nav">
+                <a href="underground.html">Underground</a>
+                <a href="underground-roulette.html">Russian Roulette</a>
+                <a href="underground-baccarat.html">Blood Pact Baccarat</a>
+                <a href="underground-dogfights.html">Dog Fights</a>
+                <a href="underground-shop.html">Black Market</a>
+                <a href="achievements.html">Achievements</a>
+            </nav>
+            <div class="balance" id="balance">
+                Underground Wallet: $<span id="underground-balance">500</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="welcome-banner">
+                <h2>🛒 Black Market Shop 🛒</h2>
+                <p class="welcome-subtitle">🔫 Illegal goods, services, and enhancements for the bold 🔫</p>
+            </div>
+            
+            <div class="warning-notice">
+                ⚠️ WARNING: All transactions are final. The house is not responsible for any... complications. ⚠️
+            </div>
+            
+
+            
+            <div class="game-stage">
+                <div class="game-panel">
+                    <h3 style="text-align: center; color: var(--accent);">💖 Life Restoration Service</h3>
+                    
+                    <div class="shop-items">
+                        <div class="shop-item" id="lifeRestorationItem">
+                            <div class="item-header">
+                                <div class="item-name">💖 Complete Life Restoration</div>
+                                <div class="item-price">$1,000</div>
+                            </div>
+                            <div class="item-description">
+                                Fully restore your lives to maximum (3 lives). Effective for Russian Roulette resurrection.
+                            </div>
+                            <div class="item-effects">
+                                <div class="effect">• Restores lives to 3/3 maximum</div>
+                                <div class="effect">• Cannot exceed 3 lives total</div>
+                                <div class="effect">• Instant effect</div>
+                            </div>
+                            <button class="buy-btn" id="lifeRestoreBtn" onclick="purchaseLifeRestoration()">
+                                💖 Restore Lives
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+            <div class="stats-display">
+                <div class="stat-item">
+                    <span class="stat-value" id="currentLives">3</span>
+                    <div>Current Lives</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="livesRestored">0</span>
+                    <div>Lives Restored</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalSpent">$0</span>
+                    <div>Total Spent</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="undergroundBalance">500</span>
+                    <div>Underground Balance</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">🛒 Black Market Shop — No questions asked, no receipts given.</div>
+    </footer>
+
+    <script>
+        // Game state
+        let undergroundBalance = Number(localStorage.getItem('underground_balance') || 500);
+        let totalSpent = Number(localStorage.getItem('blackmarket_total_spent') || 0);
+        let livesRestored = Number(localStorage.getItem('blackmarket_lives_restored') || 0);
+        let currentLives = Number(localStorage.getItem('roulette_lives') || 3);
+        
+        // Initialize shop
+        function initShop() {
+            updateDisplay();
+            updateButtonState();
+        }
+        
+        // Life restoration purchase function
+        function purchaseLifeRestoration() {
+            if (currentLives >= 3) {
+                showMessage('💖 MAXIMUM LIVES', 'You already have the maximum number of lives (3/3). No restoration needed.');
+                return;
+            }
+            
+            if (undergroundBalance < 1000) {
+                showMessage('💸 INSUFFICIENT FUNDS', 'You need $1,000 to restore your lives.');
+                return;
+            }
+            
+            // Process purchase
+            undergroundBalance -= 1000;
+            currentLives = 3; // Restore to maximum
+            totalSpent += 1000;
+            livesRestored++;
+            
+            // Update roulette lives in localStorage
+            localStorage.setItem('roulette_lives', '3');
+            
+            saveGameData();
+            updateDisplay();
+            updateButtonState();
+            
+            showMessage('💖 LIVES RESTORED', 'Your lives have been fully restored to 3/3! You can play Russian Roulette again.');
+        }
+        
+        // Update button state based on current lives
+        function updateButtonState() {
+            const button = document.getElementById('lifeRestoreBtn');
+            const canAfford = undergroundBalance >= 1000;
+            const needsRestoration = currentLives < 3;
+            
+            if (currentLives >= 3) {
+                button.textContent = '💖 Lives at Maximum';
+                button.disabled = true;
+            } else if (!canAfford) {
+                button.textContent = '💸 Insufficient Funds';
+                button.disabled = true;
+            } else {
+                button.textContent = '💖 Restore Lives';
+                button.disabled = false;
+            }
+        }
+        
+        // Show message popup
+        function showMessage(title, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, #1a130f, #2b1e17);
+                border: 2px solid #ff6b35;
+                border-radius: 15px;
+                padding: 30px;
+                z-index: 10000;
+                text-align: center;
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+                max-width: 400px;
+                color: #c4b5a0;
+            `;
+            
+            messageDiv.innerHTML = `
+                <h3 style="color: #ff6b35; margin-bottom: 15px; text-shadow: 0 0 10px #ff6b35;">${title}</h3>
+                <p style="color: #c4b5a0; margin-bottom: 20px;">${message}</p>
+                <button onclick="this.parentElement.remove()" style="
+                    background: linear-gradient(45deg, #dc143c, #ff6b35);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">Close</button>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                if (messageDiv.parentElement) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+        
+        // Save game data
+        function saveGameData() {
+            localStorage.setItem('underground_balance', String(undergroundBalance));
+            localStorage.setItem('blackmarket_total_spent', String(totalSpent));
+            localStorage.setItem('blackmarket_lives_restored', String(livesRestored));
+        }
+        
+        // Update display
+        function updateDisplay() {
+            currentLives = Number(localStorage.getItem('roulette_lives') || 3);
+            
+            document.getElementById('underground-balance').textContent = undergroundBalance.toLocaleString();
+            document.getElementById('currentLives').textContent = currentLives;
+            document.getElementById('livesRestored').textContent = livesRestored;
+            document.getElementById('totalSpent').textContent = '$' + totalSpent.toLocaleString();
+            document.getElementById('undergroundBalance').textContent = '$' + undergroundBalance.toLocaleString();
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initShop);
+    </script>
+</body>
+</html>

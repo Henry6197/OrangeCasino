@@ -72,14 +72,14 @@
           <div class="financial-grid">
             <div class="financial-panel loan-panel">
               <h4>💳 Quick Loans</h4>
-              <div class="debt-display">Current Debt: $<span id="debt-value">0</span></div>
+              <div class="debt-display">Current Debt: $<span id="debt-display">0</span></div>
               <div class="button-group">
                 <button class="btn loan-btn" onclick="vc.loan100()">Loan $100</button>
-                <button class="btn payback-btn" onclick="vc.paybackLoan()">Pay Back</button>
+                                <button class="btn payback-btn" onclick="vc.paybackLoan()">Payback Loan</button>
               </div>
             </div>
             <div class="financial-panel emergency-panel">
-              <h4>� Emergency Surgery</h4>
+              <h4>🏥 Emergency Surgery</h4>
               <p>Sell your kidney for quick cash!</p>
               <div class="surgery-warning">⚠️ 30-second procedure</div>
               <a class="btn surgery-btn" href="surgery.html">💰 Earn $5,000</a>
@@ -144,9 +144,21 @@
         }, 2000);
       }
       
+      // Update debt display with correct ID
+      function updateDebtDisplay() {
+        const debt = Number(localStorage.getItem('vc_debt') || 0);
+        const displayElements = document.querySelectorAll('#debt-display');
+        displayElements.forEach(el => {
+          if (el) el.textContent = debt.toLocaleString();
+        });
+      }
+      
       // Add some mystery to the toggle
       document.addEventListener('DOMContentLoaded', function() {
         const toggle = document.getElementById('underground-toggle');
+        
+        // Update all displays on page load
+        updateDebtDisplay();
         
         // Random flicker effect
         setInterval(() => {
@@ -164,6 +176,11 @@
             window.vc.setBuddyText('That button leads somewhere dark... Are you sure?');
           }
         });
+        
+        // Update debt display periodically in case it changes
+        setInterval(() => {
+          updateDebtDisplay();
+        }, 5000);
       });
     </script>
     
