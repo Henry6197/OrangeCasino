@@ -219,47 +219,156 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Generate ticket symbols with realistic lottery odds (harder for high stakes)
+  // Generate ticket symbols with realistic lottery odds
   function generateTicketSymbols(ticketType) {
     const ticket = ticketTypes[ticketType];
     const symbols = [];
     
-    // Define primary winning symbols for money back with different odds per ticket type
-    const primaryWinSymbols = {
-      lucky7: '7️⃣',
-      goldmine: '🥇',
-      jackpot: '💎',
-      millionaire: '💰',
-      platinum: '🔱',
-      megajackpot: '🎊'
-    };
-    
-    // Different odds for different ticket types (much more realistic)
-    const symbolOdds = {
-      lucky7: 0.20,       // 20% chance for primary symbol (1 in 5)
-      goldmine: 0.15,     // 15% chance for primary symbol 
-      jackpot: 0.12,      // 12% chance for primary symbol
-      millionaire: 0.02,  // 2% chance for primary symbol (very hard)
-      platinum: 0.015,    // 1.5% chance for primary symbol (extremely hard)
-      megajackpot: 0.01   // 1% chance for primary symbol (nearly impossible)
-    };
-    
-    const primarySymbol = primaryWinSymbols[ticketType];
-    const probability = symbolOdds[ticketType] || 0.20;
-    
-    for (let i = 0; i < ticket.spots; i++) {
-      let selectedSymbol;
-      
-      // Use ticket-specific probability for primary winning symbol
-      if (Math.random() < probability && primarySymbol) {
-        selectedSymbol = primarySymbol;
-      } else {
-        // Select from non-primary symbols
-        const otherSymbols = ticket.symbols.filter(s => s !== primarySymbol);
-        selectedSymbol = otherSymbols[Math.floor(Math.random() * otherSymbols.length)];
+    // Define primary winning symbols and their realistic odds
+    const winningConfig = {
+      lucky7: {
+        primary: '7️⃣',
+        odds: {
+          jackpot: 0.001,    // 0.1% chance for 3+ sevens (1 in 1000)
+          small: 0.08,       // 8% chance for 1-2 sevens (1 in 12.5)
+          none: 0.919        // 91.9% chance for no win
+        }
+      },
+      goldmine: {
+        primary: '🥇',
+        odds: {
+          jackpot: 0.0005,   // 0.05% chance for big win (1 in 2000)
+          medium: 0.002,     // 0.2% chance for medium win
+          small: 0.05,       // 5% chance for small win (1 in 20)
+          none: 0.9475       // 94.75% chance for no win
+        }
+      },
+      jackpot: {
+        primary: '�',
+        odds: {
+          mega: 0.0001,      // 0.01% chance for mega jackpot (1 in 10,000)
+          large: 0.0002,     // 0.02% chance for large win
+          medium: 0.001,     // 0.1% chance for medium win
+          small: 0.03,       // 3% chance for small win (1 in 33)
+          none: 0.9687       // 96.87% chance for no win
+        }
+      },
+      millionaire: {
+        primary: '💰',
+        odds: {
+          mega: 0.00002,     // 0.002% chance for mega win (1 in 50,000)
+          large: 0.00005,    // 0.005% chance for large win
+          medium: 0.0002,    // 0.02% chance for medium win
+          small: 0.015,      // 1.5% chance for small win (1 in 67)
+          none: 0.98473      // 98.473% chance for no win
+        }
+      },
+      platinum: {
+        primary: '🔱',
+        odds: {
+          mega: 0.000001,    // 0.0001% chance for mega win (1 in 1,000,000)
+          large: 0.000004,   // 0.0004% chance for large win
+          medium: 0.00002,   // 0.002% chance for medium win
+          small: 0.008,      // 0.8% chance for small win (1 in 125)
+          none: 0.991975     // 99.1975% chance for no win
+        }
+      },
+      megajackpot: {
+        primary: '🎊',
+        odds: {
+          million: 0.005, // 0.5% chance for million (1 in 200)
+          mega: 0.03,    // 0.03% chance for mega win
+          large: 0.05,   // 0.05% chance for large win
+          medium: 0.07,   // 7% chance for medium win
+          small: 0.2,      // 20% chance for small win (1 in 5)
+          none: 0.7         // 70% chance for no win
+        }
       }
-      
-      symbols.push(selectedSymbol);
+    };
+    
+    const config = winningConfig[ticketType];
+    if (!config) return symbols;
+    
+    // Determine win level based on realistic odds
+    const random = Math.random();
+    let winLevel = 'none';
+    let cumulative = 0;
+    
+    for (const [level, probability] of Object.entries(config.odds)) {
+      cumulative += probability;
+      if (random <= cumulative) {
+        winLevel = level;
+        break;
+      }
+    }
+    
+    // Generate symbols based on win level
+    const primarySymbol = config.primary;
+    const otherSymbols = ticket.symbols.filter(s => s !== primarySymbol);
+    
+    // Calculate how many primary symbols needed for this win level
+    let primaryCount = 0;
+    if (ticketType === 'lucky7') {
+      if (winLevel === 'jackpot') primaryCount = 3;
+      else if (winLevel === 'small') primaryCount = Math.random() < 0.5 ? 1 : 2;
+    } else if (ticketType === 'goldmine') {
+      if (winLevel === 'jackpot') primaryCount = 3;
+      else if (winLevel === 'medium') primaryCount = Math.random() < 0.3 ? 2 : 3; // Mix of conditions
+      else if (winLevel === 'small') primaryCount = 1;
+    } else if (ticketType === 'jackpot') {
+      if (winLevel === 'mega') primaryCount = 4;
+      else if (winLevel === 'large') primaryCount = 3;
+      else if (winLevel === 'medium') primaryCount = 3; // Different combinations
+      else if (winLevel === 'small') primaryCount = 1;
+    } else if (ticketType === 'millionaire') {
+      if (winLevel === 'mega') primaryCount = 8;
+      else if (winLevel === 'large') primaryCount = 7; // Trophy symbols
+      else if (winLevel === 'medium') primaryCount = 6;
+      else if (winLevel === 'small') primaryCount = 3;
+    } else if (ticketType === 'platinum') {
+      if (winLevel === 'mega') primaryCount = 9;
+      else if (winLevel === 'large') primaryCount = 7; // Crown symbols
+      else if (winLevel === 'medium') primaryCount = 6; // Diamond or 5 tridents
+      else if (winLevel === 'small') primaryCount = 3;
+    } else if (ticketType === 'megajackpot') {
+      if (winLevel === 'million') primaryCount = 10;
+      else if (winLevel === 'mega') primaryCount = 8; // Party symbols
+      else if (winLevel === 'large') primaryCount = 7; // Medal symbols
+      else if (winLevel === 'medium') primaryCount = 6; // Trophy symbols
+      else if (winLevel === 'small') primaryCount = 3;
+    }
+    
+    // Place primary symbols randomly
+    const positions = Array.from({length: ticket.spots}, (_, i) => i);
+    for (let i = 0; i < primaryCount; i++) {
+      const randomIndex = Math.floor(Math.random() * positions.length);
+      const position = positions.splice(randomIndex, 1)[0];
+      symbols[position] = primarySymbol;
+    }
+    
+    // Fill remaining positions with other symbols
+    positions.forEach(pos => {
+      // Add some variety with other winning symbols occasionally
+      let symbol;
+      if (Math.random() < 0.1) {
+        // 10% chance for secondary symbols that might create smaller wins
+        const secondaryWinSymbols = ticket.symbols.filter(s => 
+          s !== primarySymbol && ['👑', '💰', '💎', '🏆', '🏅', '🎉'].includes(s)
+        );
+        symbol = secondaryWinSymbols.length > 0 ? 
+          secondaryWinSymbols[Math.floor(Math.random() * secondaryWinSymbols.length)] :
+          otherSymbols[Math.floor(Math.random() * otherSymbols.length)];
+      } else {
+        symbol = otherSymbols[Math.floor(Math.random() * otherSymbols.length)];
+      }
+      symbols[pos] = symbol;
+    });
+    
+    // Fill any remaining empty positions
+    for (let i = 0; i < ticket.spots; i++) {
+      if (!symbols[i]) {
+        symbols[i] = otherSymbols[Math.floor(Math.random() * otherSymbols.length)];
+      }
     }
     
     return symbols;
@@ -283,15 +392,15 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="ticket-price">$${ticket.price}</div>
         </div>
         <div class="ticket-body">
-          <div class="scratch-grid">
-            ${symbols.map((symbol, index) => `
-              <div class="scratch-spot" data-index="${index}" data-symbol="${symbol}">
-                <div class="scratch-surface">
-                  <div class="scratch-overlay">?</div>
+          <div class="scratch-area-container">
+            <div class="scratch-grid">
+              ${symbols.map((symbol, index) => `
+                <div class="scratch-spot" data-index="${index}" data-symbol="${symbol}">
+                  <div class="revealed-symbol">${symbol}</div>
                 </div>
-                <div class="revealed-symbol">${symbol}</div>
-              </div>
-            `).join('')}
+              `).join('')}
+            </div>
+            <canvas class="scratch-canvas" width="600" height="400"></canvas>
           </div>
           <div class="win-display" id="win-display" style="display: none;">
             <div class="win-amount"></div>
@@ -348,58 +457,281 @@ document.addEventListener('DOMContentLoaded', () => {
     logResult(ticket.name, ticket.price, 0); // Log purchase
   }
 
-  // Add scratch event listeners
+  // Add scratch event listeners with drag functionality
   function addScratchListeners() {
+    const canvas = document.querySelector('.scratch-canvas');
+    const ctx = canvas.getContext('2d');
     const spots = document.querySelectorAll('.scratch-spot');
-    spots.forEach(spot => {
-      spot.addEventListener('click', () => scratchSpot(spot));
+    
+    if (!canvas) return;
+    
+    // Initialize scratch surface
+    initializeScratchSurface(canvas, ctx);
+    
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    
+    // Mouse events
+    canvas.addEventListener('mousedown', startScratch);
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('mouseup', endScratch);
+    canvas.addEventListener('mouseleave', endScratch);
+    
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', handleTouchStart);
+    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchend', endScratch);
+    
+    function startScratch(e) {
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      lastX = (e.clientX - rect.left) * scaleX;
+      lastY = (e.clientY - rect.top) * scaleY;
+      scratchAt(ctx, lastX, lastY);
+      checkAllSpotsProgress(canvas, ctx, spots);
+    }
+    
+    function scratch(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const currentX = (e.clientX - rect.left) * scaleX;
+      const currentY = (e.clientY - rect.top) * scaleY;
+      
+      // Draw a line from last position to current position for smoother scratching
+      scratchLine(ctx, lastX, lastY, currentX, currentY);
+      
+      lastX = currentX;
+      lastY = currentY;
+      
+      checkAllSpotsProgress(canvas, ctx, spots);
+    }
+    
+    function endScratch() {
+      isDrawing = false;
+    }
+    
+    function handleTouchStart(e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      isDrawing = true;
+      lastX = (touch.clientX - rect.left) * scaleX;
+      lastY = (touch.clientY - rect.top) * scaleY;
+      scratchAt(ctx, lastX, lastY);
+      checkAllSpotsProgress(canvas, ctx, spots);
+    }
+    
+    function handleTouchMove(e) {
+      e.preventDefault();
+      if (!isDrawing) return;
+      const touch = e.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const currentX = (touch.clientX - rect.left) * scaleX;
+      const currentY = (touch.clientY - rect.top) * scaleY;
+      
+      scratchLine(ctx, lastX, lastY, currentX, currentY);
+      
+      lastX = currentX;
+      lastY = currentY;
+      
+      checkAllSpotsProgress(canvas, ctx, spots);
+    }
+  }
+
+  // Initialize the scratch surface coating
+  function initializeScratchSurface(canvas, ctx) {
+    // Clear canvas and reset composite operation
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1.0;
+    
+    // Create metallic silver gradient
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#e5e7eb');
+    gradient.addColorStop(0.25, '#d1d5db');
+    gradient.addColorStop(0.5, '#9ca3af');
+    gradient.addColorStop(0.75, '#6b7280');
+    gradient.addColorStop(1, '#4b5563');
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Add metallic texture pattern
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+    for (let i = 0; i < 100; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      const size = Math.random() * 3 + 1;
+      ctx.fillRect(x, y, size, size);
+    }
+    
+    // Add diagonal scratches for texture
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 30; i++) {
+      ctx.beginPath();
+      ctx.moveTo(Math.random() * canvas.width, 0);
+      ctx.lineTo(Math.random() * canvas.width, canvas.height);
+      ctx.stroke();
+    }
+    
+    // Add "SCRATCH OFF" text in multiple places
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.font = 'bold 24px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('SCRATCH OFF', canvas.width / 2, canvas.height / 2 - 20);
+    
+    ctx.font = 'bold 16px Arial';
+    ctx.fillText('TO REVEAL PRIZES', canvas.width / 2, canvas.height / 2 + 10);
+    
+    // Add corner text
+    ctx.font = 'bold 12px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText('SCRATCH HERE', 20, 30);
+    ctx.textAlign = 'right';
+    ctx.fillText('SCRATCH HERE', canvas.width - 20, canvas.height - 20);
+  }
+
+  // Scratch at specific coordinates
+  function scratchAt(ctx, x, y) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1.0;
+    ctx.beginPath();
+    ctx.arc(x, y, 25, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Draw a scratch line between two points
+  function scratchLine(ctx, x1, y1, x2, y2) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1.0;
+    ctx.lineWidth = 50;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Check how much has been scratched for each spot
+  function checkAllSpotsProgress(canvas, ctx, spots) {
+    spots.forEach((spot, index) => {
+      if (gameState.activeTicket.scratched[index]) return;
+      
+      const spotRect = spot.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      
+      // Calculate spot position relative to canvas
+      const spotX = ((spotRect.left - canvasRect.left) / canvasRect.width) * canvas.width;
+      const spotY = ((spotRect.top - canvasRect.top) / canvasRect.height) * canvas.height;
+      const spotWidth = (spotRect.width / canvasRect.width) * canvas.width;
+      const spotHeight = (spotRect.height / canvasRect.height) * canvas.height;
+      
+      // Check if this spot area has been scratched enough
+      const imageData = ctx.getImageData(spotX, spotY, spotWidth, spotHeight);
+      const pixels = imageData.data;
+      let transparentPixels = 0;
+      
+      // Count transparent pixels (alpha = 0) in this spot
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i] === 0) transparentPixels++;
+      }
+      
+      const spotPixels = spotWidth * spotHeight;
+      const scratchPercentage = transparentPixels / spotPixels;
+      
+      // If 15% or more is scratched, completely clear this spot area
+      if (scratchPercentage >= 0.15) {
+        clearSpotArea(ctx, spotX, spotY, spotWidth, spotHeight);
+        revealSpot(index);
+      }
     });
   }
 
-  // Scratch individual spot with flip animation
-  function scratchSpot(spot) {
-    if (spot.classList.contains('scratched')) return;
+  // Completely clear a spot area
+  function clearSpotArea(ctx, x, y, width, height) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1.0;
+    ctx.fillStyle = 'rgba(0,0,0,1)';
+    ctx.fillRect(x, y, width, height);
+    ctx.restore();
+  }
+
+  // Reveal individual spot
+  function revealSpot(index) {
+    if (gameState.activeTicket.scratched[index]) return;
     
-    const index = parseInt(spot.dataset.index);
+    const spot = document.querySelector(`.scratch-spot[data-index="${index}"]`);
+    if (!spot) return;
     
-    // Add flip animation
-    spot.classList.add('flipping');
+    gameState.activeTicket.scratched[index] = true;
     
-    setTimeout(() => {
-      spot.classList.add('scratched');
-      spot.classList.remove('flipping');
-      gameState.activeTicket.scratched[index] = true;
-      
-      // Check if all scratched
-      if (gameState.activeTicket.scratched.every(s => s)) {
-        setTimeout(() => revealResult(), 500);
-      }
-    }, 300); // Flip animation duration
+    // Add reveal animation to the symbol
+    const symbol = spot.querySelector('.revealed-symbol');
+    if (symbol) {
+      symbol.style.animation = 'revealSymbol 0.5s ease-out';
+      symbol.classList.add('revealed');
+    }
+    
+    // Check if all spots are scratched
+    if (gameState.activeTicket.scratched.every(s => s)) {
+      setTimeout(() => revealResult(), 500);
+    }
   }
 
   // Scratch all spots with staggered animation
   function scratchAll() {
     if (!gameState.activeTicket) return;
     
-    const spots = document.querySelectorAll('.scratch-spot:not(.scratched)');
+    const canvas = document.querySelector('.scratch-canvas');
+    const ctx = canvas.getContext('2d');
+    const spots = document.querySelectorAll('.scratch-spot');
     
+    // Completely clear the canvas with animation
+    let clearProgress = 0;
+    const clearAnimation = setInterval(() => {
+      clearProgress += 0.05;
+      
+      // Clear canvas in expanding circles
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.globalAlpha = 1.0;
+      ctx.fillStyle = 'rgba(0,0,0,1)';
+      const radius = (canvas.width * clearProgress) / 2;
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, radius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+      
+      if (clearProgress >= 1) {
+        clearInterval(clearAnimation);
+        // Clear entire canvas to be sure
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }, 50);
+    
+    // Reveal spots with staggered timing
     spots.forEach((spot, index) => {
+      const spotIndex = parseInt(spot.dataset.index);
+      if (gameState.activeTicket.scratched[spotIndex]) return;
+      
       setTimeout(() => {
-        if (!spot.classList.contains('scratched')) {
-          const spotIndex = parseInt(spot.dataset.index);
-          spot.classList.add('flipping');
-          
-          setTimeout(() => {
-            spot.classList.add('scratched');
-            spot.classList.remove('flipping');
-            gameState.activeTicket.scratched[spotIndex] = true;
-            
-            // Check if this is the last spot
-            if (gameState.activeTicket.scratched.every(s => s)) {
-              setTimeout(() => revealResult(), 300);
-            }
-          }, 300);
-        }
+        revealSpot(spotIndex);
       }, index * 100); // Stagger the animations
     });
   }
