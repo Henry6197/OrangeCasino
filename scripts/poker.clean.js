@@ -51,6 +51,46 @@ document.addEventListener('DOMContentLoaded', ()=>{
   
   function cardToStr(c){ return `${c.rank}${c.suit}` }
   
+  // Create a proper playing card element with suit and rank
+  function createCardElement(card, hideCard = false, animationDelay = 0) {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'playing-card poker-card';
+    cardEl.style.animationDelay = `${animationDelay}s`;
+    
+    if (hideCard) {
+      cardEl.classList.add('face-down');
+      cardEl.innerHTML = `
+        <div class="card-back">
+          <div class="card-back-pattern"></div>
+        </div>
+      `;
+    } else {
+      const isRed = ['♥', '♦'].includes(card.suit);
+      cardEl.classList.add(isRed ? 'red' : 'black');
+      
+      const rankDisplay = card.rank;
+      const suitDisplay = card.suit;
+      
+      cardEl.innerHTML = `
+        <div class="card-front">
+          <div class="card-corner top-left">
+            <div class="rank">${rankDisplay}</div>
+            <div class="suit">${suitDisplay}</div>
+          </div>
+          <div class="card-center">
+            <div class="suit-large">${suitDisplay}</div>
+          </div>
+          <div class="card-corner bottom-right">
+            <div class="rank">${rankDisplay}</div>
+            <div class="suit">${suitDisplay}</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    return cardEl;
+  }
+  
   function appendLog(s){ 
     if(!log) return; 
     const p=document.createElement('div'); 
@@ -136,30 +176,45 @@ document.addEventListener('DOMContentLoaded', ()=>{
     
     // Update community cards
     communityEl.innerHTML = '';
-    gameState.communityCards.forEach(card => {
-      const div = document.createElement('div');
-      div.className = 'chip';
-      div.textContent = cardToStr(card);
-      communityEl.appendChild(div);
+    gameState.communityCards.forEach((card, i) => {
+      const cardEl = createCardElement(card, false, i * 0.15);
+      communityEl.appendChild(cardEl);
     });
     
-    // Update player hand
+    // Update player hand with hand strength display
     playerEl.innerHTML = '';
-    gameState.playerHand.forEach(card => {
-      const div = document.createElement('div');
-      div.className = 'chip';
-      div.textContent = cardToStr(card);
-      playerEl.appendChild(div);
+    gameState.playerHand.forEach((card, i) => {
+      const cardEl = createCardElement(card, false, i * 0.1);
+      playerEl.appendChild(cardEl);
     });
+    
+    // Show current hand strength for player if community cards exist
+    if(gameState.communityCards.length > 0 && gameState.playerHand.length > 0) {
+      const playerCards = [...gameState.playerHand, ...gameState.communityCards];
+      const playerHand = evaluateHand(playerCards);
+      const handStrengthEl = document.createElement('div');
+      handStrengthEl.className = 'hand-strength-indicator';
+      handStrengthEl.textContent = `${playerHand.name}`;
+      playerEl.appendChild(handStrengthEl);
+    }
     
     // Update dealer hand
     dealerEl.innerHTML = '';
     gameState.dealerHand.forEach((card, i) => {
-      const div = document.createElement('div');
-      div.className = 'chip';
-      div.textContent = (gameState.phase === 'showdown') ? cardToStr(card) : '🂠';
-      dealerEl.appendChild(div);
+      const hideCard = gameState.phase !== 'showdown';
+      const cardEl = createCardElement(card, hideCard, i * 0.1);
+      dealerEl.appendChild(cardEl);
     });
+    
+    // Show dealer hand strength in showdown
+    if(gameState.phase === 'showdown' && gameState.dealerHand.length > 0) {
+      const dealerCards = [...gameState.dealerHand, ...gameState.communityCards];
+      const dealerHand = evaluateHand(dealerCards);
+      const handStrengthEl = document.createElement('div');
+      handStrengthEl.className = 'hand-strength-indicator';
+      handStrengthEl.textContent = `${dealerHand.name}`;
+      dealerEl.appendChild(handStrengthEl);
+    }
   }
 
   function updateButtons() {
@@ -516,6 +571,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
     appendLog(`Dealer calls your raise`);
     nextPhase();
   }
+
+  // Quick bet buttons for ante
+  document.querySelectorAll('.quick-bet-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const amount = btn.dataset.amount;
+      betInput.value = amount;
+    });
+  });
+  
+  // Quick raise buttons
+  document.querySelectorAll('.quick-raise-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const amount = btn.dataset.amount;
+      if (amount === 'pot') {
+        raiseAmountInput.value = gameState.pot + gameState.dealerBet;
+      } else {
+        raiseAmountInput.value = amount;
+      }
+    });
+  });
 
   // Event listeners
   dealBtn && dealBtn.addEventListener('click', startNewHand);

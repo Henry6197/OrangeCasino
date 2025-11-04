@@ -465,8 +465,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!canvas) return;
     
-    // Initialize scratch surface
-    initializeScratchSurface(canvas, ctx);
+    // Initialize scratch surface with ticket theme
+    initializeScratchSurface(canvas, ctx, gameState.activeTicket.type);
     
     let isDrawing = false;
     let lastX = 0;
@@ -547,20 +547,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initialize the scratch surface coating
-  function initializeScratchSurface(canvas, ctx) {
+  // Initialize the scratch surface coating with themed colors
+  function initializeScratchSurface(canvas, ctx, ticketType) {
     // Clear canvas and reset composite operation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1.0;
     
-    // Create metallic silver gradient
+    // Define themed colors for each ticket type
+    const themes = {
+      lucky7: {
+        colors: ['#22c55e', '#16a34a', '#15803d', '#166534', '#14532d'], // Green lucky colors
+        textColor: 'rgba(255, 255, 255, 0.7)',
+        title: '🍀 LUCKY 7s',
+        subtitle: 'SCRATCH TO WIN'
+      },
+      goldmine: {
+        colors: ['#fbbf24', '#f59e0b', '#d97706', '#b45309', '#92400e'], // Gold/orange mine colors
+        textColor: 'rgba(255, 255, 255, 0.8)',
+        title: '⛏️ GOLD MINE',
+        subtitle: 'DIG FOR PRIZES'
+      },
+      jackpot: {
+        colors: ['#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6', '#4c1d95'], // Purple diamond colors
+        textColor: 'rgba(255, 255, 255, 0.8)',
+        title: '💎 DIAMOND JACKPOT',
+        subtitle: 'SCRATCH FOR FORTUNE'
+      },
+      millionaire: {
+        colors: ['#10b981', '#059669', '#047857', '#065f46', '#064e3b'], // Emerald green money colors
+        textColor: 'rgba(255, 255, 255, 0.8)',
+        title: '💰 MILLIONAIRE',
+        subtitle: 'DREAM BIG'
+      },
+      platinum: {
+        colors: ['#06b6d4', '#0891b2', '#0e7490', '#155e75', '#164e63'], // Cyan platinum colors
+        textColor: 'rgba(255, 255, 255, 0.8)',
+        title: '🔱 PLATINUM ELITE',
+        subtitle: 'ELITE STATUS'
+      },
+      megajackpot: {
+        colors: ['#ec4899', '#db2777', '#be185d', '#9f1239', '#831843'], // Pink/magenta celebration colors
+        textColor: 'rgba(255, 255, 255, 0.9)',
+        title: '🎊 MEGA JACKPOT',
+        subtitle: 'ULTIMATE PRIZE'
+      }
+    };
+    
+    // Get theme for current ticket or default to silver
+    const theme = themes[ticketType] || {
+      colors: ['#e5e7eb', '#d1d5db', '#9ca3af', '#6b7280', '#4b5563'],
+      textColor: 'rgba(255, 255, 255, 0.6)',
+      title: 'SCRATCH OFF',
+      subtitle: 'TO REVEAL PRIZES'
+    };
+    
+    // Create themed gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#e5e7eb');
-    gradient.addColorStop(0.25, '#d1d5db');
-    gradient.addColorStop(0.5, '#9ca3af');
-    gradient.addColorStop(0.75, '#6b7280');
-    gradient.addColorStop(1, '#4b5563');
+    theme.colors.forEach((color, index) => {
+      gradient.addColorStop(index / (theme.colors.length - 1), color);
+    });
     
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -584,14 +630,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.stroke();
     }
     
-    // Add "SCRATCH OFF" text in multiple places
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    // Add themed text
+    ctx.fillStyle = theme.textColor;
     ctx.font = 'bold 24px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('SCRATCH OFF', canvas.width / 2, canvas.height / 2 - 20);
+    ctx.fillText(theme.title, canvas.width / 2, canvas.height / 2 - 20);
     
     ctx.font = 'bold 16px Arial';
-    ctx.fillText('TO REVEAL PRIZES', canvas.width / 2, canvas.height / 2 + 10);
+    ctx.fillText(theme.subtitle, canvas.width / 2, canvas.height / 2 + 10);
     
     // Add corner text
     ctx.font = 'bold 12px Arial';

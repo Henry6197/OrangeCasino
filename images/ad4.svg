@@ -1,10 +1,129 @@
-<svg width="120" height="100" xmlns="http://www.w3.org/2000/svg">
-  <rect width="120" height="100" fill="#e17055" stroke="#d63031" stroke-width="2" rx="5"/>
-  <text x="60" y="16" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">YOU WON'T BELIEVE</text>
-  <text x="60" y="26" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">WHAT HAPPENED!</text>
-  <circle cx="60" cy="45" r="15" fill="#fdcb6e" stroke="#f39c12" stroke-width="2"/>
-  <text x="60" y="50" text-anchor="middle" fill="#2d3436" font-family="Arial" font-size="16" font-weight="bold">!</text>
-  <text x="60" y="70" text-anchor="middle" fill="white" font-family="Arial" font-size="7">SHOCKING TRUTH</text>
-  <text x="60" y="80" text-anchor="middle" fill="white" font-family="Arial" font-size="7">REVEALED!</text>
-  <text x="60" y="92" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">CLICK NOW!</text>
+<svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f7931e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e17055;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="explosionGrad" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#ffff00;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff8c00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff0000;stop-opacity:0.5" />
+    </radialGradient>
+    <linearGradient id="buttonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff0066;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cc0052;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="3" stdDeviation="2" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="120" height="100" fill="url(#orangeGrad)" rx="8"/>
+  
+  <!-- Animated explosion/burst background -->
+  <g opacity="0.2">
+    <circle cx="60" cy="50" r="45" fill="url(#explosionGrad)">
+      <animate attributeName="r" values="40;50;40" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Top shocking banner -->
+  <g>
+    <path d="M 10,8 L 18,5 L 26,8 L 34,5 L 42,8 L 50,5 L 58,8 L 66,5 L 74,8 L 82,5 L 90,8 L 98,5 L 106,8 L 110,8 L 110,22 L 10,22 Z" 
+          fill="#ffff00" stroke="#ff8c00" stroke-width="2"/>
+    <text x="60" y="13" text-anchor="middle" fill="#cc0000" font-family="Impact, Arial Black" font-size="8" font-weight="bold">
+      🚨 YOU WON'T BELIEVE 🚨
+    </text>
+    <text x="60" y="20" text-anchor="middle" fill="#cc0000" font-family="Impact, Arial Black" font-size="8" font-weight="bold">
+      WHAT HAPPENED!
+    </text>
+  </g>
+  
+  <!-- Giant exclamation mark with effects -->
+  <g transform="translate(60, 52)" filter="url(#glow4)">
+    <!-- Explosion rays -->
+    <g stroke="#ffff00" stroke-width="3" opacity="0.7">
+      <line x1="0" y1="-25" x2="0" y2="-35"/>
+      <line x1="18" y1="-18" x2="25" y2="-25"/>
+      <line x1="25" y1="0" x2="35" y2="0"/>
+      <line x1="18" y1="18" x2="25" y2="25"/>
+      <line x1="0" y1="25" x2="0" y2="35"/>
+      <line x1="-18" y1="18" x2="-25" y2="25"/>
+      <line x1="-25" y1="0" x2="-35" y2="0"/>
+      <line x1="-18" y1="-18" x2="-25" y2="-25"/>
+      <animateTransform attributeName="transform" type="rotate" values="0;45;0" dur="3s" repeatCount="indefinite"/>
+    </g>
+    
+    <!-- Shadow -->
+    <ellipse cx="0" cy="3" rx="12" ry="4" fill="#000" opacity="0.4"/>
+    
+    <!-- Main exclamation circle -->
+    <circle cx="0" cy="0" r="20" fill="#ffff00" stroke="#ff8c00" stroke-width="3"/>
+    <circle cx="0" cy="0" r="18" fill="#ffd700"/>
+    
+    <!-- Shine effect -->
+    <ellipse cx="-5" cy="-5" rx="8" ry="10" fill="#ffffff" opacity="0.5"/>
+    
+    <!-- Exclamation mark -->
+    <g fill="#cc0000">
+      <rect x="-3" y="-12" width="6" height="14" rx="2"/>
+      <circle cx="0" cy="6" r="3.5"/>
+    </g>
+    
+    <!-- Pulse rings -->
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#ff0000" stroke-width="2" opacity="0.8">
+      <animate attributeName="r" values="20;30;20" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0;0.8" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Shocking truth text -->
+  <rect x="12" y="75" width="96" height="9" fill="#000000" opacity="0.3" rx="2"/>
+  <text x="60" y="82" text-anchor="middle" fill="#ffff00" font-family="Arial" font-size="7" font-weight="bold" filter="url(#glow4)">
+    😱 THE SHOCKING TRUTH REVEALED! 😱
+  </text>
+  
+  <!-- Call to action button -->
+  <rect x="15" y="87" width="90" height="11" fill="url(#buttonGrad)" stroke="#ff0066" stroke-width="2" rx="5" filter="url(#shadow2)">
+    <animate attributeName="y" values="87;85;87" dur="0.8s" repeatCount="indefinite"/>
+  </rect>
+  <text x="60" y="94" text-anchor="middle" fill="#ffffff" font-family="Arial Black" font-size="7" font-weight="bold">
+    ▶ CLICK TO SEE NOW! ◀
+  </text>
+  
+  <!-- Lightning bolts -->
+  <g fill="#ffff00" stroke="#ff8c00" stroke-width="1" opacity="0.8">
+    <path d="M 20,35 L 22,42 L 18,42 L 20,48">
+      <animate attributeName="opacity" values="0;0.8;0" dur="0.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 100,38 L 102,45 L 98,45 L 100,51">
+      <animate attributeName="opacity" values="0;0.8;0" dur="0.5s" begin="0.25s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Animated sparkles -->
+  <g>
+    <path d="M 15,60 L 17,60 M 16,59 L 16,61" stroke="#ffff00" stroke-width="2">
+      <animate attributeName="opacity" values="0;1;0" dur="1.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 105,57 L 107,57 M 106,56 L 106,58" stroke="#ffff00" stroke-width="2">
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" begin="0.3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 25,68 L 27,68 M 26,67 L 26,69" stroke="#ffffff" stroke-width="1.5">
+      <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 95,65 L 97,65 M 96,64 L 96,66" stroke="#ffffff" stroke-width="1.5">
+      <animate attributeName="opacity" values="0;1;0" dur="1.4s" begin="0.9s" repeatCount="indefinite"/>
+    </path>
+  </g>
 </svg>

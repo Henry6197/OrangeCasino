@@ -11,21 +11,17 @@
     <button class="ads-toggle" id="ads-toggle">🚫 Hide Ads</button>
     
     <!-- Advertisement System -->
-    <div class="ad-container left ad-1" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container left ad-1" onclick="window.open('kraft-singles-ad.html', '_blank')">
       <img src="images/ad1.svg" class="ad-svg" alt="Ad 1">
-      <div class="ad-text">Kraft Singles!</div>
     </div>
-    <div class="ad-container left ad-2" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container left ad-2" onclick="window.open('doctors-hate-this.html', '_blank')">
       <img src="images/ad2.svg" class="ad-svg" alt="Ad 2">
-      <div class="ad-text">Doctors Hate This!</div>
     </div>
     <div class="ad-container right ad-3" onclick="window.open('popup-hell.html', '_blank')">
       <img src="images/ad3.svg" class="ad-svg" alt="Ad 3">
-      <div class="ad-text">Make Money!</div>
     </div>
-    <div class="ad-container right ad-4" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container right ad-4" onclick="window.open('you-wont-believe.html', '_blank')">
       <img src="images/ad4.svg" class="ad-svg" alt="Ad 4">
-      <div class="ad-text">You Won't Believe!</div>
     </div>
 
     <header class="site-header">
@@ -88,6 +84,39 @@
               <label class="bet-label">Bet Amount:</label>
               <input id="bj-bet" class="bet-input" type="number" value="20" min="1">
             </div>
+            <div class="quick-bet-buttons">
+              <button class="quick-bet-btn" data-amount="10">$10</button>
+              <button class="quick-bet-btn" data-amount="25">$25</button>
+              <button class="quick-bet-btn" data-amount="50">$50</button>
+              <button class="quick-bet-btn" data-amount="100">$100</button>
+              <button class="quick-bet-btn" data-amount="250">$250</button>
+              <button class="quick-bet-btn max-bet-btn" data-amount="max">Max</button>
+            </div>
+          </div>
+
+          <div class="control-panel stats-panel">
+            <h4>📊 Session Stats</h4>
+            <div class="stat-item">
+              <span class="stat-label">Hands Played:</span>
+              <span class="stat-value" id="bj-hands-played">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Hands Won:</span>
+              <span class="stat-value" id="bj-hands-won">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Win Rate:</span>
+              <span class="stat-value" id="bj-win-rate">0%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Current Streak:</span>
+              <span class="stat-value" id="bj-streak">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Best Streak:</span>
+              <span class="stat-value" id="bj-best-streak">0</span>
+            </div>
+            <button class="btn reset-btn" id="reset-bj-stats">🔄 Reset Stats</button>
           </div>
           
           <div class="control-panel rules-panel">
@@ -97,6 +126,7 @@
               <div class="rule-item">🎯 Dealer stands on 17</div>
               <div class="rule-item">🎯 Aces count as 1 or 11</div>
               <div class="rule-item">🎯 Face cards worth 10</div>
+              <div class="rule-item">💎 Blackjack pays 3:2</div>
             </div>
           </div>
         </aside>

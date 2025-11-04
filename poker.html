@@ -11,21 +11,17 @@
     <button class="ads-toggle" id="ads-toggle">🚫 Hide Ads</button>
     
     <!-- Advertisement System -->
-    <div class="ad-container left ad-1" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container left ad-1" onclick="window.open('kraft-singles-ad.html', '_blank')">
       <img src="images/ad1.svg" class="ad-svg" alt="Ad 1">
-      <div class="ad-text">Kraft Singles!</div>
     </div>
-    <div class="ad-container left ad-2" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container left ad-2" onclick="window.open('doctors-hate-this.html', '_blank')">
       <img src="images/ad2.svg" class="ad-svg" alt="Ad 2">
-      <div class="ad-text">Doctors Hate This!</div>
     </div>
     <div class="ad-container right ad-3" onclick="window.open('popup-hell.html', '_blank')">
       <img src="images/ad3.svg" class="ad-svg" alt="Ad 3">
-      <div class="ad-text">Make Money!</div>
     </div>
-    <div class="ad-container right ad-4" onclick="window.open('popup-hell.html', '_blank')">
+    <div class="ad-container right ad-4" onclick="window.open('you-wont-believe.html', '_blank')">
       <img src="images/ad4.svg" class="ad-svg" alt="Ad 4">
-      <div class="ad-text">You Won't Believe!</div>
     </div>
 
     <header class="site-header">
@@ -104,9 +100,20 @@
               <label class="bet-label">Ante Amount:</label>
               <input id="poker-bet" class="bet-input" type="number" value="15" min="1">
             </div>
+            <div class="quick-bet-buttons">
+              <button class="quick-bet-btn" data-amount="10">$10</button>
+              <button class="quick-bet-btn" data-amount="25">$25</button>
+              <button class="quick-bet-btn" data-amount="50">$50</button>
+            </div>
             <div class="bet-section">
               <label class="bet-label">Raise to:</label>
               <input id="raise-amount" class="bet-input" type="number" value="20" min="1">
+            </div>
+            <div class="quick-raise-buttons">
+              <button class="quick-raise-btn" data-amount="20">$20</button>
+              <button class="quick-raise-btn" data-amount="50">$50</button>
+              <button class="quick-raise-btn" data-amount="100">$100</button>
+              <button class="quick-raise-btn pot-btn" data-amount="pot">Pot</button>
             </div>
           </div>
           
