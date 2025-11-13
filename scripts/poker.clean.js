@@ -18,6 +18,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const dealerChipsEl = document.getElementById('dealer-chips');
   const currentBetEl = document.getElementById('current-bet');
 
+  // Player behavior tracking for bluff detection
+  let playerStats = {
+    totalHands: 0,
+    preflopRaises: 0,
+    preflopFolds: 0,
+    flopBets: 0,
+    flopFolds: 0,
+    turnBets: 0,
+    turnFolds: 0,
+    riverBets: 0,
+    showdownHands: [],
+    bigBluffs: 0, // Tracked when player shows weak hand after aggressive betting
+    valueBets: 0, // Tracked when player shows strong hand after aggressive betting
+    recentActions: [] // Last 10 hands history
+  };
+
   // Game state
   let gameState = {
     deck: [],
@@ -30,7 +46,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     phase: 'waiting', // waiting, preflop, flop, turn, river, showdown
     dealerBet: 0,
     playerBet: 0,
-    gameActive: false
+    gameActive: false,
+    playerRaisedPreflop: false,
+    playerRaisedFlop: false,
+    playerRaisedTurn: false,
+    playerRaisedRiver: false,
+    playerBetSizes: [] // Track bet sizes this hand
   };
 
   // Card utilities
@@ -270,8 +291,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
       phase: 'preflop',
       dealerBet: ante,
       playerBet: ante,
-      gameActive: true
+      gameActive: true,
+      playerRaisedPreflop: false,
+      playerRaisedFlop: false,
+      playerRaisedTurn: false,
+      playerRaisedRiver: false,
+      playerBetSizes: []
     };
+    
+    // Track stats
+    playerStats.totalHands++;
     
     // Track poker play for achievements
     try{ if(window.vc && typeof window.vc.incrementPokerPlays === 'function') window.vc.incrementPokerPlays(1); }catch(e){}
@@ -366,6 +395,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let winner = '';
     let balance = vc.readBalance();
     
+    // Update player stats based on showdown result
+    const wasAggressive = gameState.playerRaisedPreflop || gameState.playerRaisedFlop || 
+                         gameState.playerRaisedTurn || gameState.playerRaisedRiver;
+    
     if(playerHand.rank > dealerHand.rank || 
        (playerHand.rank === dealerHand.rank && compareKickers(playerHand.kickers, dealerHand.kickers) > 0)) {
       winner = 'player';
@@ -375,6 +408,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
       vc.confetti(40);
       vc.showBigMessage(`You won $${gameState.pot}!`, 1400);
       vc.setBuddyText('Great hand! You got them!');
+      
+      // Track if player bet aggressively with strong hand (value betting)
+      if(wasAggressive && playerHand.rank >= 3) {
+        playerStats.valueBets++;
+      }
     } else if(dealerHand.rank > playerHand.rank ||
               (playerHand.rank === dealerHand.rank && compareKickers(dealerHand.kickers, playerHand.kickers) > 0)) {
       winner = 'dealer';
@@ -382,6 +420,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
       appendLog(`Dealer wins with ${dealerHand.name} vs your ${playerHand.name}`);
       vc.showBigMessage('YOU LOST', 1000);
       vc.setBuddyText('Tough break — try again!');
+      
+      // Track if player bet aggressively with weak hand (bluffing)
+      if(wasAggressive && playerHand.rank <= 1) {
+        playerStats.bigBluffs++;
+      }
     } else {
       // Tie
       const split = gameState.pot / 2;
@@ -390,6 +433,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
       vc.writeBalance(balance);
       appendLog(`Split pot! Both had ${playerHand.name}`);
       vc.setBuddyText('Split pot — close game!');
+    }
+    
+    // Store this hand in recent history
+    playerStats.showdownHands.push({
+      rank: playerHand.rank,
+      wasAggressive: wasAggressive,
+      won: winner === 'player'
+    });
+    if(playerStats.showdownHands.length > 10) {
+      playerStats.showdownHands.shift();
     }
     
     gameStatusEl.textContent = "Hand complete. Deal new hand to continue.";
@@ -462,6 +515,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
     vc.writeBalance(balance);
     gameState.playerBet = betAmount;
     gameState.pot += betAmount;
+    gameState.playerBetSizes.push(betAmount);
+    
+    // Track betting by phase
+    if(gameState.phase === 'flop') {
+      playerStats.flopBets++;
+      gameState.playerRaisedFlop = true;
+    } else if(gameState.phase === 'turn') {
+      playerStats.turnBets++;
+      gameState.playerRaisedTurn = true;
+    } else if(gameState.phase === 'river') {
+      playerStats.riverBets++;
+      gameState.playerRaisedRiver = true;
+    }
     
     appendLog(`You bet $${betAmount}`);
     
@@ -487,6 +553,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
     vc.writeBalance(balance);
     gameState.playerBet = totalBet;
     gameState.pot += additionalBet;
+    gameState.playerBetSizes.push(totalBet);
+    
+    // Track raising by phase
+    if(gameState.phase === 'preflop') {
+      playerStats.preflopRaises++;
+      gameState.playerRaisedPreflop = true;
+    } else if(gameState.phase === 'flop') {
+      playerStats.flopBets++;
+      gameState.playerRaisedFlop = true;
+    } else if(gameState.phase === 'turn') {
+      playerStats.turnBets++;
+      gameState.playerRaisedTurn = true;
+    } else if(gameState.phase === 'river') {
+      playerStats.riverBets++;
+      gameState.playerRaisedRiver = true;
+    }
     
     appendLog(`You raised to $${totalBet}`);
     
@@ -515,61 +597,455 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  // Simple dealer AI
+  // Advanced poker AI with equity calculation and strategic play
+  
+  // Calculate hand equity using Monte Carlo simulation
+  function calculateEquity(holeCards, communityCards, numSimulations = 1000) {
+    let wins = 0;
+    let ties = 0;
+    
+    for(let sim = 0; sim < numSimulations; sim++) {
+      // Create a deck without known cards
+      const knownCards = [...holeCards, ...communityCards];
+      const simulationDeck = makeDeck().filter(card => 
+        !knownCards.some(known => known.rank === card.rank && known.suit === card.suit)
+      );
+      shuffle(simulationDeck);
+      
+      // Deal opponent two random cards
+      const oppCards = [simulationDeck.pop(), simulationDeck.pop()];
+      
+      // Complete community cards if needed
+      const simCommunity = [...communityCards];
+      while(simCommunity.length < 5) {
+        simCommunity.push(simulationDeck.pop());
+      }
+      
+      // Evaluate both hands
+      const ourHand = evaluateHand([...holeCards, ...simCommunity]);
+      const oppHand = evaluateHand([...oppCards, ...simCommunity]);
+      
+      if(ourHand.rank > oppHand.rank || 
+         (ourHand.rank === oppHand.rank && compareKickers(ourHand.kickers, oppHand.kickers) > 0)) {
+        wins++;
+      } else if(ourHand.rank === oppHand.rank && compareKickers(ourHand.kickers, oppHand.kickers) === 0) {
+        ties++;
+      }
+    }
+    
+    return (wins + ties * 0.5) / numSimulations;
+  }
+  
+  // Calculate preflop hand strength based on Chen formula
+  function getPreflopStrength(card1, card2) {
+    const rank1 = rankValue(card1.rank);
+    const rank2 = rankValue(card2.rank);
+    const highCard = Math.max(rank1, rank2);
+    const lowCard = Math.min(rank1, rank2);
+    const suited = card1.suit === card2.suit;
+    const paired = rank1 === rank2;
+    const gap = highCard - lowCard - 1;
+    
+    let score = 0;
+    
+    // Base score from high card
+    if(highCard === 14) score = 10; // Ace
+    else if(highCard === 13) score = 8; // King
+    else if(highCard === 12) score = 7; // Queen
+    else if(highCard === 11) score = 6; // Jack
+    else score = highCard / 2;
+    
+    // Pair bonus
+    if(paired) {
+      score *= 2;
+      if(score < 5) score = 5;
+    }
+    
+    // Suited bonus
+    if(suited) score += 2;
+    
+    // Close cards bonus
+    if(!paired) {
+      if(gap === 0) score += 1; // Connected
+      else if(gap === 1) score += 0; // 1 gap
+      else if(gap === 2) score -= 1; // 2 gap
+      else if(gap === 3) score -= 2; // 3 gap
+      else score -= 4; // 4+ gap
+      
+      // Straight potential with low cards
+      if(gap <= 1 && highCard < 12) score -= 1;
+    }
+    
+    return Math.max(score, 0) / 20; // Normalize to 0-1
+  }
+  
+  // Calculate pot odds
+  function getPotOdds(callAmount, potSize) {
+    return callAmount / (potSize + callAmount);
+  }
+  
+  // Analyze player tendencies to detect bluffing
+  function getBluffLikelihood() {
+    if(playerStats.totalHands < 5) return 0.5; // Not enough data, assume neutral
+    
+    const bluffRate = playerStats.bigBluffs / Math.max(playerStats.showdownHands.length, 1);
+    const valueRate = playerStats.valueBets / Math.max(playerStats.showdownHands.length, 1);
+    
+    // High bluff rate = player bluffs often
+    // Low value rate = player doesn't have it when betting
+    const bluffTendency = bluffRate * 2 + (1 - valueRate);
+    
+    // Recent aggression without strong hands indicates possible bluffing
+    const recentWeak = playerStats.showdownHands.slice(-5).filter(h => 
+      h.wasAggressive && h.rank <= 1
+    ).length;
+    
+    return Math.min(bluffTendency / 3 + recentWeak * 0.1, 0.9);
+  }
+  
+  // Analyze betting patterns this hand
+  function analyzeBettingPattern() {
+    if(gameState.playerBetSizes.length === 0) return { suspicious: false, aggression: 0 };
+    
+    const avgBet = gameState.playerBetSizes.reduce((a, b) => a + b, 0) / gameState.playerBetSizes.length;
+    const potRelative = avgBet / Math.max(gameState.pot * 0.5, 10);
+    
+    // Suspicious patterns: very large bets, increasing bet sizes, etc.
+    const largeBets = gameState.playerBetSizes.filter(b => b > gameState.pot * 0.8).length;
+    const increasing = gameState.playerBetSizes.length > 1 && 
+                       gameState.playerBetSizes[gameState.playerBetSizes.length - 1] > 
+                       gameState.playerBetSizes[0] * 1.5;
+    
+    return {
+      suspicious: largeBets > 0 || increasing,
+      aggression: Math.min(potRelative, 2)
+    };
+  }
+  
+  // Get betting action based on game theory with bluff detection
+  function getOptimalAction(equity, potOdds, potSize, chips, phase, playerBetSize) {
+    // Get player profiling data
+    const bluffLikelihood = getBluffLikelihood();
+    const bettingPattern = analyzeBettingPattern();
+    
+    // Adjust equity based on bluff detection
+    let adjustedEquity = equity;
+    if(playerBetSize > 0) {
+      // If player is betting and we think they're bluffing, our equity increases
+      const bluffAdjustment = (bluffLikelihood - 0.5) * 0.15; // Max ±7.5% equity adjustment
+      adjustedEquity = Math.max(0.1, Math.min(0.95, equity + bluffAdjustment));
+      
+      // Extra adjustment if betting pattern is suspicious
+      if(bettingPattern.suspicious) {
+        adjustedEquity += 0.05;
+      }
+    }
+    
+    // Bluffing frequency based on optimal game theory
+    const bluffFreq = Math.random() < 0.12;
+    
+    // Adjust strategy based on phase - more aggressive preflop
+    const phaseAggression = {
+      'preflop': 1.2, // Much more aggressive preflop
+      'flop': 0.8,
+      'turn': 0.9,
+      'river': 1.0
+    };
+    const aggression = phaseAggression[phase] || 0.8;
+    
+    // Expected value calculation
+    const callEV = adjustedEquity * potSize - (1 - adjustedEquity) * (potOdds * potSize);
+    
+    // Decision thresholds (adjusted for optimal play and phase)
+    let foldThreshold = potOdds * 0.85;
+    let callThreshold = potOdds * 1.2;
+    let raiseThreshold = 0.55 + (1 - aggression) * 0.1;
+    
+    // Preflop: much more willing to play
+    if(phase === 'preflop') {
+      foldThreshold = Math.max(0.25, potOdds * 0.7); // Only fold really bad hands preflop
+      callThreshold = Math.max(0.35, potOdds * 1.0);
+      raiseThreshold = 0.50; // Lower threshold for raising preflop
+    }
+    
+    // If we detect bluffing, be more aggressive
+    if(bluffLikelihood > 0.6) {
+      foldThreshold *= 0.8;
+      callThreshold *= 0.9;
+    }
+    
+    // Strong hand criteria
+    const veryStrong = adjustedEquity > 0.75;
+    const strong = adjustedEquity > raiseThreshold;
+    const medium = adjustedEquity > callThreshold;
+    const weak = adjustedEquity > foldThreshold;
+    
+    // Player bet size tells us information
+    const bigBet = playerBetSize > potSize * 0.7;
+    const mediumBet = playerBetSize > potSize * 0.4;
+    
+    // Determine action
+    if(veryStrong || (bluffFreq && Math.random() < 0.3)) {
+      // Value bet or semi-bluff
+      if(Math.random() < 0.7 || veryStrong) {
+        return { action: 'raise', multiplier: veryStrong ? (1.5 + Math.random() * 1.0) : (0.7 + Math.random() * 0.5) };
+      }
+      return { action: 'call' };
+    } else if(strong) {
+      // Good hand - bet for value or call
+      if(playerBetSize === 0 && Math.random() < 0.6) {
+        return { action: 'raise', multiplier: 0.6 + Math.random() * 0.6 };
+      }
+      // Call down suspected bluffs
+      if(bigBet && bluffLikelihood > 0.55) {
+        return { action: 'call' };
+      }
+      if(bigBet && Math.random() < 0.2) {
+        return { action: 'fold' }; // Sometimes fold to big bets
+      }
+      return { action: 'call' };
+    } else if(medium) {
+      // Marginal hand - call if price is right or if we suspect bluff
+      if(callEV > 0 || potOdds < adjustedEquity * 0.7) {
+        return { action: 'call' };
+      }
+      // Bluff catch with medium hands if player is bluffy
+      if(playerBetSize > 0 && bluffLikelihood > 0.65 && !bigBet) {
+        return { action: 'call' };
+      }
+      if(bluffFreq && playerBetSize === 0) {
+        return { action: 'raise', multiplier: 0.5 + Math.random() * 0.4 };
+      }
+      return { action: 'fold' };
+    } else if(weak) {
+      // Weak hand but pot odds justify call
+      if(potOdds < adjustedEquity * 0.8 && !bigBet) {
+        return { action: 'call' };
+      }
+      // Hero call if we strongly suspect bluff
+      if(phase === 'river' && bluffLikelihood > 0.75 && bettingPattern.suspicious) {
+        return { action: 'call' };
+      }
+      return { action: 'fold' };
+    } else {
+      // Very weak hand
+      if(playerBetSize === 0 && bluffFreq) {
+        return { action: 'raise', multiplier: 0.4 + Math.random() * 0.3 };
+      }
+      return { action: 'fold' };
+    }
+  }
+  
+  // Advanced dealer AI
   function dealerAction() {
     if(!gameState.gameActive) return;
     
     const dealerCards = [...gameState.dealerHand, ...gameState.communityCards];
-    const dealerHand = evaluateHand(dealerCards);
     
-    // Simple AI logic - dealer never folds
-    const handStrength = dealerHand.rank / 9; // 0 to 1
-    const random = Math.random();
+    // Calculate equity based on game phase
+    let equity;
+    if(gameState.communityCards.length === 0) {
+      // Preflop - use Chen formula
+      equity = getPreflopStrength(gameState.dealerHand[0], gameState.dealerHand[1]);
+    } else {
+      // Postflop - use Monte Carlo simulation
+      equity = calculateEquity(gameState.dealerHand, gameState.communityCards, 800);
+    }
     
-    if(handStrength > 0.6 || (handStrength > 0.3 && random < 0.3)) {
-      // Dealer raises
-      const raiseAmount = gameState.playerBet + 10 + Math.floor(Math.random() * 20);
-      if(raiseAmount <= gameState.dealerChips + gameState.dealerBet) {
-        const additionalBet = raiseAmount - gameState.dealerBet;
+    // Calculate pot odds
+    const callAmount = gameState.playerBet - gameState.dealerBet;
+    const potOdds = callAmount > 0 ? getPotOdds(callAmount, gameState.pot) : 0;
+    
+    // Get optimal action
+    const decision = getOptimalAction(
+      equity, 
+      potOdds, 
+      gameState.pot,
+      gameState.dealerChips,
+      gameState.phase,
+      gameState.playerBet
+    );
+    
+    if(decision.action === 'raise') {
+      // Calculate raise size based on pot and hand strength
+      const baseBet = gameState.playerBet > 0 ? gameState.playerBet : Math.max(10, gameState.pot * 0.3);
+      const raiseAmount = Math.floor(baseBet + gameState.pot * decision.multiplier);
+      const totalBet = Math.max(raiseAmount, gameState.playerBet + 10);
+      
+      // Don't raise more than player can afford to call
+      const playerBalance = vc.readBalance();
+      const maxDealerBet = gameState.playerBet + playerBalance;
+      const cappedTotalBet = Math.min(totalBet, maxDealerBet);
+      
+      // If capped bet is not significantly higher than current bet, just call/check instead
+      if(cappedTotalBet <= gameState.dealerBet + 5) {
+        // Not worth raising if we can't raise enough, just call/check
+        if(callAmount > 0) {
+          if(callAmount <= gameState.dealerChips) {
+            gameState.dealerChips -= callAmount;
+            gameState.pot += callAmount;
+            gameState.dealerBet = gameState.playerBet;
+            appendLog("Dealer calls");
+          } else {
+            gameState.pot += gameState.dealerChips;
+            gameState.dealerBet += gameState.dealerChips;
+            gameState.dealerChips = 0;
+            appendLog("Dealer calls all-in");
+          }
+        } else {
+          appendLog("Dealer checks");
+        }
+        nextPhase();
+        return;
+      }
+      
+      if(cappedTotalBet > gameState.dealerBet && cappedTotalBet - gameState.dealerBet <= gameState.dealerChips) {
+        const additionalBet = cappedTotalBet - gameState.dealerBet;
         gameState.dealerChips -= additionalBet;
         gameState.pot += additionalBet;
-        gameState.dealerBet = raiseAmount;
-        appendLog(`Dealer raises to $${raiseAmount}`);
+        gameState.dealerBet = cappedTotalBet;
+        appendLog(`Dealer raises to $${cappedTotalBet}`);
         updateUI();
         updateButtons();
         return;
       }
     }
     
-    // Dealer checks if player checked, calls if player bet
-    if(gameState.playerBet > gameState.dealerBet) {
-      const callAmount = gameState.playerBet - gameState.dealerBet;
-      gameState.dealerChips -= callAmount;
-      gameState.pot += callAmount;
-      gameState.dealerBet = gameState.playerBet;
-      appendLog("Dealer calls");
-    } else {
-      appendLog("Dealer checks");
+    if(decision.action === 'call' || (decision.action === 'raise' && callAmount > 0)) {
+      if(callAmount > 0) {
+        if(callAmount <= gameState.dealerChips) {
+          gameState.dealerChips -= callAmount;
+          gameState.pot += callAmount;
+          gameState.dealerBet = gameState.playerBet;
+          appendLog("Dealer calls");
+        } else {
+          // Not enough chips to call - all in
+          gameState.pot += gameState.dealerChips;
+          gameState.dealerBet += gameState.dealerChips;
+          gameState.dealerChips = 0;
+          appendLog("Dealer calls all-in");
+        }
+      } else {
+        appendLog("Dealer checks");
+      }
+      nextPhase();
+    } else if(decision.action === 'fold') {
+      if(gameState.playerBet > gameState.dealerBet) {
+        // Fold to player bet
+        gameState.gameActive = false;
+        let balance = vc.readBalance();
+        balance += gameState.pot;
+        vc.writeBalance(balance);
+        appendLog("Dealer folds! You win the pot!");
+        gameStatusEl.textContent = "Dealer folded. Deal new hand to continue.";
+        vc.confetti(30);
+        vc.showBigMessage(`Dealer folded! +$${gameState.pot}`, 1400);
+        updateUI();
+        updateButtons();
+      } else {
+        // Check instead of folding when there's no bet
+        appendLog("Dealer checks");
+        nextPhase();
+      }
     }
-    
-    // Move to next phase now that both players have acted and bets are equal
-    nextPhase();
   }
 
   function dealerRespondToRaise(playerRaise) {
     if(!gameState.gameActive) return;
     
-    const dealerCards = [...gameState.dealerHand, ...gameState.communityCards];
-    const dealerHand = evaluateHand(dealerCards);
-    const handStrength = dealerHand.rank / 9;
+    // Calculate equity
+    let equity;
+    if(gameState.communityCards.length === 0) {
+      equity = getPreflopStrength(gameState.dealerHand[0], gameState.dealerHand[1]);
+    } else {
+      equity = calculateEquity(gameState.dealerHand, gameState.communityCards, 800);
+    }
     
-    // Dealer always calls raises - never folds
     const callAmount = playerRaise - gameState.dealerBet;
-    gameState.dealerChips -= callAmount;
-    gameState.dealerBet = playerRaise;
-    gameState.pot += callAmount;
-    appendLog(`Dealer calls your raise`);
-    nextPhase();
+    const potOdds = getPotOdds(callAmount, gameState.pot);
+    
+    // Get decision
+    const decision = getOptimalAction(
+      equity,
+      potOdds,
+      gameState.pot,
+      gameState.dealerChips,
+      gameState.phase,
+      playerRaise
+    );
+    
+    if(decision.action === 'fold') {
+      // Dealer folds to raise
+      gameState.gameActive = false;
+      let balance = vc.readBalance();
+      balance += gameState.pot;
+      vc.writeBalance(balance);
+      appendLog("Dealer folds to your raise! You win the pot!");
+      gameStatusEl.textContent = "Dealer folded. Deal new hand to continue.";
+      vc.confetti(30);
+      vc.showBigMessage(`Dealer folded! +$${gameState.pot}`, 1400);
+      updateUI();
+      updateButtons();
+    } else if(decision.action === 'raise' && equity > 0.7) {
+      // Re-raise with very strong hand
+      const reraiseAmount = Math.floor(playerRaise + gameState.pot * 0.8);
+      
+      // Don't re-raise more than player can afford to call
+      const playerBalance = vc.readBalance();
+      const maxDealerBet = gameState.playerBet + playerBalance;
+      const cappedReraiseAmount = Math.min(reraiseAmount, maxDealerBet);
+      
+      // If capped re-raise is not significantly higher, just call instead
+      if(cappedReraiseAmount <= gameState.dealerBet + 5 || cappedReraiseAmount <= playerRaise + 5) {
+        // Just call instead of re-raising
+        if(callAmount <= gameState.dealerChips) {
+          gameState.dealerChips -= callAmount;
+          gameState.dealerBet = playerRaise;
+          gameState.pot += callAmount;
+          appendLog(`Dealer calls your raise`);
+        } else {
+          gameState.pot += gameState.dealerChips;
+          gameState.dealerBet += gameState.dealerChips;
+          gameState.dealerChips = 0;
+          appendLog(`Dealer calls all-in`);
+        }
+        nextPhase();
+        return;
+      }
+      
+      if(cappedReraiseAmount > gameState.dealerBet && cappedReraiseAmount - gameState.dealerBet <= gameState.dealerChips) {
+        const additionalBet = cappedReraiseAmount - gameState.dealerBet;
+        gameState.dealerChips -= additionalBet;
+        gameState.dealerBet = cappedReraiseAmount;
+        gameState.pot += additionalBet;
+        appendLog(`Dealer re-raises to $${cappedReraiseAmount}!`);
+        updateUI();
+        updateButtons();
+        return;
+      } else {
+        // Not enough for reraise, just call
+        gameState.dealerChips -= callAmount;
+        gameState.dealerBet = playerRaise;
+        gameState.pot += callAmount;
+        appendLog(`Dealer calls your raise`);
+        nextPhase();
+      }
+    } else {
+      // Call the raise
+      if(callAmount <= gameState.dealerChips) {
+        gameState.dealerChips -= callAmount;
+        gameState.dealerBet = playerRaise;
+        gameState.pot += callAmount;
+        appendLog(`Dealer calls your raise`);
+      } else {
+        // All in
+        gameState.pot += gameState.dealerChips;
+        gameState.dealerBet += gameState.dealerChips;
+        gameState.dealerChips = 0;
+        appendLog(`Dealer calls all-in`);
+      }
+      nextPhase();
+    }
   }
 
   // Quick bet buttons for ante

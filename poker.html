@@ -47,32 +47,29 @@
       
       <div class="game-stage">
         <div class="game-panel poker-table">
+          <div class="table-config">
+            <label>Players at table: 
+              <select id="num-players">
+                <option value="3">3 (You + 2 AI)</option>
+                <option value="4">4 (You + 3 AI)</option>
+                <option value="5" selected>5 (You + 4 AI)</option>
+                <option value="6">6 (You + 5 AI)</option>
+                <option value="7">7 (You + 6 AI)</option>
+                <option value="8">8 (You + 7 AI)</option>
+              </select>
+            </label>
+          </div>
+          
           <div class="community-section">
             <h3>🃏 Community Cards</h3>
             <div id="community-cards" class="card-row community-cards"></div>
+            <div class="pot-display">
+              <h4>💰 Pot: $<span id="pot-amount">0</span></h4>
+            </div>
           </div>
           
-          <div class="poker-players">
-            <div class="poker-player dealer-player">
-              <div class="player-info">
-                <h4>🎩 Dealer</h4>
-                <div class="chip-display">Chips: $<span id="dealer-chips">1000</span></div>
-              </div>
-              <div id="dealer-hand" class="card-row"></div>
-            </div>
-            
-            <div class="pot-display">
-              <h4>💰 Pot</h4>
-              <div class="pot-amount">$<span id="pot-amount">0</span></div>
-            </div>
-            
-            <div class="poker-player user-player">
-              <div class="player-info">
-                <h4>👤 You</h4>
-                <div class="chip-display">Current bet: $<span id="current-bet">0</span></div>
-              </div>
-              <div id="player-hand" class="card-row"></div>
-            </div>
+          <div id="poker-players" class="poker-players-grid">
+            <!-- Players will be dynamically generated -->
           </div>
           
           <div class="poker-actions">
@@ -143,7 +140,7 @@
     <script src="scripts/todd-dialogue.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/achievements.js"></script>
-    <script src="scripts/poker.clean.js"></script>
+    <script src="scripts/poker-multiplayer.js"></script>
     
     <script>
       // Ghost Code System for Poker
