@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Platinum Fortune Wheel - VIP Casino</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background: 
+          radial-gradient(ellipse at top, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+          linear-gradient(180deg, #0a0e27 0%, #1e3a8a 25%, #1e40af 50%, #1e3a8a 75%, #0c0f1f 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .game-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: 
+          linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.8)),
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 60%);
+        border: 3px solid;
+        border-image: linear-gradient(135deg, #3b82f6, #60a5fa, #3b82f6) 1;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(59, 130, 246, 0.4);
+      }
+
+      .game-title {
+        text-align: center;
+        font-size: 2.5em;
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 32px;
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+      }
+
+      .wheel-container {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 40px auto;
+      }
+
+      .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 8px solid #60a5fa;
+        box-shadow: 
+          0 0 40px rgba(59, 130, 246, 0.8),
+          inset 0 0 40px rgba(59, 130, 246, 0.3);
+        position: relative;
+        transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        background: conic-gradient(
+          #3b82f6 0deg 36deg,
+          #1e40af 36deg 72deg,
+          #60a5fa 72deg 108deg,
+          #1e40af 108deg 144deg,
+          #3b82f6 144deg 180deg,
+          #1e40af 180deg 216deg,
+          #60a5fa 216deg 252deg,
+          #1e40af 252deg 288deg,
+          #3b82f6 288deg 324deg,
+          #1e40af 324deg 360deg
+        );
+      }
+
+      .wheel-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #dbeafe, #60a5fa);
+        border-radius: 50%;
+        border: 4px solid #0a0e27;
+        z-index: 10;
+        box-shadow: 0 0 20px rgba(96, 165, 250, 0.8);
+      }
+
+      .wheel-pointer {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 40px solid #60a5fa;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        z-index: 11;
+      }
+
+      .wheel-segment {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center;
+        font-size: 1.2em;
+        font-weight: 900;
+        color: #dbeafe;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+      }
+
+      .bet-controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+        margin: 32px 0;
+        flex-wrap: wrap;
+      }
+
+      .bet-input {
+        padding: 12px 20px;
+        font-size: 1.1em;
+        background: rgba(15, 23, 42, 0.8);
+        border: 2px solid #3b82f6;
+        border-radius: 10px;
+        color: #dbeafe;
+        font-weight: 700;
+        width: 200px;
+        text-align: center;
+      }
+
+      .game-btn {
+        padding: 14px 32px;
+        font-size: 1.2em;
+        font-weight: 900;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        color: #0a0e27;
+        border: 2px solid #60a5fa;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+      }
+
+      .game-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(59, 130, 246, 0.6);
+      }
+
+      .game-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .result-message {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 900;
+        margin: 24px 0;
+        min-height: 40px;
+        background: linear-gradient(135deg, #dbeafe, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .game-info {
+        background: rgba(30, 58, 138, 0.3);
+        border: 2px solid rgba(59, 130, 246, 0.5);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 24px 0;
+        color: #cbd5e1;
+        line-height: 1.8;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 32px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(30, 58, 138, 0.4));
+        border: 2px solid #3b82f6;
+        border-radius: 10px;
+        color: #60a5fa;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s ease;
+      }
+
+      .back-link:hover {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(30, 58, 138, 0.6));
+        border-color: #60a5fa;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      }
+
+      .multipliers-list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin: 24px 0;
+        font-size: 0.9em;
+        text-align: center;
+      }
+
+      .multiplier-item {
+        padding: 8px;
+        background: rgba(59, 130, 246, 0.2);
+        border: 1px solid rgba(96, 165, 250, 0.4);
+        border-radius: 8px;
+        color: #dbeafe;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.95)); border-bottom: 3px solid; border-image: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6) 1; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);">
+      <div class="container">
+        <h1 class="brand" style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🎡 Platinum Fortune Wheel 💎</h1>
+        <div class="balance">
+          Platinum: <span id="platinum-balance">0</span> 💎
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="game-container">
+        <h2 class="game-title">🎡 Platinum Fortune Wheel 💎</h2>
+
+        <div class="game-info">
+          <strong style="color: #60a5fa;">How to Play:</strong><br>
+          Place your platinum bet and spin the wheel! Land on different multipliers to multiply your wager.
+        </div>
+
+        <div class="multipliers-list">
+          <div class="multiplier-item">0x 💀</div>
+          <div class="multiplier-item">1.5x 📈</div>
+          <div class="multiplier-item">2x 🎯</div>
+          <div class="multiplier-item">3x ⭐</div>
+          <div class="multiplier-item">5x 🔥</div>
+          <div class="multiplier-item">10x 💫</div>
+          <div class="multiplier-item">20x 🌟</div>
+          <div class="multiplier-item">50x 👑</div>
+          <div class="multiplier-item">100x 💎</div>
+          <div class="multiplier-item">JACKPOT 🚀</div>
+        </div>
+
+        <div class="wheel-container">
+          <div class="wheel-pointer"></div>
+          <div class="wheel" id="wheel">
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(18deg) translateY(-160px);">100x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(54deg) translateY(-160px);">0x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(90deg) translateY(-160px);">2x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(126deg) translateY(-160px);">1.5x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(162deg) translateY(-160px);">5x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(198deg) translateY(-160px);">1.5x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(234deg) translateY(-160px);">10x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(270deg) translateY(-160px);">0x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(306deg) translateY(-160px);">3x</div>
+            <div class="wheel-segment" style="transform: translate(-50%, -50%) rotate(342deg) translateY(-160px);">20x</div>
+            <div class="wheel-center"></div>
+          </div>
+        </div>
+
+        <div class="result-message" id="result-message"></div>
+
+        <div class="bet-controls">
+          <input type="number" id="bet-amount" class="bet-input" placeholder="Bet Amount (💎)" min="1" value="10">
+          <button id="spin-btn" class="game-btn">🎡 Spin Wheel</button>
+        </div>
+
+        <a href="vip-casino.html" class="back-link">← Back to VIP Casino</a>
+      </div>
+    </main>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script>
+      // Check VIP access
+      if (localStorage.getItem('vc_vip_access') !== 'true') {
+        window.location.href = 'index.html';
+      }
+
+      // Update balance display
+      function updateDisplay() {
+        const platinum = window.vc.readPlatinumCredits();
+        document.getElementById('platinum-balance').textContent = platinum.toLocaleString();
+      }
+
+      updateDisplay();
+
+      // Wheel multipliers (36 degrees each segment)
+      const multipliers = [100, 0, 2, 1.5, 5, 1.5, 10, 0, 3, 20];
+      let currentRotation = 0;
+      
+      document.getElementById('spin-btn').addEventListener('click', () => {
+        const betAmount = parseInt(document.getElementById('bet-amount').value);
+        const platinum = window.vc.readPlatinumCredits();
+        const resultMsg = document.getElementById('result-message');
+        const spinBtn = document.getElementById('spin-btn');
+        const wheel = document.getElementById('wheel');
+
+        if (isNaN(betAmount) || betAmount < 1) {
+          resultMsg.textContent = '⚠️ Enter a valid bet amount!';
+          return;
+        }
+
+        if (betAmount > platinum) {
+          resultMsg.textContent = '⚠️ Insufficient platinum credits!';
+          return;
+        }
+
+        // Deduct bet
+        window.vc.writePlatinumCredits(platinum - betAmount);
+        updateDisplay();
+
+        spinBtn.disabled = true;
+        resultMsg.textContent = '🎡 Spinning...';
+
+        // Random outcome with weighted probabilities
+        let multiplier;
+        const rand = Math.random();
+        if (rand < 0.35) multiplier = 0;        // 35% chance
+        else if (rand < 0.65) multiplier = 1.5; // 30% chance
+        else if (rand < 0.83) multiplier = 2;   // 18% chance
+        else if (rand < 0.92) multiplier = 3;   // 9% chance
+        else if (rand < 0.96) multiplier = 5;   // 4% chance
+        else if (rand < 0.985) multiplier = 10; // 2.5% chance
+        else if (rand < 0.995) multiplier = 20; // 1% chance
+        else if (rand < 0.999) multiplier = 50; // 0.4% chance
+        else multiplier = 100;                  // 0.1% chance
+
+        // Find segment index
+        const segmentIndex = multipliers.indexOf(multiplier);
+        const targetAngle = segmentIndex * 36;
+        
+        // Add multiple spins + target angle
+        // Pointer is at top (0 degrees), so we rotate to bring the target segment to the top
+        // Subtracting 18 degrees to adjust the segment under the pointer
+        // Add random extra spins (0-3) on top of minimum 5 spins
+        const spins = 5 + Math.floor(Math.random() * 4);
+        const newRotation = currentRotation + (360 * spins) - (currentRotation % 360) - targetAngle - 18;
+        currentRotation = newRotation;
+
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+        setTimeout(() => {
+          const winAmount = Math.floor(betAmount * multiplier);
+          
+          if (multiplier === 0) {
+            resultMsg.textContent = `💀 Landed on 0x - Lost ${betAmount.toLocaleString()} 💎`;
+            if (window.vc.setBuddyText) {
+              window.vc.setBuddyText('Ouch! Better luck on the next spin!');
+            }
+          } else {
+            window.vc.writePlatinumCredits(window.vc.readPlatinumCredits() + winAmount);
+            resultMsg.textContent = `🎉 ${multiplier}x! Won ${winAmount.toLocaleString()} 💎!`;
+            if (window.vc.setBuddyText) {
+              if (multiplier >= 50) {
+                window.vc.setBuddyText(`LEGENDARY SPIN! ${winAmount.toLocaleString()} platinum!`);
+              } else if (multiplier >= 10) {
+                window.vc.setBuddyText(`Amazing! You won ${winAmount.toLocaleString()} platinum!`);
+              } else {
+                window.vc.setBuddyText(`Nice win! ${winAmount.toLocaleString()} platinum!`);
+              }
+            }
+          }
+
+          updateDisplay();
+          spinBtn.disabled = false;
+        }, 4000);
+      });
+    </script>
+
+    <div class="buddy" id="buddy">
+      <div class="buddy-toggle" id="buddy-toggle">−</div>
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Donny Boy</div>
+        <div class="text" id="buddy-text">Spin the wheel and win big!</div>
+      </div>
+    </div>
+  </body>
+</html>

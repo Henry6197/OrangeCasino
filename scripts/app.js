@@ -10,13 +10,100 @@
   function writeBalance(v){ 
     localStorage.setItem('vc_balance', String(v)); 
     updateBalance(); 
+    // Check for platinum conversion
+    checkPlatinumConversion();
     // Only trigger auto-payoff if not already in progress
     if(!autoPayoffInProgress) {
       checkAutoPayoffDebt(); 
     }
   }
   
-  function updateBalance(){ const els = document.querySelectorAll('#balance-value'); els.forEach(e=>{ const v = readBalance(); e.textContent = String(v); }); }
+  function updateBalance(){ 
+    const els = document.querySelectorAll('#balance-value'); 
+    els.forEach(e=>{ 
+      const v = readBalance(); 
+      const platinum = readPlatinumCredits();
+      if(platinum > 0) {
+        e.textContent = v.toLocaleString() + ' + ' + platinum.toLocaleString() + ' 💎';
+      } else {
+        e.textContent = v.toLocaleString();
+      }
+    }); 
+  }
+
+  // Platinum Credits system for ultra-high balances
+  const PLATINUM_CONVERSION_THRESHOLD = 100000000000; // 100 billion - prompt user
+  const PLATINUM_CONVERSION_RATE = 10000000000; // 10 billion = 1 platinum
+  
+  function readPlatinumCredits(){
+    const raw = localStorage.getItem('vc_platinum');
+    return raw ? Number(raw) : 0;
+  }
+  
+  function writePlatinumCredits(v){ 
+    localStorage.setItem('vc_platinum', String(v)); 
+    updateBalance(); 
+  }
+  
+  function checkPlatinumConversion(){
+    const balance = readBalance();
+    if(balance >= PLATINUM_CONVERSION_THRESHOLD){
+      // Prompt user for conversion
+      const maxConvertible = Math.floor(balance / PLATINUM_CONVERSION_RATE);
+      const minConversion = Math.ceil(maxConvertible * 0.8); // Minimum 80%
+      
+      const message = `You have $${balance.toLocaleString()}!\n\nConvert to Platinum Credits?\n(1 💎 = $10 billion)\n\nMaximum: ${maxConvertible} 💎\nMinimum: ${minConversion} 💎 (80%)\n\nEnter amount to convert:`;
+      
+      const userInput = prompt(message, maxConvertible);
+      
+      if(userInput === null) return false; // User cancelled
+      
+      const amountToConvert = parseInt(userInput);
+      
+      if(isNaN(amountToConvert) || amountToConvert < minConversion || amountToConvert > maxConvertible){
+        if(typeof setBuddyText === 'function'){
+          setBuddyText(`Invalid amount! Must convert between ${minConversion} and ${maxConvertible} platinum credits.`);
+        }
+        // Ask again
+        setTimeout(() => checkPlatinumConversion(), 100);
+        return false;
+      }
+      
+      const cashToConvert = amountToConvert * PLATINUM_CONVERSION_RATE;
+      const remainingBalance = balance - cashToConvert;
+      
+      const currentPlatinum = readPlatinumCredits();
+      writePlatinumCredits(currentPlatinum + amountToConvert);
+      localStorage.setItem('vc_balance', String(remainingBalance));
+      
+      if(typeof showBigMessage === 'function'){
+        showBigMessage(`💎 CONVERTED TO ${amountToConvert.toLocaleString()} PLATINUM CREDITS! 💎`, 3000);
+      }
+      if(typeof confetti === 'function'){
+        confetti(50);
+      }
+      updateBalance();
+      return true;
+    }
+    return false;
+  }
+  
+  function purchaseWithPlatinum(itemName, cost, effect){
+    const platinum = readPlatinumCredits();
+    if(platinum >= cost){
+      writePlatinumCredits(platinum - cost);
+      if(typeof showBigMessage === 'function'){
+        showBigMessage(`💎 PURCHASED ${itemName}! 💎`, 2000);
+      }
+      if(typeof confetti === 'function'){
+        confetti(30);
+      }
+      // Apply the effect
+      if(effect) effect();
+      return true;
+    }
+    return false;
+  }
 
   // Debt handling
   function readDebt(){ const raw = localStorage.getItem('vc_debt'); return raw ? Number(raw) : 0; }
@@ -28,7 +115,7 @@
   
   function updateDebt(){ 
     const els = document.querySelectorAll('#debt-value, #debt-display'); 
-    els.forEach(e=>{ const v = readDebt(); e.textContent = String(v); }); 
+    els.forEach(e=>{ const v = readDebt(); e.textContent = v.toLocaleString(); }); 
   }
 
   // Progressive Jackpot system
@@ -515,7 +602,7 @@
     });
   }
 
-  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, launderMoney };
+  window.vc = { readBalance, writeBalance, updateBalance, readDebt, writeDebt, updateDebt, loan100, paybackLoan, setBuddyText, showBigMessage, confetti, readJackpot, writeJackpot, updateJackpot, addToJackpot, winJackpot, startGlobalBloodDebtTimer, stopGlobalBloodDebtTimer, addOrganEffect, resetAllOrganEffects, launderMoney, readPlatinumCredits, writePlatinumCredits, purchaseWithPlatinum, checkPlatinumConversion };
   document.addEventListener('DOMContentLoaded', ()=>{ 
     vc.updateBalance(); 
     vc.updateDebt(); 

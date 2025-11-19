@@ -88,6 +88,34 @@
               <a class="btn surgery-btn" href="surgery.html">💰 Earn $5,000</a>
             </div>
           </div>
+          
+          <!-- Platinum Shop Panel (shows when player has platinum) -->
+          <div id="platinum-panel" class="financial-panel platinum-panel" style="display: none; margin-top: 16px;">
+            <h4>💎 Platinum Membership - Ultra Elite Access</h4>
+            <div class="platinum-balance">Platinum Credits: <span id="platinum-display">0</span> 💎</div>
+            <p style="font-size: 0.85em; color: #c4b5fd; margin: 8px 0; font-style: italic;">Exclusive access for the ultra-wealthy</p>
+            <button id="manual-convert-btn" class="btn" style="background: linear-gradient(135deg, #059669, #047857); color: white; width: 100%; margin-bottom: 16px; display: none;" onclick="manualConvert()">💵 Convert Cash to Platinum (10B = 1 💎)</button>
+            
+            <div id="vip-casino-access" class="platinum-items" style="margin-top: 16px;">
+              <div class="platinum-item vip-casino-feature" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(218, 165, 32, 0.1)); border: 3px solid #ffd700; padding: 20px;">
+                <div style="text-align: center; margin-bottom: 16px;">
+                  <div style="font-size: 3em; margin-bottom: 8px;">👑</div>
+                  <strong style="font-size: 1.3em; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">VIP CASINO ACCESS</strong>
+                </div>
+                <div style="margin: 16px 0; line-height: 1.8;">
+                  <div style="margin-bottom: 8px;">✨ <strong>Exclusive Ultra-Elite Casino</strong></div>
+                  <div style="margin-bottom: 8px;">💰 <strong>Platinum-only games & betting</strong></div>
+                  <div style="margin-bottom: 8px;">🎰 <strong>Massive multipliers & jackpots</strong></div>
+                  <div style="margin-bottom: 8px;">🏆 <strong>VIP rewards & bonuses</strong></div>
+                  <div style="margin-bottom: 8px;">👔 <strong>White-glove service</strong></div>
+                </div>
+                <div style="text-align: center; margin-top: 16px;">
+                  <button id="vip-access-btn" class="btn platinum-buy-btn" onclick="purchaseVIPAccess()" style="background: linear-gradient(135deg, #ffd700, #daa520); color: #1e1b4b; padding: 14px 28px; font-size: 1.1em; font-weight: 900; width: 100%; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);">🌟 UNLOCK FOR 100 💎 🌟</button>
+                  <button id="vip-enter-btn" onclick="enterVIPCasino()" style="display: none; background: linear-gradient(135deg, #ffd700, #daa520); color: #1e1b4b; padding: 14px 28px; font-size: 1.1em; font-weight: 900; width: 100%; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5); transition: all 0.3s ease;">👑 ENTER VIP CASINO 👑</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Help Section -->
@@ -190,7 +218,9 @@
         'jackpot': { reward: 4500, message: '🎰 JACKPOT activated! +$4,500!', used: false },
         'moneybags': { reward: 4000, message: '💰 MONEYBAGS activated! +$4,000!', used: false },
         'casino': { reward: 3500, message: '🏆 CASINO activated! +$3,500!', used: false },
-        'lucky': { reward: 300000000, message: '🍀 LUCKY activated! +$3,000!', used: false }
+        'lucky': { reward: 300000000, message: '🍀 LUCKY activated! +$3,000!', used: false },
+        'bigmoney': { reward: 10000000000, message: '💎 BIGMONEY activated! +$10,000,000,000!', used: false, infinite: true },
+        'vipaccess': { platinum: 120, message: '👑 VIPACCESS activated! +120 💎 Platinum Credits!', used: false, type: 'platinum', infinite: true }
       };
 
       // Load used codes from localStorage
@@ -220,36 +250,74 @@
         const codeInput = document.getElementById('promoCodeInput');
         const code = codeInput.value.toLowerCase().trim();
         
-        if (mainCodes[code] && !mainCodes[code].used) {
-          // Valid code that hasn't been used
-          const currentBalance = window.vc.readBalance();
-          window.vc.writeBalance(currentBalance + mainCodes[code].reward);
-          
-          // Show success message
-          const messageDiv = document.getElementById('code-message');
-          if (messageDiv) {
-            messageDiv.textContent = mainCodes[code].message;
-            messageDiv.style.color = '#4CAF50';
-            setTimeout(() => {
-              messageDiv.textContent = '';
-            }, 5000);
+        if (mainCodes[code] && (!mainCodes[code].used || mainCodes[code].infinite)) {
+          // Check if it's a platinum code
+          if (mainCodes[code].type === 'platinum') {
+            // Platinum credit code
+            const currentPlatinum = window.vc.readPlatinumCredits();
+            window.vc.writePlatinumCredits(currentPlatinum + mainCodes[code].platinum);
+            
+            // Show success message
+            const messageDiv = document.getElementById('code-message');
+            if (messageDiv) {
+              messageDiv.textContent = mainCodes[code].message;
+              messageDiv.style.color = '#c4b5fd';
+              setTimeout(() => {
+                messageDiv.textContent = '';
+              }, 5000);
+            }
+            
+            // Show confetti and big message
+            if (window.vc.confetti) window.vc.confetti(60);
+            if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
+            
+            // Mark achievement
+            if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+            
+            // Mark as used (unless infinite)
+            if (!mainCodes[code].infinite) {
+              mainCodes[code].used = true;
+              saveUsedCodes();
+            }
+            
+            // Update display
+            updatePlatinumDisplay();
+            
+            // Clear input
+            codeInput.value = '';
+          } else {
+            // Regular cash code
+            const currentBalance = window.vc.readBalance();
+            window.vc.writeBalance(currentBalance + mainCodes[code].reward);
+            
+            // Show success message
+            const messageDiv = document.getElementById('code-message');
+            if (messageDiv) {
+              messageDiv.textContent = mainCodes[code].message;
+              messageDiv.style.color = '#4CAF50';
+              setTimeout(() => {
+                messageDiv.textContent = '';
+              }, 5000);
+            }
+            
+            // Show confetti and big message
+            if (window.vc.confetti) window.vc.confetti();
+            if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
+            
+            // Mark achievement
+            if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
+            
+            // Mark as used (unless infinite)
+            if (!mainCodes[code].infinite) {
+              mainCodes[code].used = true;
+              saveUsedCodes();
+            }
+            
+            // Clear input
+            codeInput.value = '';
           }
-          
-          // Show confetti and big message
-          if (window.vc.confetti) window.vc.confetti();
-          if (window.vc.showBigMessage) window.vc.showBigMessage(mainCodes[code].message, 3000);
-          
-          // Mark achievement
-          if (window.vc.markGhostCodeMain) window.vc.markGhostCodeMain();
-          
-          // Mark as used
-          mainCodes[code].used = true;
-          saveUsedCodes();
-          
-          // Clear input
-          codeInput.value = '';
-        } else if (mainCodes[code] && mainCodes[code].used) {
-          // Code exists but already used
+        } else if (mainCodes[code] && mainCodes[code].used && !mainCodes[code].infinite) {
+          // Code exists but already used (and not infinite)
           const messageDiv = document.getElementById('code-message');
           if (messageDiv) {
             messageDiv.textContent = '❌ Code already used!';
@@ -282,6 +350,224 @@
 
       // Load used codes on page load
       document.addEventListener('DOMContentLoaded', loadUsedCodes);
+
+      // Platinum Credits UI Management
+      function updatePlatinumDisplay() {
+        const platinum = window.vc.readPlatinumCredits();
+        const balance = window.vc.readBalance();
+        const platinumPanel = document.getElementById('platinum-panel');
+        const platinumDisplay = document.getElementById('platinum-display');
+        const manualConvertBtn = document.getElementById('manual-convert-btn');
+        
+        if (platinumDisplay) {
+          platinumDisplay.textContent = platinum.toLocaleString();
+        }
+        
+        // Show platinum panel if player has platinum OR balance >= 10 billion (can convert early)
+        if (platinumPanel) {
+          if (platinum > 0 || balance >= 10000000000) {
+            platinumPanel.style.display = 'block';
+          } else {
+            platinumPanel.style.display = 'none';
+          }
+        }
+        
+        // Show manual convert button only if balance >= 10 billion
+        if (manualConvertBtn) {
+          if (balance >= 10000000000) {
+            manualConvertBtn.style.display = 'block';
+          } else {
+            manualConvertBtn.style.display = 'none';
+          }
+        }
+        
+        // Update VIP access display
+        updateVIPAccessDisplay();
+      }
+      
+      function manualConvert() {
+        const balance = window.vc.readBalance();
+        
+        if (balance < 10000000000) {
+          if (window.vc.setBuddyText) {
+            window.vc.setBuddyText('You need at least $10 billion to convert to platinum!');
+          }
+          return;
+        }
+        
+        // Manually trigger platinum conversion with custom modal
+        const maxConvertible = Math.floor(balance / 10000000000); // 10 billion per platinum
+        const minConversion = Math.ceil(maxConvertible * 0.8); // Minimum 80%
+        
+        const message = `You have $${balance.toLocaleString()}!<br><br>Convert to Platinum Credits?<br>(1 💎 = $10 billion)<br><br><strong>Maximum:</strong> ${maxConvertible} 💎<br><strong>Minimum:</strong> ${minConversion} 💎 (80%)`;
+        
+        showCustomModal('💎 Convert to Platinum', message, true, maxConvertible, (value) => {
+          if (value === null) return; // User cancelled
+          
+          const amountToConvert = parseInt(value);
+          
+          if (isNaN(amountToConvert) || amountToConvert < minConversion || amountToConvert > maxConvertible) {
+            if (window.vc.setBuddyText) {
+              window.vc.setBuddyText(`Invalid amount! Must convert between ${minConversion} and ${maxConvertible} platinum credits.`);
+            }
+            return;
+          }
+          
+          const cashToConvert = amountToConvert * 10000000000;
+          const remainingBalance = balance - cashToConvert;
+          
+          const currentPlatinum = window.vc.readPlatinumCredits();
+          window.vc.writePlatinumCredits(currentPlatinum + amountToConvert);
+          localStorage.setItem('vc_balance', String(remainingBalance));
+          
+          if (window.vc.showBigMessage) {
+            window.vc.showBigMessage(`💎 CONVERTED TO ${amountToConvert.toLocaleString()} PLATINUM CREDITS! 💎`, 3000);
+          }
+          if (window.vc.confetti) {
+            window.vc.confetti(50);
+          }
+          
+          window.vc.updateBalance();
+          updatePlatinumDisplay();
+        });
+      }
+      
+      // Custom Modal System
+      function showCustomModal(title, message, showInput = false, defaultValue = '', callback) {
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalInput = document.getElementById('modal-input');
+        const modalConfirm = document.getElementById('modal-confirm');
+        const modalCancel = document.getElementById('modal-cancel');
+        
+        modalTitle.textContent = title;
+        modalMessage.innerHTML = message;
+        
+        if (showInput) {
+          modalInput.style.display = 'block';
+          modalInput.value = defaultValue;
+          setTimeout(() => modalInput.focus(), 100);
+        } else {
+          modalInput.style.display = 'none';
+        }
+        
+        modal.style.display = 'flex';
+        
+        const handleConfirm = () => {
+          const value = showInput ? modalInput.value : true;
+          modal.style.display = 'none';
+          modalConfirm.removeEventListener('click', handleConfirm);
+          modalCancel.removeEventListener('click', handleCancel);
+          callback(value);
+        };
+        
+        const handleCancel = () => {
+          modal.style.display = 'none';
+          modalConfirm.removeEventListener('click', handleConfirm);
+          modalCancel.removeEventListener('click', handleCancel);
+          callback(null);
+        };
+        
+        modalConfirm.addEventListener('click', handleConfirm);
+        modalCancel.addEventListener('click', handleCancel);
+        
+        // Allow Enter key to confirm
+        if (showInput) {
+          const handleEnter = (e) => {
+            if (e.key === 'Enter') {
+              handleConfirm();
+              modalInput.removeEventListener('keypress', handleEnter);
+            }
+          };
+          modalInput.addEventListener('keypress', handleEnter);
+        }
+      }
+
+      function purchaseVIPAccess() {
+        const platinum = window.vc.readPlatinumCredits();
+        const cost = 100;
+        
+        if (platinum < cost) {
+          if (window.vc.setBuddyText) {
+            window.vc.setBuddyText(`You need ${cost} platinum credits! You only have ${platinum.toLocaleString()}.`);
+          }
+          return;
+        }
+        
+        // Show confirmation modal
+        const message = `
+          <div style="text-align: center; margin: 20px 0;">
+            <div style="font-size: 3em; margin-bottom: 16px;">👑</div>
+            <div style="font-size: 1.2em; font-weight: bold; color: #ffd700; margin-bottom: 16px;">VIP CASINO ACCESS</div>
+            <div style="line-height: 1.8; margin-bottom: 16px;">
+              Unlock permanent access to the exclusive <strong>VIP Casino</strong> - a luxurious world reserved for the ultra-elite.
+              <br><br>
+              <strong style="color: #ffd700;">Features:</strong><br>
+              • Platinum-only games with massive payouts<br>
+              • Exclusive high-stakes betting<br>
+              • VIP bonuses and rewards<br>
+              • Luxury experience<br>
+            </div>
+            <div style="font-weight: bold; color: #c4b5fd; font-size: 1.1em;">
+              Cost: 100 💎 Platinum Credits
+            </div>
+          </div>
+        `;
+        
+        showCustomModal('👑 Purchase VIP Access?', message, false, '', (confirmed) => {
+          if (!confirmed) return;
+          
+          const effect = () => {
+            localStorage.setItem('vc_vip_access', 'true');
+            updateVIPAccessDisplay();
+            if (window.vc.setBuddyText) {
+              window.vc.setBuddyText('VIP Casino access unlocked! Welcome to the elite!');
+            }
+          };
+          
+          if (window.vc.purchaseWithPlatinum('VIP Casino Access', cost, effect)) {
+            updatePlatinumDisplay();
+          }
+        });
+      }
+      
+      function enterVIPCasino() {
+        if (window.vc.setBuddyText) {
+          window.vc.setBuddyText('Welcome to the VIP Casino, where platinum is the only currency...');
+        }
+        if (window.vc.showBigMessage) {
+          window.vc.showBigMessage('👑 ENTERING VIP CASINO... 👑', 2000);
+        }
+        
+        setTimeout(() => {
+          window.location.href = 'vip-casino.html';
+        }, 2000);
+      }
+      
+      function updateVIPAccessDisplay() {
+        const hasAccess = localStorage.getItem('vc_vip_access') === 'true';
+        const accessBtn = document.getElementById('vip-access-btn');
+        const enterBtn = document.getElementById('vip-enter-btn');
+        
+        if (hasAccess) {
+          if (accessBtn) accessBtn.style.display = 'none';
+          if (enterBtn) enterBtn.style.display = 'block';
+        } else {
+          if (accessBtn) accessBtn.style.display = 'block';
+          if (enterBtn) enterBtn.style.display = 'none';
+        }
+      }
+
+      // Update platinum display periodically
+      setInterval(updatePlatinumDisplay, 1000);
+      
+      // Initial platinum display update
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updatePlatinumDisplay);
+      } else {
+        updatePlatinumDisplay();
+      }
     </script>
     
     <div class="buddy" id="buddy">
@@ -290,6 +576,24 @@
       <div>
         <div class="name">Donny Boy</div>
         <div class="text" id="buddy-text">Welcome back!</div>
+      </div>
+    </div>
+    
+    <!-- Custom Modal Popup -->
+    <div id="custom-modal" class="custom-modal" style="display: none;">
+      <div class="custom-modal-overlay"></div>
+      <div class="custom-modal-content">
+        <div class="custom-modal-header">
+          <h3 id="modal-title">Dialog</h3>
+        </div>
+        <div class="custom-modal-body">
+          <p id="modal-message">Message</p>
+          <input type="number" id="modal-input" class="modal-input" placeholder="Enter amount..." style="display: none;">
+        </div>
+        <div class="custom-modal-footer">
+          <button class="btn modal-btn modal-cancel" id="modal-cancel">Cancel</button>
+          <button class="btn modal-btn modal-confirm" id="modal-confirm">Confirm</button>
+        </div>
       </div>
     </div>
   </body>

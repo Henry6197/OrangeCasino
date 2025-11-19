@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sky Raiders - VIP Casino</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 50%, #1e40af 80%, #0c4a6e 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .game-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 3px solid #3b82f6;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(59, 130, 246, 0.4);
+      }
+
+      .game-title {
+        text-align: center;
+        font-size: 2em;
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+      }
+
+      .game-display {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 70%, #1e40af 85%, #0c4a6e 100%);
+        border: 3px solid rgba(59, 130, 246, 0.8);
+        border-radius: 12px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        margin: 20px 0;
+      }
+
+      .game-world {
+        position: relative;
+        width: 3000px;
+        height: 100%;
+        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 70%, #1e40af 85%, #0c4a6e 100%);
+      }
+
+      .plane {
+        position: absolute;
+        width: 60px;
+        height: 50px;
+        top: 150px;
+        left: 50px;
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.6));
+        z-index: 10;
+      }
+
+      .plane img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .plane.crashed {
+        animation: planeCrash 0.5s ease-out;
+      }
+
+      @keyframes planeCrash {
+        0% { transform: rotate(0deg); opacity: 1; }
+        100% { transform: rotate(90deg); opacity: 0; }
+      }
+
+      .multiplier-item {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+        z-index: 5;
+      }
+
+      .multiplier-item img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .multiplier-item .mult-value {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10px;
+        font-weight: bold;
+        color: #92400e;
+        pointer-events: none;
+      }
+
+      .bomb-item {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
+        z-index: 5;
+      }
+
+      .bomb-item img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .ocean {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 80px;
+        background: linear-gradient(180deg, rgba(6, 78, 59, 0.3) 0%, #064e3b 50%, #042f2e 100%);
+        border-top: 3px solid #10b981;
+        z-index: 3;
+      }
+
+      .wave {
+        position: absolute;
+        width: 100%;
+        height: 20px;
+        top: 0;
+        background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(16, 185, 129, 0.3) 20px, rgba(16, 185, 129, 0.3) 40px);
+        animation: waveMove 2s linear infinite;
+      }
+
+      @keyframes waveMove {
+        0% { background-position: 0 0; }
+        100% { background-position: 40px 0; }
+      }
+
+      .carrier {
+        position: absolute;
+        bottom: 20px;
+        width: 90px;
+        height: 40px;
+        z-index: 4;
+        filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+      }
+
+      .carrier img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .score-display {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 2.5em;
+        font-weight: 900;
+        background: linear-gradient(135deg, #fef3c7, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8));
+        z-index: 15;
+      }
+
+      .distance-display {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        font-size: 1.2em;
+        color: #dbeafe;
+        background: rgba(15, 23, 42, 0.7);
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 2px solid rgba(59, 130, 246, 0.5);
+        z-index: 15;
+      }
+
+      .bet-controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .bet-input {
+        padding: 12px 24px;
+        font-size: 1.2em;
+        border: 2px solid #3b82f6;
+        border-radius: 8px;
+        background: rgba(15, 23, 42, 0.8);
+        color: #dbeafe;
+        outline: none;
+        width: 200px;
+      }
+
+      .game-btn {
+        padding: 14px 32px;
+        font-size: 1.2em;
+        font-weight: bold;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+      }
+
+      .game-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.7);
+      }
+
+      .game-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .result-msg {
+        text-align: center;
+        font-size: 1.3em;
+        color: #dbeafe;
+        margin: 16px 0;
+        min-height: 40px;
+        padding: 12px;
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 8px;
+        border: 2px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 24px;
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.6);
+        border-radius: 12px;
+        border: 2px solid rgba(59, 130, 246, 0.3);
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-label {
+        color: #93c5fd;
+        font-size: 0.9em;
+        margin-bottom: 8px;
+      }
+
+      .stat-value {
+        color: #dbeafe;
+        font-size: 1.8em;
+        font-weight: bold;
+      }
+
+      .collected-animation {
+        animation: collect 0.5s ease-out forwards;
+      }
+
+      @keyframes collect {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(2); opacity: 0; }
+      }
+
+      .explosion {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, #ef4444, #dc2626, transparent);
+        border-radius: 50%;
+        animation: explode 0.6s ease-out forwards;
+        z-index: 8;
+      }
+
+      @keyframes explode {
+        0% { transform: scale(0); opacity: 1; }
+        100% { transform: scale(3); opacity: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.95)); border-bottom: 3px solid; border-image: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6) 1; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);">
+      <div class="container">
+        <h1 class="brand" style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">✈️ Sky Raiders 💎</h1>
+        <div class="balance">
+          Platinum: <span id="credits">0</span> 💎
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="game-container">
+      <h2 class="game-title">✈️ Sky Raiders 💎</h2>
+
+      <div class="game-display" id="gameDisplay">
+        <div class="distance-display">Distance: <span id="distance">0</span>m</div>
+        <div class="score-display" id="scoreDisplay">×1.0</div>
+        
+        <div class="game-world" id="gameWorld">
+          <div class="plane" id="plane">
+            <img src="images/plane.svg" alt="Plane">
+          </div>
+
+          <div class="ocean">
+            <div class="wave"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-msg" id="resultMsg">Place your bet and take flight!</div>
+
+      <div class="bet-controls">
+        <input type="number" id="betAmount" class="bet-input" placeholder="Bet Amount" value="10" min="1" />
+        <button id="start-btn" class="game-btn">✈️ Take Flight</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Current Bet</div>
+          <div class="stat-value" id="currentBet">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Potential Win</div>
+          <div class="stat-value" id="potentialWin">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Flights</div>
+          <div class="stat-value" id="flightCount">0</div>
+        </div>
+      </div>
+    </div>
+    </main>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script>
+      let isPlaying = false;
+      let gameInterval = null;
+      let planeX = 50;
+      let planeY = 150;
+      let verticalVelocity = 0;
+      let multiplier = 1.0;
+      let currentBet = 0;
+      let gameSpeed = 40;
+      let horizontalSpeed = 5;
+      let multiplierItems = [];
+      let bombItems = [];
+      let carriers = [];
+      let flightCount = 0;
+      let worldWidth = 3000;
+
+      const plane = document.getElementById('plane');
+      const gameDisplay = document.getElementById('gameDisplay');
+      const gameWorld = document.getElementById('gameWorld');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const distanceDisplay = document.getElementById('distance');
+      const resultMsg = document.getElementById('resultMsg');
+      const startBtn = document.getElementById('start-btn');
+      const betInput = document.getElementById('betAmount');
+      const creditsDisplay = document.getElementById('credits');
+      const currentBetDisplay = document.getElementById('currentBet');
+      const potentialWinDisplay = document.getElementById('potentialWin');
+      const flightCountDisplay = document.getElementById('flightCount');
+
+      function loadCredits() {
+        const saved = localStorage.getItem('platinumCredits');
+        return saved ? parseInt(saved) : 100;
+      }
+
+      function saveCredits(amount) {
+        localStorage.setItem('platinumCredits', amount);
+      }
+
+      function updateCreditsDisplay() {
+        creditsDisplay.textContent = loadCredits();
+      }
+
+      updateCreditsDisplay();
+
+      function spawnCarriers() {
+        carriers = [];
+        const positions = [2450, 2570, 2690, 2810];
+        
+        positions.forEach(xPos => {
+          const carrier = document.createElement('div');
+          carrier.className = 'carrier';
+          carrier.style.left = xPos + 'px';
+          carrier.innerHTML = '<img src="images/aircraft-carrier.svg" alt="Carrier">';
+          gameWorld.appendChild(carrier);
+          carriers.push({
+            element: carrier,
+            x: xPos,
+            width: 90
+          });
+        });
+      }
+
+      function spawnMultiplier() {
+        const mult = Math.random() < 0.5 ? 1.2 : (Math.random() < 0.7 ? 1.5 : 2.0);
+        const xPos = Math.random() * (worldWidth - 400) + 200;
+        const yPos = Math.random() * 250 + 80;
+
+        const multItem = document.createElement('div');
+        multItem.className = 'multiplier-item';
+        multItem.style.left = xPos + 'px';
+        multItem.style.top = yPos + 'px';
+        multItem.innerHTML = '<img src="images/multiplier.svg" alt="Multiplier"><span class="mult-value">×' + mult.toFixed(1) + '</span>';
+        gameWorld.appendChild(multItem);
+
+        multiplierItems.push({
+          element: multItem,
+          x: xPos,
+          y: yPos,
+          value: mult,
+          width: 30,
+          height: 30
+        });
+      }
+
+      function spawnBomb() {
+        const xPos = Math.random() * (worldWidth - 400) + 200;
+        const yPos = Math.random() * 250 + 80;
+
+        const bombItem = document.createElement('div');
+        bombItem.className = 'bomb-item';
+        bombItem.style.left = xPos + 'px';
+        bombItem.style.top = yPos + 'px';
+        bombItem.innerHTML = '<img src="images/bomb.svg" alt="Bomb">';
+        gameWorld.appendChild(bombItem);
+
+        bombItems.push({
+          element: bombItem,
+          x: xPos,
+          y: yPos,
+          width: 35,
+          height: 35
+        });
+      }
+
+      function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
+        return !(x1 + w1 < x2 || x1 > x2 + w2 || y1 + h1 < y2 || y1 > y2 + h2);
+      }
+
+      function gameLoop() {
+        if (!isPlaying) return;
+
+        // Move horizontally
+        planeX += horizontalSpeed;
+        
+        // Exponential descent curve
+        const normalizedProgress = Math.min(planeX / worldWidth, 1);
+        const k = 3.5;
+        const targetY = 150 + 250 * (Math.exp(k * normalizedProgress) - 1) / (Math.exp(k) - 1);
+        
+        // Apply vertical physics
+        verticalVelocity += 0.4;
+        const curveInfluence = (targetY - planeY) * 0.2;
+        planeY += verticalVelocity + curveInfluence;
+        verticalVelocity *= 0.8;
+        
+        plane.style.left = planeX + 'px';
+        plane.style.top = planeY + 'px';
+        
+        // Scroll viewport
+        if (planeX > gameDisplay.scrollLeft + 350) {
+          gameDisplay.scrollLeft = planeX - 350;
+        }
+        
+        // Update distance
+        distanceDisplay.textContent = Math.floor(planeX / 3);
+
+        // Check multiplier collisions
+        for (let i = multiplierItems.length - 1; i >= 0; i--) {
+          const item = multiplierItems[i];
+          if (checkCollision(planeX + 15, planeY + 10, 30, 30, item.x + 5, item.y + 5, 20, 20)) {
+            multiplier *= item.value;
+            item.element.classList.add('collected-animation');
+            setTimeout(() => item.element.remove(), 500);
+            multiplierItems.splice(i, 1);
+            verticalVelocity = -10;
+            updateScore();
+          }
+        }
+
+        // Check bomb collisions
+        for (let i = bombItems.length - 1; i >= 0; i--) {
+          const item = bombItems[i];
+          if (checkCollision(planeX + 15, planeY + 10, 30, 30, item.x + 5, item.y + 5, 25, 25)) {
+            multiplier /= 2;
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            explosion.style.left = item.x + 'px';
+            explosion.style.top = item.y + 'px';
+            gameWorld.appendChild(explosion);
+            setTimeout(() => explosion.remove(), 600);
+            item.element.remove();
+            bombItems.splice(i, 1);
+            updateScore();
+            verticalVelocity = 15;
+          }
+        }
+
+        // Check carrier landing
+        let onCarrier = false;
+        carriers.forEach(carrier => {
+          if (checkCollision(planeX + 15, planeY + 10, 30, 30, carrier.x + 10, 410, 70, 30)) {
+            onCarrier = true;
+          }
+        });
+
+        if (onCarrier) {
+          winGame();
+          return;
+        }
+
+        // Check ocean crash
+        if (planeY >= 420) {
+          loseGame();
+          return;
+        }
+        
+        // Win if reached end
+        if (planeX >= worldWidth - 100) {
+          winGame();
+        }
+      }
+
+      function updateScore() {
+        scoreDisplay.textContent = '×' + multiplier.toFixed(1);
+        potentialWinDisplay.textContent = Math.floor(currentBet * multiplier);
+      }
+
+      function startGame() {
+        const bet = parseInt(betInput.value);
+        const credits = loadCredits();
+
+        if (isNaN(bet) || bet < 1) {
+          resultMsg.textContent = '⚠️ Invalid bet amount!';
+          resultMsg.style.color = '#ef4444';
+          return;
+        }
+
+        if (bet > credits) {
+          resultMsg.textContent = '⚠️ Insufficient credits!';
+          resultMsg.style.color = '#ef4444';
+          return;
+        }
+
+        saveCredits(credits - bet);
+        updateCreditsDisplay();
+
+        // Reset state
+        currentBet = bet;
+        multiplier = 1.0;
+        planeX = 50;
+        planeY = 150;
+        verticalVelocity = 0;
+        isPlaying = true;
+        multiplierItems = [];
+        bombItems = [];
+        gameDisplay.scrollLeft = 0;
+
+        // Clear old items
+        document.querySelectorAll('.multiplier-item, .bomb-item, .carrier').forEach(el => el.remove());
+
+        plane.style.left = planeX + 'px';
+        plane.style.top = planeY + 'px';
+        plane.classList.remove('crashed');
+        updateScore();
+        currentBetDisplay.textContent = currentBet;
+        
+        spawnCarriers();
+        
+        for (let i = 0; i < 15; i++) {
+          spawnMultiplier();
+        }
+        for (let i = 0; i < 10; i++) {
+          spawnBomb();
+        }
+
+        startBtn.disabled = true;
+        betInput.disabled = true;
+        resultMsg.textContent = '✈️ Flying! Collect coins and avoid bombs!';
+        resultMsg.style.color = '#dbeafe';
+
+        gameInterval = setInterval(gameLoop, gameSpeed);
+      }
+
+      function winGame() {
+        isPlaying = false;
+        clearInterval(gameInterval);
+        
+        const winAmount = Math.floor(currentBet * multiplier);
+        const credits = loadCredits();
+        saveCredits(credits + winAmount);
+        updateCreditsDisplay();
+        
+        flightCount++;
+        flightCountDisplay.textContent = flightCount;
+
+        resultMsg.textContent = `🎉 Safe Landing! Won ${winAmount} credits! (×${multiplier.toFixed(1)})`;
+        resultMsg.style.color = '#10b981';
+        
+        startBtn.disabled = false;
+        betInput.disabled = false;
+      }
+
+      function loseGame() {
+        isPlaying = false;
+        clearInterval(gameInterval);
+        
+        plane.classList.add('crashed');
+        
+        flightCount++;
+        flightCountDisplay.textContent = flightCount;
+
+        resultMsg.textContent = '💥 Crashed into the ocean! Bet lost.';
+        resultMsg.style.color = '#ef4444';
+        
+        startBtn.disabled = false;
+        betInput.disabled = false;
+      }
+
+      startBtn.addEventListener('click', startGame);
+      betInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !isPlaying) startGame();
+      });
+
+      currentBetDisplay.textContent = 0;
+      potentialWinDisplay.textContent = 0;
+      flightCountDisplay.textContent = flightCount;
+    </script>
+  </body>
+</html>

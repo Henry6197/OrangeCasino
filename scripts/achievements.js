@@ -240,52 +240,85 @@ document.addEventListener('DOMContentLoaded', ()=>{
     vc.updateDebt = function(){ origUpdateDebt(); render(); };
   }
 
+  // Custom Modal System for achievements page
+  function showCustomModal(title, message, callback) {
+    const modal = document.getElementById('custom-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalConfirm = document.getElementById('modal-confirm');
+    const modalCancel = document.getElementById('modal-cancel');
+    
+    modalTitle.textContent = title;
+    modalMessage.innerHTML = message;
+    
+    modal.style.display = 'flex';
+    
+    const handleConfirm = () => {
+      modal.style.display = 'none';
+      modalConfirm.removeEventListener('click', handleConfirm);
+      modalCancel.removeEventListener('click', handleCancel);
+      callback(true);
+    };
+    
+    const handleCancel = () => {
+      modal.style.display = 'none';
+      modalConfirm.removeEventListener('click', handleConfirm);
+      modalCancel.removeEventListener('click', handleCancel);
+      callback(false);
+    };
+    
+    modalConfirm.addEventListener('click', handleConfirm);
+    modalCancel.addEventListener('click', handleCancel);
+  }
+
   document.getElementById('reset-achievements')?.addEventListener('click', ()=>{ 
-    if (!confirm('Are you sure you want to reset ALL achievements? This cannot be undone!')) return;
+    const message = `
+      <div style="text-align: center; margin: 20px 0;">
+        <div style="font-size: 3em; margin-bottom: 16px;">⚠️</div>
+        <div style="font-size: 1.2em; font-weight: bold; color: #fca5a5; margin-bottom: 12px;">COMPLETE RESET WARNING</div>
+        <div style="line-height: 1.6; margin-bottom: 16px;">
+          This will reset <strong>EVERYTHING</strong> including:
+        </div>
+        <div style="text-align: left; display: inline-block; margin-bottom: 16px;">
+          • All achievements and progress<br>
+          • Balance (back to $1,000)<br>
+          • Debt (back to $0)<br>
+          • Platinum Credits<br>
+          • All promo codes<br>
+          • VIP status and perks<br>
+          • All game history<br>
+        </div>
+        <div style="font-weight: bold; color: #fbbf24;">
+          This action cannot be undone!
+        </div>
+      </div>
+    `;
     
-    // Remove main achievement tracking
-    localStorage.removeItem(ACH_KEY); 
+    showCustomModal('🔄 Reset Everything?', message, (confirmed) => {
+      if (!confirmed) return;
     
-    // Remove game visit tracking
-    localStorage.removeItem('ach_visited_slots');
-    localStorage.removeItem('ach_visited_blackjack');
-    localStorage.removeItem('ach_visited_poker');
-    localStorage.removeItem('ach_visited_scratch');
-    
-    // Remove underground tracking
-    localStorage.removeItem('ach_visited_underground');
-    localStorage.removeItem('ach_roulette_survivor');
-    localStorage.removeItem('ach_baccarat_played');
-    localStorage.removeItem('ach_dogfight_bet');
-    localStorage.removeItem('ach_shop_visited');
-    localStorage.removeItem('ach_money_laundered');
-    
-    // Remove special location tracking
-    localStorage.removeItem('vc_coal_mine_visited');
-    localStorage.removeItem('vc_coal_mine_escaped');
-    localStorage.removeItem('ach_hells_visited');
-    localStorage.removeItem('ach_hells_escaped');
-    
-    // Remove medical tracking
-    localStorage.removeItem('ach_surgery_visited');
-    
-    // Remove business tracking
-    localStorage.removeItem('vc_chads_course_owned');
-    
-    // Remove ghost code tracking
-    localStorage.removeItem('ach_ghost_main');
-    localStorage.removeItem('ach_ghost_underground');
-    
-    // Remove misc tracking
-    localStorage.removeItem('ach_help_watched');
-    localStorage.removeItem('ach_ad_clicked');
-    localStorage.removeItem('ach_popup_survived');
+    // Clear ALL localStorage items
+    localStorage.clear();
     
     render(); 
     
-    if (window.vc && window.vc.showBigMessage) {
-      window.vc.showBigMessage('🔄 All achievements reset!', 2000);
+    // Reset balance and debt displays
+    if (window.vc) {
+      if (typeof window.vc.updateBalance === 'function') window.vc.updateBalance();
+      if (typeof window.vc.updateDebt === 'function') window.vc.updateDebt();
+      if (typeof window.vc.showBigMessage === 'function') {
+        window.vc.showBigMessage('🔄 Complete reset! Everything restored to default.', 3000);
+      }
+      if (typeof window.vc.setBuddyText === 'function') {
+        window.vc.setBuddyText('Fresh start! All your data has been reset.');
+      }
     }
+    
+    // Reload the page after a short delay to ensure everything resets properly
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
+    });
   });
 
   // Expose render function for external achievement checking

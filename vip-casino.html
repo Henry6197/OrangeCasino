@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VIP Casino — PLATINUM ELITE</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background: 
+          radial-gradient(ellipse at top, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+          linear-gradient(180deg, #0a0e27 0%, #1e3a8a 25%, #1e40af 50%, #1e3a8a 75%, #0c0f1f 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+      
+      .vip-header {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.95));
+        border-bottom: 3px solid;
+        border-image: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6) 1;
+        box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+        backdrop-filter: blur(10px);
+      }
+      
+      .vip-brand {
+        background: linear-gradient(135deg, #dbeafe 0%, #3b82f6 25%, #60a5fa 50%, #3b82f6 75%, #dbeafe 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 28px !important;
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+        animation: shimmer 3s linear infinite;
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+      }
+      
+      .vip-welcome {
+        background: 
+          linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 58, 138, 0.8)),
+          radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 60%);
+        border: 3px solid;
+        border-image: linear-gradient(135deg, #3b82f6, #60a5fa, #3b82f6) 1;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        margin: 40px 0;
+        box-shadow: 
+          0 8px 40px rgba(59, 130, 246, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+      
+      .vip-welcome h2 {
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2.5em;
+        margin: 0 0 16px;
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+      }
+      
+      .vip-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin: 40px 0;
+      }
+      
+      .vip-feature-card {
+        background: 
+          linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.7)),
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.08), transparent 70%);
+        border: 2px solid rgba(59, 130, 246, 0.5);
+        border-radius: 16px;
+        padding: 32px;
+        text-align: center;
+        box-shadow: 
+          0 8px 32px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .vip-feature-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .vip-feature-card:hover::before {
+        opacity: 1;
+      }
+      
+      .vip-feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 
+          0 16px 48px rgba(59, 130, 246, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: #60a5fa;
+      }
+      
+      .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+      }
+      
+      .vip-feature-icon {
+        font-size: 4em;
+        margin-bottom: 16px;
+        filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.7));
+        position: relative;
+        z-index: 1;
+      }
+      
+      .vip-feature-title {
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5em;
+        font-weight: 800;
+        margin: 16px 0;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .vip-feature-desc {
+        color: #cbd5e1;
+        line-height: 1.6;
+        font-size: 1.05em;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .platinum-only {
+        background: 
+          linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(79, 70, 229, 0.2)),
+          radial-gradient(circle at center, rgba(129, 140, 248, 0.15), transparent 60%);
+        border: 2px solid rgba(129, 140, 248, 0.6);
+        padding: 16px;
+        border-radius: 12px;
+        margin: 32px 0;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(129, 140, 248, 0.3);
+      }
+      
+      .platinum-only h3 {
+        background: linear-gradient(135deg, #c7d2fe, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 8px;
+      }
+      
+      .coming-soon {
+        background: 
+          linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.8)),
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 60%);
+        border: 3px solid;
+        border-image: linear-gradient(135deg, #3b82f6, #818cf8, #3b82f6) 1;
+        border-radius: 16px;
+        padding: 60px 40px;
+        text-align: center;
+        margin: 40px 0;
+        box-shadow: 
+          0 8px 40px rgba(59, 130, 246, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      
+      .coming-soon h2 {
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 3em;
+        margin: 0 0 16px;
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+      }
+      
+      .coming-soon p {
+        color: #cbd5e1;
+        font-size: 1.3em;
+        line-height: 1.8;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header vip-header">
+      <div class="container">
+        <h1 class="brand vip-brand">👑 VIP CASINO 👑</h1>
+        <nav class="main-nav">
+          <a href="index.html" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 58, 138, 0.3)); border: 2px solid rgba(96, 165, 250, 0.5); border-radius: 8px; padding: 8px 16px; transition: all 0.3s ease; color:#60a5fa">🏠 Main Casino</a>
+          <a href="vip-casino.html" style="color: #60a5fa; background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(96, 165, 250, 0.2)); border: 2px solid #60a5fa; border-radius: 8px; padding: 8px 16px; box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);">VIP Lounge</a>
+        </nav>
+            <div class="balance-display" style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.3em; font-weight: 800; margin: 16px 0;">
+          Platinum: <span id="platinum-value">0</span> 💎
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="vip-welcome">
+        <div style="font-size: 4em; margin-bottom: 16px;">👑</div>
+        <h2>Welcome to the VIP Casino</h2>
+              <p style="color: #cbd5e1; font-size: 1.2em; line-height: 1.8; margin: 0;">
+        Welcome to the pinnacle of luxury gaming. This exclusive space is reserved for our most distinguished platinum members. Experience games with higher stakes, better odds, and rewards that redefine opulence. <span style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800;">Your Platinum Credits</span> unlock a world beyond imagination.
+      </p>
+      </div>
+
+      <div class="platinum-only">
+        <h3>💎 Platinum Currency Only 💎</h3>
+        <p style="color: #cbd5e1; margin: 8px 0;">All games and services use Platinum Credits exclusively. Convert your cash at the main casino.</p>
+      </div>
+
+      <div class="vip-features">
+        <div class="vip-feature-card" onclick="window.location.href='platinum-dice.html'" style="cursor: pointer;">
+          <div class="vip-feature-icon">🎲</div>
+          <div class="vip-feature-title">Diamond Dice</div>
+          <div class="vip-feature-desc">
+            Roll luxury dice and multiply your platinum. 
+            Predict the outcome and win up to 36x your bet!
+          </div>
+        </div>
+
+        <div class="vip-feature-card" onclick="window.location.href='platinum-wheel.html'" style="cursor: pointer;">
+          <div class="vip-feature-icon">🎡</div>
+          <div class="vip-feature-title">Platinum Fortune Wheel</div>
+          <div class="vip-feature-desc">
+            Spin the platinum wheel of fortune with massive multipliers. 
+            Land on 100x and become a platinum legend!
+          </div>
+        </div>
+
+        <div class="vip-feature-card" onclick="window.location.href='platinum-crash.html'" style="cursor: pointer;">
+          <div class="vip-feature-icon">🚀</div>
+          <div class="vip-feature-title">Rocket Crash</div>
+          <div class="vip-feature-desc">
+            Watch the multiplier soar and cash out before it crashes. 
+            Risk it all for legendary 1000x multipliers!
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer" style="border-top: 3px solid; border-image: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6) 1; background: rgba(15, 23, 42, 0.95);">
+      <div class="container" style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+        👑 VIP Casino — For Platinum Members Only 💎
+      </div>
+    </footer>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Check if user has VIP access
+        const hasAccess = localStorage.getItem('vc_vip_access') === 'true';
+        
+        if (!hasAccess) {
+          // Redirect back to main casino if no access
+          if (window.vc && window.vc.setBuddyText) {
+            window.vc.setBuddyText('You need to purchase VIP access with platinum credits!');
+          }
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 2000);
+        }
+        
+        // Display platinum balance
+        if (window.vc) {
+          const platinum = window.vc.readPlatinumCredits();
+          const platinumDisplay = document.getElementById('platinum-value');
+          if (platinumDisplay) {
+            platinumDisplay.textContent = platinum.toLocaleString();
+          }
+        }
+      });
+    </script>
+
+    <div class="buddy" id="buddy">
+      <div class="buddy-toggle" id="buddy-toggle">−</div>
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Donny Boy</div>
+        <div class="text" id="buddy-text">Welcome to the elite club!</div>
+      </div>
+    </div>
+  </body>
+</html>

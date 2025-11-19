@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocket Crash - VIP Casino</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        background: 
+          radial-gradient(ellipse at top, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
+          radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+          linear-gradient(180deg, #0a0e27 0%, #1e3a8a 25%, #1e40af 50%, #1e3a8a 75%, #0c0f1f 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .game-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: 
+          linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.8)),
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 60%);
+        border: 3px solid;
+        border-image: linear-gradient(135deg, #3b82f6, #60a5fa, #3b82f6) 1;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(59, 130, 246, 0.4);
+      }
+
+      .game-title {
+        text-align: center;
+        font-size: 2.5em;
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 32px;
+        filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+      }
+
+      .rocket-display {
+        position: relative;
+        height: 500px;
+        background: 
+          linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(30, 58, 138, 0.6)),
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent);
+        border: 3px solid rgba(59, 130, 246, 0.5);
+        border-radius: 16px;
+        margin: 32px 0;
+        overflow: hidden;
+      }
+
+      .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: #dbeafe;
+        border-radius: 50%;
+        animation: twinkle 3s infinite;
+      }
+
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+      }
+
+      .rocket-trail {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .trail-segment {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: radial-gradient(circle, rgba(96, 165, 250, 0.9), rgba(59, 130, 246, 0.4));
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(96, 165, 250, 0.8);
+        animation: fadeTrail 1s ease-out forwards;
+      }
+
+      @keyframes fadeTrail {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.3); }
+      }
+
+      .multiplier-display {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 5em;
+        font-weight: 900;
+        background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.8));
+        transition: all 0.1s ease;
+        z-index: 10;
+      }
+
+      .rocket {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        bottom: 30px;
+        left: 50px;
+        transition: all 0.1s ease-out;
+        filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.8));
+        z-index: 5;
+      }
+
+      .rocket img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .rocket.flying {
+        animation: rocketTilt 0.2s ease-in-out infinite;
+      }
+
+      @keyframes rocketTilt {
+        0%, 100% { transform: rotate(-3deg) scale(1); }
+        50% { transform: rotate(3deg) scale(1.05); }
+      }
+
+      .crashed {
+        color: #ef4444;
+        animation: explosion 0.5s ease-out;
+      }
+
+      @keyframes explosion {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.5); opacity: 0.7; }
+        100% { transform: scale(2); opacity: 0; }
+      }
+
+      .bet-controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+        margin: 32px 0;
+        flex-wrap: wrap;
+      }
+
+      .bet-input {
+        padding: 12px 20px;
+        font-size: 1.1em;
+        background: rgba(15, 23, 42, 0.8);
+        border: 2px solid #3b82f6;
+        border-radius: 10px;
+        color: #dbeafe;
+        font-weight: 700;
+        width: 200px;
+        text-align: center;
+      }
+
+      .game-btn {
+        padding: 14px 32px;
+        font-size: 1.2em;
+        font-weight: 900;
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        color: #0a0e27;
+        border: 2px solid #60a5fa;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+      }
+
+      .game-btn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(59, 130, 246, 0.6);
+      }
+
+      .game-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .cashout-btn {
+        background: linear-gradient(135deg, #10b981, #34d399);
+        border-color: #10b981;
+      }
+
+      .cashout-btn:hover:not(:disabled) {
+        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.6);
+      }
+
+      .result-message {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 900;
+        margin: 24px 0;
+        min-height: 40px;
+        background: linear-gradient(135deg, #dbeafe, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .game-info {
+        background: rgba(30, 58, 138, 0.3);
+        border: 2px solid rgba(59, 130, 246, 0.5);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 24px 0;
+        color: #cbd5e1;
+        line-height: 1.8;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 32px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(30, 58, 138, 0.4));
+        border: 2px solid #3b82f6;
+        border-radius: 10px;
+        color: #60a5fa;
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.3s ease;
+      }
+
+      .back-link:hover {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(30, 58, 138, 0.6));
+        border-color: #60a5fa;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      }
+
+      .stats {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        margin: 24px 0;
+        flex-wrap: wrap;
+      }
+
+      .stat-box {
+        padding: 16px 24px;
+        background: rgba(59, 130, 246, 0.2);
+        border: 2px solid rgba(96, 165, 250, 0.4);
+        border-radius: 12px;
+        text-align: center;
+      }
+
+      .stat-label {
+        color: #cbd5e1;
+        font-size: 0.9em;
+        margin-bottom: 4px;
+      }
+
+      .stat-value {
+        color: #60a5fa;
+        font-size: 1.4em;
+        font-weight: 900;
+      }
+
+      .activity-feed {
+        background: rgba(15, 23, 42, 0.8);
+        border: 2px solid rgba(59, 130, 246, 0.5);
+        border-radius: 12px;
+        padding: 16px;
+        margin: 24px 0;
+        max-height: 150px;
+        overflow-y: auto;
+      }
+
+      .activity-feed::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .activity-feed::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.5);
+        border-radius: 4px;
+      }
+
+      .activity-feed::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.5);
+        border-radius: 4px;
+      }
+
+      .activity-item {
+        padding: 8px 0;
+        color: #cbd5e1;
+        font-size: 0.9em;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      }
+
+      .activity-item:last-child {
+        border-bottom: none;
+      }
+
+      .activity-item .username {
+        color: #60a5fa;
+        font-weight: 700;
+      }
+
+      .activity-item .multiplier {
+        color: #10b981;
+        font-weight: 900;
+      }
+
+      .crash-result {
+        color: #cbd5e1;
+        font-size: 0.95em;
+        margin-top: 8px;
+        text-align: center;
+      }
+
+      .crash-result .would-have {
+        color: #ef4444;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 58, 138, 0.95)); border-bottom: 3px solid; border-image: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6) 1; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);">
+      <div class="container">
+        <h1 class="brand" style="background: linear-gradient(135deg, #dbeafe, #3b82f6, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🚀 Rocket Crash 💎</h1>
+        <div class="balance">
+          Platinum: <span id="platinum-balance">0</span> 💎
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="game-container">
+        <h2 class="game-title">🚀 Rocket Crash 💎</h2>
+
+        <div class="game-info">
+          <strong style="color: #60a5fa;">How to Play:</strong><br>
+          Place your bet and watch the multiplier climb! Cash out before the rocket crashes to win your bet × the multiplier.
+          Wait too long and you lose everything! The rocket can crash at any moment!
+        </div>
+
+        <div class="stats">
+          <div class="stat-box">
+            <div class="stat-label">Current Bet</div>
+            <div class="stat-value" id="current-bet">0 💎</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Potential Win</div>
+            <div class="stat-value" id="potential-win">0 💎</div>
+          </div>
+        </div>
+
+        <div class="rocket-display">
+          <div class="stars" id="stars"></div>
+          <div class="multiplier-display" id="multiplier">1.00x</div>
+          <div class="rocket-trail" id="rocket-trail"></div>
+          <div class="rocket" id="rocket"><img src="images/rocket.svg" alt="Rocket"></div>
+        </div>
+
+        <div class="bet-controls">
+          <input type="number" id="bet-amount" class="bet-input" placeholder="Bet Amount (💎)" min="1" value="10">
+          <button id="start-btn" class="game-btn">🚀 Start Flight</button>
+          <button id="cashout-btn" class="game-btn cashout-btn" style="display: none;">💰 Cash Out</button>
+        </div>
+
+        <div class="result-message" id="result-message"></div>
+        <div class="crash-result" id="crash-result"></div>
+
+        <div class="activity-feed" id="activity-feed">
+          <div style="text-align: center; color: #60a5fa; font-weight: 700; margin-bottom: 8px;">🎮 Recent Activity</div>
+        </div>
+
+        <a href="vip-casino.html" class="back-link">← Back to VIP Casino</a>
+      </div>
+    </main>
+
+    <script src="scripts/todd-dialogue.js"></script>
+    <script src="scripts/app.js"></script>
+    <script>
+      // Check VIP access
+      if (localStorage.getItem('vc_vip_access') !== 'true') {
+        window.location.href = 'index.html';
+      }
+
+      let isFlying = false;
+      let currentMultiplier = 1.00;
+      let betAmount = 0;
+      let crashPoint = 0;
+      let flightInterval = null;
+      let activityInterval = null;
+      let xrayMode = false;
+
+      const usernames = [
+        'DiamondKing', 'PlatinumWhale', 'LuckyLegend', 'MegaGambler', 'CrashMaster',
+        'RocketRider', 'BigBaller', 'HighRoller', 'FortuneSeeker', 'RiskTaker',
+        'SkyLimit', 'MoonShot', 'StarPlayer', 'VIPElite', 'GoldRush'
+      ];
+
+      // Update balance display
+      function updateDisplay() {
+        const platinum = window.vc.readPlatinumCredits();
+        document.getElementById('platinum-balance').textContent = platinum.toLocaleString();
+      }
+
+      updateDisplay();
+
+      // Generate stars background
+      function generateStars() {
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = Math.random() * 100 + '%';
+          star.style.top = Math.random() * 100 + '%';
+          star.style.animationDelay = Math.random() * 3 + 's';
+          starsContainer.appendChild(star);
+        }
+      }
+
+      generateStars();
+
+      // Add fake activity
+      function addActivity(username, multiplier, isCrash = false) {
+        const feed = document.getElementById('activity-feed');
+        const item = document.createElement('div');
+        item.className = 'activity-item';
+        
+        if (isCrash) {
+          item.innerHTML = `💥 Rocket crashed at <span class="multiplier">${multiplier.toFixed(2)}x</span>`;
+        } else {
+          item.innerHTML = `<span class="username">${username}</span> cashed out at <span class="multiplier">${multiplier.toFixed(2)}x</span>`;
+        }
+        
+        feed.appendChild(item);
+        
+        // Keep only last 10 items
+        while (feed.children.length > 11) { // +1 for header
+          feed.removeChild(feed.children[1]); // Skip header
+        }
+        
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      // Start fake activity generator
+      function startFakeActivity() {
+        activityInterval = setInterval(() => {
+          if (!isFlying) return;
+          
+          const randomUser = usernames[Math.floor(Math.random() * usernames.length)];
+          // Generate random cashout between 1.1x and currentMultiplier
+          const cashoutMultiplier = 1.1 + Math.random() * (currentMultiplier - 1.1);
+          
+          if (cashoutMultiplier > 1.1 && Math.random() > 0.3) {
+            addActivity(randomUser, cashoutMultiplier);
+          }
+        }, 2000);
+      }
+
+      function updateStats() {
+        document.getElementById('current-bet').textContent = betAmount.toLocaleString() + ' 💎';
+        const potentialWin = Math.floor(betAmount * currentMultiplier);
+        document.getElementById('potential-win').textContent = potentialWin.toLocaleString() + ' 💎';
+      }
+
+      function generateCrashPoint() {
+        // X-ray mode: guarantee 1000x
+        if (xrayMode) {
+          xrayMode = false; // Reset after use
+          return 1000.0;
+        }
+        
+        // Weighted random crash point
+        const rand = Math.random();
+        if (rand < 0.40) return 1.0 + Math.random() * 0.5;      // 40% crash between 1.0-1.5x
+        if (rand < 0.70) return 1.5 + Math.random() * 1.5;      // 30% crash between 1.5-3.0x
+        if (rand < 0.88) return 3.0 + Math.random() * 4.0;      // 18% crash between 3.0-7.0x
+        if (rand < 0.96) return 7.0 + Math.random() * 13.0;     // 8% crash between 7.0-20.0x
+        if (rand < 0.99) return 20.0 + Math.random() * 30.0;    // 3% crash between 20.0-50.0x
+        return 50.0 + Math.random() * 950.0;                    // 1% crash between 50.0-1000.0x
+      }
+
+      document.getElementById('start-btn').addEventListener('click', () => {
+        const inputAmount = parseInt(document.getElementById('bet-amount').value);
+        const platinum = window.vc.readPlatinumCredits();
+        const resultMsg = document.getElementById('result-message');
+
+        if (isNaN(inputAmount) || inputAmount < 1) {
+          resultMsg.textContent = '⚠️ Enter a valid bet amount!';
+          return;
+        }
+
+        if (inputAmount > platinum) {
+          resultMsg.textContent = '⚠️ Insufficient platinum credits!';
+          return;
+        }
+
+        // Start flight
+        betAmount = inputAmount;
+        window.vc.writePlatinumCredits(platinum - betAmount);
+        updateDisplay();
+
+        isFlying = true;
+        currentMultiplier = 1.00;
+        crashPoint = generateCrashPoint();
+
+        document.getElementById('start-btn').style.display = 'none';
+        document.getElementById('cashout-btn').style.display = 'inline-block';
+        document.getElementById('bet-amount').disabled = true;
+        document.getElementById('rocket').classList.add('flying');
+        document.getElementById('crash-result').textContent = '';
+        
+        resultMsg.textContent = '🚀 Flying! Cash out before it crashes!';
+
+        const rocket = document.getElementById('rocket');
+        const multiplierDisplay = document.getElementById('multiplier');
+        const trail = document.getElementById('rocket-trail');
+        
+        startFakeActivity();
+        
+        let lastTrailTime = Date.now();
+        
+        flightInterval = setInterval(() => {
+          if (!isFlying) return;
+
+          // Increase multiplier
+          const increment = currentMultiplier < 2 ? 0.01 : 
+                           currentMultiplier < 10 ? 0.05 : 
+                           currentMultiplier < 50 ? 0.1 : 0.5;
+          currentMultiplier += increment;
+
+          // Update display
+          multiplierDisplay.textContent = currentMultiplier.toFixed(2) + 'x';
+          
+          // Calculate exponential curve position
+          // Using exponential function to create curved path
+          const displayHeight = 500;
+          const displayWidth = 900;
+          
+          // Exponential curve: y = a * e^(bx) - shifted and scaled
+          const maxMultiplier = Math.min(crashPoint * 1.2, 100); // Cap visualization
+          const normalizedProgress = Math.min(currentMultiplier / maxMultiplier, 1);
+          
+          // Exponential growth for vertical position (0 to 0.9 of height)
+          const verticalProgress = (Math.exp(normalizedProgress * 2.5) - 1) / (Math.exp(2.5) - 1);
+          const rocketBottom = 30 + verticalProgress * (displayHeight - 100);
+          
+          // Horizontal position follows exponential curve too
+          const horizontalProgress = (Math.exp(normalizedProgress * 1.8) - 1) / (Math.exp(1.8) - 1);
+          const rocketLeft = 50 + horizontalProgress * (displayWidth - 200);
+          
+          rocket.style.bottom = rocketBottom + 'px';
+          rocket.style.left = rocketLeft + 'px';
+          
+          // Add trail segments periodically
+          const now = Date.now();
+          if (now - lastTrailTime > 30) {
+            const segment = document.createElement('div');
+            segment.className = 'trail-segment';
+            segment.style.bottom = rocketBottom + 30 + 'px';
+            segment.style.left = rocketLeft + 30 + 'px';
+            trail.appendChild(segment);
+            
+            // Remove old segments
+            if (trail.children.length > 40) {
+              trail.removeChild(trail.firstChild);
+            }
+            
+            lastTrailTime = now;
+          }
+
+          updateStats();
+
+          // Check if crashed
+          if (currentMultiplier >= crashPoint) {
+            crash();
+          }
+        }, 50);
+      });
+
+      document.getElementById('cashout-btn').addEventListener('click', () => {
+        if (!isFlying) return;
+        cashOut();
+      });
+
+      function cashOut() {
+        const cashedOutAt = currentMultiplier;
+        const userBetAmount = betAmount;
+        
+        const winAmount = Math.floor(userBetAmount * cashedOutAt);
+        window.vc.writePlatinumCredits(window.vc.readPlatinumCredits() + winAmount);
+        
+        const resultMsg = document.getElementById('result-message');
+        
+        resultMsg.textContent = `💰 Cashed out at ${cashedOutAt.toFixed(2)}x! Won ${winAmount.toLocaleString()} 💎! Watching...`;
+        
+        addActivity('YOU', cashedOutAt);
+        
+        if (window.vc.setBuddyText) {
+          if (cashedOutAt >= 50) {
+            window.vc.setBuddyText(`LEGENDARY! Cashed out at ${cashedOutAt.toFixed(2)}x!`);
+          } else if (cashedOutAt >= 10) {
+            window.vc.setBuddyText(`Incredible timing! ${winAmount.toLocaleString()} platinum!`);
+          } else {
+            window.vc.setBuddyText(`Nice win! ${winAmount.toLocaleString()} platinum!`);
+          }
+        }
+
+        // Keep animation going to show what could have been
+        document.getElementById('cashout-btn').style.display = 'none';
+        document.getElementById('bet-amount').disabled = true;
+        
+        // Set betAmount to 0 so we don't show lost message on crash
+        betAmount = 0;
+        
+        // Show result after crash happens
+        const originalCrashHandler = () => {
+          const crashResult = document.getElementById('crash-result');
+          if (crashPoint > cashedOutAt) {
+            const couldHaveWon = Math.floor(userBetAmount * crashPoint);
+            crashResult.innerHTML = `😬 Rocket crashed at <span class="would-have">${crashPoint.toFixed(2)}x</span> - you could have won <span class="would-have">${couldHaveWon.toLocaleString()} 💎</span>`;
+            if (window.vc.setBuddyText) {
+              window.vc.setBuddyText(`It went to ${crashPoint.toFixed(2)}x! You missed out on ${(couldHaveWon - winAmount).toLocaleString()} platinum!`);
+            }
+          } else {
+            crashResult.innerHTML = `🎯 Perfect timing! Rocket crashed at <span style="color: #10b981; font-weight: 900;">${crashPoint.toFixed(2)}x</span>`;
+          }
+        };
+        
+        // Store the handler for when crash actually happens
+        window.pendingCrashHandler = originalCrashHandler;
+      }
+
+      function crash() {
+        isFlying = false;
+        clearInterval(flightInterval);
+        clearInterval(activityInterval);
+
+        const rocket = document.getElementById('rocket');
+        const resultMsg = document.getElementById('result-message');
+        const crashResult = document.getElementById('crash-result');
+        
+        rocket.textContent = '💥';
+        rocket.classList.add('crashed');
+        
+        // Only show crash message if user didn't cash out (betAmount still > 0)
+        if (betAmount > 0) {
+          resultMsg.textContent = `💥 CRASHED at ${crashPoint.toFixed(2)}x! Lost ${betAmount.toLocaleString()} 💎`;
+          crashResult.textContent = '';
+          
+          if (window.vc.setBuddyText) {
+            window.vc.setBuddyText(`Crashed at ${crashPoint.toFixed(2)}x! Better luck next time!`);
+          }
+        } else if (window.pendingCrashHandler) {
+          // User cashed out, execute the pending handler
+          window.pendingCrashHandler();
+          window.pendingCrashHandler = null;
+        }
+        
+        addActivity('', crashPoint, true);
+
+        setTimeout(() => {
+          rocket.innerHTML = '<img src="images/rocket.svg" alt="Rocket">';
+          rocket.classList.remove('crashed');
+          resetGame();
+        }, 3000);
+      }
+
+      function resetGame() {
+        updateDisplay();
+        clearInterval(activityInterval);
+        document.getElementById('start-btn').style.display = 'inline-block';
+        document.getElementById('cashout-btn').style.display = 'none';
+        document.getElementById('bet-amount').disabled = false;
+        document.getElementById('rocket').classList.remove('flying');
+        document.getElementById('rocket').style.bottom = '30px';
+        document.getElementById('rocket').style.left = '50px';
+        document.getElementById('rocket-trail').innerHTML = '';
+        document.getElementById('multiplier').textContent = '1.00x';
+        betAmount = 0;
+        currentMultiplier = 1.00;
+        updateStats();
+      }
+
+      updateStats();
+
+      // X-ray cheat code listener
+      let cheatInput = '';
+      let cheatTimeout;
+      
+      document.addEventListener('keypress', (e) => {
+        if (isFlying) return; // Don't allow during flight
+        
+        clearTimeout(cheatTimeout);
+        cheatInput += e.key.toLowerCase();
+        
+        if (cheatInput.includes('xray')) {
+          xrayMode = true;
+          cheatInput = '';
+          
+          // Visual feedback
+          const resultMsg = document.getElementById('result-message');
+          resultMsg.textContent = '🔍 X-RAY MODE ACTIVATED - Next round guaranteed 1000x! 🔍';
+          resultMsg.style.color = '#10b981';
+          
+          setTimeout(() => {
+            resultMsg.textContent = '';
+            resultMsg.style.color = '';
+          }, 3000);
+        }
+        
+        // Reset input after 2 seconds of inactivity
+        cheatTimeout = setTimeout(() => {
+          cheatInput = '';
+        }, 2000);
+      });
+    </script>
+
+    <div class="buddy" id="buddy">
+      <div class="buddy-toggle" id="buddy-toggle">−</div>
+      <img src="images/buddy.svg" alt="Buddy" />
+      <div>
+        <div class="name">Donny Boy</div>
+        <div class="text" id="buddy-text">Cash out before it crashes!</div>
+      </div>
+    </div>
+  </body>
+</html>
