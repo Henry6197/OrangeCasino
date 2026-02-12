@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     {id:'money_launderer', title:'🧽 Money Launderer', desc:'Launder dirty money', reward: 400, check:()=> (localStorage.getItem('ach_money_laundered') === '1')},
     
     // Special Location Achievements
-    {id:'coal_visitor', title:'⛏️ Factory Worker', desc:'Visit the factory!', reward: 100, check:()=> (localStorage.getItem('vc_coal_mine_visited') === '1')},
     {id:'coal_escape', title:'🔑 Great Escape', desc:'Escape the factory using supervisor override', reward: 1000, check:()=> (localStorage.getItem('vc_coal_mine_escaped') === '1')},
     {id:'hells_casino', title:'🔥 Descent into Hell', desc:'Enter Hell\'s Casino', reward: 300, check:()=> (localStorage.getItem('ach_hells_visited') === '1')},
     {id:'hells_escape', title:'😇 Redemption', desc:'Escape Hell\'s Casino', reward: 1000, check:()=> (localStorage.getItem('ach_hells_escaped') === '1')},
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }},
     {id:'true_master', title:'👑 True Master', desc:'Unlock all achievements', reward: 5000000, check:()=> {
       const state = JSON.parse(localStorage.getItem('vc_achievements') || '{}');
-      return Object.keys(state).length >= 34;
+      return Object.keys(state).length >= 36;
     }},
     
     // Hidden/Secret Achievements
@@ -190,10 +189,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   };
   
   // Special Location Tracking
-  window.vc.markCoalMineVisited = function(){ 
-    localStorage.setItem('vc_coal_mine_visited', '1'); 
-    render(); 
-  };
   window.vc.markCoalMineEscaped = function(){ 
     localStorage.setItem('vc_coal_mine_escaped', '1'); 
     render(); 

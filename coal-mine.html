@@ -965,14 +965,9 @@
         }
       });
       
-      // Initialize
-      updateChipCount();
-      
-      // Mark sweatshop as visited for achievement when page loads
+      // Initialize on page load
       document.addEventListener('DOMContentLoaded', function() {
-        if (window.vc && typeof window.vc.markCoalMineVisited === 'function') {
-          window.vc.markCoalMineVisited();
-        }
+        updateChipCount();
       });
 
       // Ghost Code System for Coal Mine
